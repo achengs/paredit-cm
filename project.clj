@@ -13,13 +13,13 @@
 
   :plugins [[lein-figwheel "0.5.9" :exclusions [org.clojure/clojure]]
             [lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]
-            [refactor-nrepl "2.2.0"]
-            ;;[cider/cider-nrepl "0.14.0"]
-            [lein-ancient "0.6.10"]
-            [lein-kibit "0.1.3" :exclusions [[org.clojure/clojure]
-                                             [org.clojure/tools.cli]]]
-            [jonase/eastwood "0.2.3"]
-            [lein-bikeshed "0.4.1"]]
+            ;;[refactor-nrepl "2.2.0"]
+            ;; [lein-ancient "0.6.10"]
+            ;; [lein-kibit "0.1.3" :exclusions [[org.clojure/clojure]
+            ;;                                  [org.clojure/tools.cli]]]
+            ;; [jonase/eastwood "0.2.3"]
+            ;; [lein-bikeshed "0.4.1"]
+            ]
 
   :source-paths ["src"]
 

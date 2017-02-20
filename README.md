@@ -1,6 +1,7 @@
 # paredit-cm
 
 [![Build Status](https://travis-ci.org/achengs/paredit-cm.svg?branch=master)](https://travis-ci.org/achengs/paredit-cm)
+[![Dependencies Status](https://jarkeeper.com/achengs/paredit-cm/status.svg)](https://jarkeeper.com/achengs/paredit-cm)
 
 All the Paredit operations from [EmacsWiki Paredit CheatSheet](https://emacswiki.org/emacs/PareditCheatsheet) for [CodeMirror](http://codemirror.net/).
 

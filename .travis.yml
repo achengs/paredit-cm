@@ -6,3 +6,5 @@ before_install: yes y | sudo lein upgrade
 
 script:  
 - lein cljsbuild test
+- lein do deps :tree, ancient, ancient :plugins, kibit, bikeshed
+- lein eastwood

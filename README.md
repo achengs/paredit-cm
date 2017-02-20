@@ -1,12 +1,14 @@
 # paredit-cm
 
+[![Build Status](https://travis-ci.org/achengs/paredit-cm.svg?branch=master)](https://travis-ci.org/achengs/paredit-cm)
+
 All the Paredit operations from [EmacsWiki Paredit CheatSheet](https://emacswiki.org/emacs/PareditCheatsheet) for [CodeMirror](http://codemirror.net/).
 
 paredit-cm is written in ClojureScript. It only parses code when asked to do an operation, and only parses as far as it needs to. It relies on methods in CodeMirror, which in turn may change its behavior (i.e. what counts as a token, etc) depending on what kind of file it believes it's displaying.
 
 ## Demo
 
-[Here is a page that hosts a demo.](http://htmlpreview.github.com/?https://github.com/achengs/paredit-cm/blob/master/demo/normal.html) Note though, that your browser may intercept some of the key modifiers and combinations.
+[Here is a page that hosts a demo.](http://htmlpreview.github.com/?https://github.com/achengs/paredit-cm/blob/master/resources/public/index.html) Note though, that your browser may intercept some of the key modifiers and combinations.
 
 You might have to reload the demo page to get the source code to load inside the CodeMirror.
 

@@ -26,14 +26,14 @@
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
   :cljsbuild {:builds
-              [{:id "test"
-                :source-paths ["src" "test"]
+              {:test
+               {:source-paths ["src" "test"]
                 :compiler {:output-to  "resources/test/compiled.js"
                            :output-dir "resources/test/js/compiled"
                            :optimizations :whitespace
                            :pretty-print true}}
-               {:id "dev"
-                :source-paths ["src" "test"]
+               :dev
+               {:source-paths ["src" "test"]
                 :figwheel {:on-jsload "paredit-cm.test/run"
                            :open-urls ["http://localhost:3449/index.html"]}
 
@@ -44,12 +44,13 @@
                            :source-map-timestamp true
                            :optimizations :none
                            :preloads [devtools.preload]}}
-               {:id "min"
-                :source-paths ["src"]
+               :prod
+               {:source-paths ["src"]
                 :compiler {:output-to "resources/public/compiled/paredit-cm.js"
+                           :output-dir "resources/public/js/compiled"
                            :main paredit-cm.core
                            :optimizations :advanced
-                           :pretty-print false}}]
+                           :pretty-print false}}}
               :test-commands {"test" ["phantomjs"
                                       "resources/test/test.js"
                                       "resources/test/test.html"]}}

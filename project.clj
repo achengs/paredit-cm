@@ -1,4 +1,4 @@
-(defproject paredit-cm "0.1.0-SNAPSHOT"
+(defproject paredit-cm "0.1.0"
   :description "paredit for codemirror"
   :url "https://github.com/achengs/paredit-cm"
             :license {:name "MIT License"

@@ -15,39 +15,39 @@ You can clone this repo, `lein cljsbuild once`, then visit `resources/public/ind
 ## Features / Keys
 
 * Delimiters
-    * Backspace, Delete, Ctrl-D handle these: () {} [] ""
-    * Delimiters are created in pairs except when inside a string or comment or when the next character is escaped: () {} [] ""
+    * Backspace, Delete, Ctrl-D handle these: `() {} [] ""`
+    * Delimiters are created in pairs except when inside a string or comment or when the next character is escaped: `() {} [] ""`
     * Typing a closing delimiter moves past it after deleting any whitespace at the end of the current list.
-    * Close round and newline: Shift-Alt-0
+    * Close round and newline: `Shift-Alt-0`
 * Movement
-    * Forward: Ctrl-Alt-f
-    * Backward: Ctrl-Alt-b
-    * Forward sexp: Shift-Ctrl-f
-    * Backward sexp: Shift-Ctrl-b
-    * Backward Up: Ctrl-Alt-U
-    * Forward Down: Ctrl-Alt-D
-    * Backward Down: Ctrl-Alt-P
-    * Forward Up: Ctrl-Alt-N
+    * Forward: `Ctrl-Alt-f`
+    * Backward: `Ctrl-Alt-b`
+    * Forward sexp: `Shift-Ctrl-f`
+    * Backward sexp: `Shift-Ctrl-b`
+    * Backward Up: `Ctrl-Alt-U`
+    * Forward Down: `Ctrl-Alt-D`
+    * Backward Down: `Ctrl-Alt-P`
+    * Forward Up: `Ctrl-Alt-N`
 * Barf / Slurp
-    * Backward Barf: Shift-Ctrl-[
-    * Forward Barf: Shift-Ctrl-]
-    * Backward Slurp: Shift-Ctrl-9
-    * Forward Slurp: Shift-Ctrl-0
+    * Backward Barf: `Shift-Ctrl-[`
+    * Forward Barf: `Shift-Ctrl-]`
+    * Backward Slurp: `Shift-Ctrl-9`
+    * Forward Slurp: `Shift-Ctrl-0`
 * Splicing, etc
-    * Splice: Alt-s
-    * Splice Killing Backward: Alt-Up
-    * Splice Killing Forward: Alt-Down
-    * Wrap round: Shift-Alt-9
-    * Raise sexp: Alt-r
-    * Split sexp: Shift-Alt-s
-    * Join sexps: Shift-Alt-j
+    * Splice: `Alt-s`
+    * Splice Killing Backward: `Alt-Up`
+    * Splice Killing Forward: `Alt-Down`
+    * Wrap round: `Shift-Alt-9`
+    * Raise sexp: `Alt-r`
+    * Split sexp: `Shift-Alt-s`
+    * Join sexps: `Shift-Alt-j`
 * Others
-    * Kill: Ctrl-k
-    * Forward Kill Word: Alt-d
-    * Backward Kill Word: Alt-Backspace
-    * Quoting the next sexp: Shift-Alt-"
-    * Comment DWIM: Shift-Alt-;
-    * Indent Defun: Alt-q
+    * Kill: `Ctrl-k`
+    * Forward Kill Word: `Alt-d`
+    * Backward Kill Word: `Alt-Backspace`
+    * Quoting the next sexp: `Shift-Alt-"`
+    * Comment DWIM: `Shift-Alt-;`
+    * Indent Defun: `Alt-q`
 
 Bug reports are definitely welcome.
 

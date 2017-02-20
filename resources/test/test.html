@@ -1,14 +1,14 @@
 <!doctype html>
 <title>paredit-cm demo</title>
 <meta charset="utf-8"/>
-<link rel=stylesheet href="../cm/doc/docs.css">
-<link rel="stylesheet" href="../cm/lib/codemirror.css">
-<script src="../cm/lib/codemirror.js"></script>
-<script src="../cm/mode/clojure/clojure.js"></script>
-<script src="../cm/keymap/emacs.js"></script>
+<link rel=stylesheet href="./cm/doc/docs.css">
+<link rel="stylesheet" href="./cm/lib/codemirror.css">
+<script src="./cm/lib/codemirror.js"></script>
+<script src="./cm/mode/clojure/clojure.js"></script>
+<script src="./cm/keymap/emacs.js"></script>
 <script src="compiled.js"></script>
 <script src="compiled/paredit-cm.js"></script>
-<script src="../js/keymap-paredit-cm.js"></script>
+<script src="./js/keymap-paredit-cm.js"></script>
 <style>.CodeMirror {background: #f8f8f8;}</style>
 <article>
 <h2>Paredit-CM demo</h2>
@@ -73,7 +73,7 @@
 <h3>Features / Key Bindings</h3>
 
 <p>The Paredit keybindings are enabled by
-including <code><a href="../js/keymap-paredit-cm.js">js/keymap-paredit-cm.js</a></code>
+including <code><a href="./js/keymap-paredit-cm.js">js/keymap-paredit-cm.js</a></code>
 and setting the <code>keyMap</code> option
 to <code>"paredit_cm"</code>.</p>
 
@@ -120,7 +120,7 @@ to <code>"paredit_cm"</code>.</p>
 <p>The following also applies because the keymap falls through to
   CodeMirror's <code>emacs.js</code> keymap which I have copied
   locally for this demo page
-  to <code><a href="../cm/keymap/emacs.js">js/keymap-paredit-cm.js</a></code>:</p>
+  to <code><a href="./cm/keymap/emacs.js">js/keymap-paredit-cm.js</a></code>:</p>
 
 <blockquote cite="https://github.com/codemirror/CodeMirror/blob/master/demo/emacs.html">
 Because CodeMirror's internal API is quite different from Emacs,

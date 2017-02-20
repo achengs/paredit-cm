@@ -8,9 +8,7 @@ paredit-cm is written in ClojureScript. It only parses code when asked to do an 
 
 ## Demo
 
-[Here is a page that hosts a demo.](http://htmlpreview.github.com/?https://github.com/achengs/paredit-cm/blob/master/resources/public/index.html) Note though, that your browser may intercept some of the key modifiers and combinations.
-
-You might have to reload the demo page to get the source code to load inside the CodeMirror.
+You can clone this repo and visit resources/public/index.html. Note: your browser may interfere with the capture of many modifiers and combinations.
 
 ## Features / Keys
 
@@ -58,7 +56,13 @@ resources/js/keymap-paredit-cm.js
 
 ## Running the Tests
 
+### From the command line
 lein cljsbuild test
+
+### With figwheel and emacs
+* Jack in
+* When your browser loads index.html, show the javascipt console
+* Edit code or tests. The tests should run.
 
 ## License
 

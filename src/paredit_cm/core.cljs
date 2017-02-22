@@ -1,6 +1,9 @@
 (ns paredit-cm.core
   "paredit operations (exported)"
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [cljsjs.codemirror]
+            [cljsjs.codemirror.mode.clojure]
+            [cljsjs.codemirror.keymap.emacs]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ** PAREDI PROJECT CONVENTIONS **
@@ -1090,7 +1093,8 @@
   "returns true for closing brackets and for closing double-quotes"
   [cm cur]
   (let [{:keys [string type left-char right-cur]} (get-info cm cur)]
-    (or (and (is-bracket-type? type) (closer? string))
+    (println "closing delim?" type string left-char)
+    (or (and (is-bracket-type? type) (closer? left-char))
         (and (= type "string")
              (= "\"" left-char)
              ;; at this point, we could be just inside the start of a string.
@@ -1124,7 +1128,7 @@
   "returns true for opening brackets and for opening double-quotes"
   [cm cur]
   (let [{:keys [string type left-char right-cur]} (get-info cm cur)]
-    (or (and (is-bracket-type? type) (opener? string))
+    (or (and (is-bracket-type? type) (opener? left-char))
         (opening-doublequote? cm type left-char right-cur))))
 
 (defn opening-delim-for-empty-pair?

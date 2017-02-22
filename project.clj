@@ -9,7 +9,8 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.473"]
                  [org.clojure/core.async "0.2.395"
-                  :exclusions [org.clojure/tools.reader]]]
+                  :exclusions [org.clojure/tools.reader]]
+                 [cljsjs/codemirror "5.24.0-0"]]
 
   :plugins [[lein-figwheel "0.5.9" :exclusions [org.clojure/clojure]]
             [lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]
@@ -18,8 +19,7 @@
             [lein-kibit "0.1.3" :exclusions [[org.clojure/clojure]
                                              [org.clojure/tools.cli]]]
             [jonase/eastwood "0.2.3"]
-            [lein-bikeshed "0.4.1"]
-            ]
+            [lein-bikeshed "0.4.1"]]
 
   :source-paths ["src"]
 
@@ -46,8 +46,8 @@
                            :preloads [devtools.preload]}}
                :prod
                {:source-paths ["src"]
-                :compiler {:output-to "resources/public/compiled/paredit-cm.js"
-                           :output-dir "resources/public/js/compiled"
+                :compiler {:output-to  "resources/demo/js/paredit-cm.js"
+                           :output-dir "resources/demo/js"
                            :main paredit-cm.core
                            :optimizations :advanced
                            :pretty-print false}}}

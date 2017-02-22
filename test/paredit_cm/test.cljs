@@ -298,8 +298,16 @@ world\\\" baz)\" quux)")
            "(foo X bar)")
 
   (t/check p/backward-delete
-           "(foo bar)X"
-           "(foo barX)")
+           "(ns ^{X:doc \"Conway's Game of Life.\"} game-of-life)"
+           "(ns ^{X:doc \"Conway's Game of Life.\"} game-of-life)")
+
+  (t/check p/backward-delete
+           "(foo bar)X
+
+(baz)"
+           "(foo barX)
+
+(baz)")
 
   (t/check p/backward-delete
            "(foo bar)

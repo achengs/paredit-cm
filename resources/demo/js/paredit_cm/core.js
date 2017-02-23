@@ -37,23 +37,23 @@ return cljs.core.count(cm.getValue());
  * get cur, the position of the cursor
  */
 paredit_cm.core.cursor = (function paredit_cm$core$cursor(var_args){
-var args25642 = [];
-var len__7927__auto___25645 = arguments.length;
-var i__7928__auto___25646 = (0);
+var args22272 = [];
+var len__7927__auto___22275 = arguments.length;
+var i__7928__auto___22276 = (0);
 while(true){
-if((i__7928__auto___25646 < len__7927__auto___25645)){
-args25642.push((arguments[i__7928__auto___25646]));
+if((i__7928__auto___22276 < len__7927__auto___22275)){
+args22272.push((arguments[i__7928__auto___22276]));
 
-var G__25647 = (i__7928__auto___25646 + (1));
-i__7928__auto___25646 = G__25647;
+var G__22277 = (i__7928__auto___22276 + (1));
+i__7928__auto___22276 = G__22277;
 continue;
 } else {
 }
 break;
 }
 
-var G__25644 = args25642.length;
-switch (G__25644) {
+var G__22274 = args22272.length;
+switch (G__22274) {
 case 1:
 return paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -63,7 +63,7 @@ return paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(ar
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25642.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22272.length)].join('')));
 
 }
 });
@@ -82,23 +82,23 @@ paredit_cm.core.cursor.cljs$lang$maxFixedArity = 2;
  * get the index i for the cursor's position
  */
 paredit_cm.core.index = (function paredit_cm$core$index(var_args){
-var args25649 = [];
-var len__7927__auto___25652 = arguments.length;
-var i__7928__auto___25653 = (0);
+var args22279 = [];
+var len__7927__auto___22282 = arguments.length;
+var i__7928__auto___22283 = (0);
 while(true){
-if((i__7928__auto___25653 < len__7927__auto___25652)){
-args25649.push((arguments[i__7928__auto___25653]));
+if((i__7928__auto___22283 < len__7927__auto___22282)){
+args22279.push((arguments[i__7928__auto___22283]));
 
-var G__25654 = (i__7928__auto___25653 + (1));
-i__7928__auto___25653 = G__25654;
+var G__22284 = (i__7928__auto___22283 + (1));
+i__7928__auto___22283 = G__22284;
 continue;
 } else {
 }
 break;
 }
 
-var G__25651 = args25649.length;
-switch (G__25651) {
+var G__22281 = args22279.length;
+switch (G__22281) {
 case 1:
 return paredit_cm.core.index.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -108,7 +108,7 @@ return paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arg
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25649.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22279.length)].join('')));
 
 }
 });
@@ -149,23 +149,23 @@ return cm.getTokenAt(cur,true);
  * get the type at the current cursor.
  */
 paredit_cm.core.get_type = (function paredit_cm$core$get_type(var_args){
-var args25656 = [];
-var len__7927__auto___25659 = arguments.length;
-var i__7928__auto___25660 = (0);
+var args22286 = [];
+var len__7927__auto___22289 = arguments.length;
+var i__7928__auto___22290 = (0);
 while(true){
-if((i__7928__auto___25660 < len__7927__auto___25659)){
-args25656.push((arguments[i__7928__auto___25660]));
+if((i__7928__auto___22290 < len__7927__auto___22289)){
+args22286.push((arguments[i__7928__auto___22290]));
 
-var G__25661 = (i__7928__auto___25660 + (1));
-i__7928__auto___25660 = G__25661;
+var G__22291 = (i__7928__auto___22290 + (1));
+i__7928__auto___22290 = G__22291;
 continue;
 } else {
 }
 break;
 }
 
-var G__25658 = args25656.length;
-switch (G__25658) {
+var G__22288 = args22286.length;
+switch (G__22288) {
 case 1:
 return paredit_cm.core.get_type.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -175,7 +175,7 @@ return paredit_cm.core.get_type.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25656.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22286.length)].join('')));
 
 }
 });
@@ -194,23 +194,23 @@ paredit_cm.core.get_type.cljs$lang$maxFixedArity = 2;
  * gets the string of the current token
  */
 paredit_cm.core.get_string = (function paredit_cm$core$get_string(var_args){
-var args25663 = [];
-var len__7927__auto___25666 = arguments.length;
-var i__7928__auto___25667 = (0);
+var args22293 = [];
+var len__7927__auto___22296 = arguments.length;
+var i__7928__auto___22297 = (0);
 while(true){
-if((i__7928__auto___25667 < len__7927__auto___25666)){
-args25663.push((arguments[i__7928__auto___25667]));
+if((i__7928__auto___22297 < len__7927__auto___22296)){
+args22293.push((arguments[i__7928__auto___22297]));
 
-var G__25668 = (i__7928__auto___25667 + (1));
-i__7928__auto___25667 = G__25668;
+var G__22298 = (i__7928__auto___22297 + (1));
+i__7928__auto___22297 = G__22298;
 continue;
 } else {
 }
 break;
 }
 
-var G__25665 = args25663.length;
-switch (G__25665) {
+var G__22295 = args22293.length;
+switch (G__22295) {
 case 1:
 return paredit_cm.core.get_string.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -220,7 +220,7 @@ return paredit_cm.core.get_string.cljs$core$IFn$_invoke$arity$2((arguments[(0)])
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25663.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22293.length)].join('')));
 
 }
 });
@@ -243,23 +243,23 @@ paredit_cm.core.get_string.cljs$lang$maxFixedArity = 2;
  * gets the length of the current line
  */
 paredit_cm.core.line_length = (function paredit_cm$core$line_length(var_args){
-var args25670 = [];
-var len__7927__auto___25673 = arguments.length;
-var i__7928__auto___25674 = (0);
+var args22300 = [];
+var len__7927__auto___22303 = arguments.length;
+var i__7928__auto___22304 = (0);
 while(true){
-if((i__7928__auto___25674 < len__7927__auto___25673)){
-args25670.push((arguments[i__7928__auto___25674]));
+if((i__7928__auto___22304 < len__7927__auto___22303)){
+args22300.push((arguments[i__7928__auto___22304]));
 
-var G__25675 = (i__7928__auto___25674 + (1));
-i__7928__auto___25674 = G__25675;
+var G__22305 = (i__7928__auto___22304 + (1));
+i__7928__auto___22304 = G__22305;
 continue;
 } else {
 }
 break;
 }
 
-var G__25672 = args25670.length;
-switch (G__25672) {
+var G__22302 = args22300.length;
+switch (G__22302) {
 case 1:
 return paredit_cm.core.line_length.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -269,7 +269,7 @@ return paredit_cm.core.line_length.cljs$core$IFn$_invoke$arity$2((arguments[(0)]
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25670.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22300.length)].join('')));
 
 }
 });
@@ -298,23 +298,23 @@ return cljs.core.last(cm.getLineTokens(cur.line));
  * returns the last cursor of a line
  */
 paredit_cm.core.last_cur = (function paredit_cm$core$last_cur(var_args){
-var args25677 = [];
-var len__7927__auto___25680 = arguments.length;
-var i__7928__auto___25681 = (0);
+var args22307 = [];
+var len__7927__auto___22310 = arguments.length;
+var i__7928__auto___22311 = (0);
 while(true){
-if((i__7928__auto___25681 < len__7927__auto___25680)){
-args25677.push((arguments[i__7928__auto___25681]));
+if((i__7928__auto___22311 < len__7927__auto___22310)){
+args22307.push((arguments[i__7928__auto___22311]));
 
-var G__25682 = (i__7928__auto___25681 + (1));
-i__7928__auto___25681 = G__25682;
+var G__22312 = (i__7928__auto___22311 + (1));
+i__7928__auto___22311 = G__22312;
 continue;
 } else {
 }
 break;
 }
 
-var G__25679 = args25677.length;
-switch (G__25679) {
+var G__22309 = args22307.length;
+switch (G__22309) {
 case 1:
 return paredit_cm.core.last_cur.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -324,7 +324,7 @@ return paredit_cm.core.last_cur.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25677.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22307.length)].join('')));
 
 }
 });
@@ -347,23 +347,23 @@ paredit_cm.core.last_cur.cljs$lang$maxFixedArity = 2;
  *   that performance hit won't be that bad.
  */
 paredit_cm.core.get_info = (function paredit_cm$core$get_info(var_args){
-var args25684 = [];
-var len__7927__auto___25687 = arguments.length;
-var i__7928__auto___25688 = (0);
+var args22314 = [];
+var len__7927__auto___22317 = arguments.length;
+var i__7928__auto___22318 = (0);
 while(true){
-if((i__7928__auto___25688 < len__7927__auto___25687)){
-args25684.push((arguments[i__7928__auto___25688]));
+if((i__7928__auto___22318 < len__7927__auto___22317)){
+args22314.push((arguments[i__7928__auto___22318]));
 
-var G__25689 = (i__7928__auto___25688 + (1));
-i__7928__auto___25688 = G__25689;
+var G__22319 = (i__7928__auto___22318 + (1));
+i__7928__auto___22318 = G__22319;
 continue;
 } else {
 }
 break;
 }
 
-var G__25686 = args25684.length;
-switch (G__25686) {
+var G__22316 = args22314.length;
+switch (G__22316) {
 case 1:
 return paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -373,7 +373,7 @@ return paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25684.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22314.length)].join('')));
 
 }
 });
@@ -416,23 +416,23 @@ return cm.indentLine(paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1(cm).li
  * returns true if backslash is to the left and cursor is on an escaped char
  */
 paredit_cm.core.in_escaped_char_QMARK_ = (function paredit_cm$core$in_escaped_char_QMARK_(var_args){
-var args25691 = [];
-var len__7927__auto___25696 = arguments.length;
-var i__7928__auto___25697 = (0);
+var args22321 = [];
+var len__7927__auto___22326 = arguments.length;
+var i__7928__auto___22327 = (0);
 while(true){
-if((i__7928__auto___25697 < len__7927__auto___25696)){
-args25691.push((arguments[i__7928__auto___25697]));
+if((i__7928__auto___22327 < len__7927__auto___22326)){
+args22321.push((arguments[i__7928__auto___22327]));
 
-var G__25698 = (i__7928__auto___25697 + (1));
-i__7928__auto___25697 = G__25698;
+var G__22328 = (i__7928__auto___22327 + (1));
+i__7928__auto___22327 = G__22328;
 continue;
 } else {
 }
 break;
 }
 
-var G__25693 = args25691.length;
-switch (G__25693) {
+var G__22323 = args22321.length;
+switch (G__22323) {
 case 2:
 return paredit_cm.core.in_escaped_char_QMARK_.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -442,7 +442,7 @@ return paredit_cm.core.in_escaped_char_QMARK_.cljs$core$IFn$_invoke$arity$3((arg
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25691.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22321.length)].join('')));
 
 }
 });
@@ -452,12 +452,12 @@ return paredit_cm.core.in_escaped_char_QMARK_.cljs$core$IFn$_invoke$arity$3(cm,c
 });
 
 paredit_cm.core.in_escaped_char_QMARK_.cljs$core$IFn$_invoke$arity$3 = (function (cm,cur,offset){
-var map__25694 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25694__$1 = ((((!((map__25694 == null)))?((((map__25694.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25694.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25694):map__25694);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25694__$1,cljs.core.cst$kw$ch);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25694__$1,cljs.core.cst$kw$start);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25694__$1,cljs.core.cst$kw$end);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25694__$1,cljs.core.cst$kw$type);
+var map__22324 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22324__$1 = ((((!((map__22324 == null)))?((((map__22324.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22324.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22324):map__22324);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22324__$1,cljs.core.cst$kw$ch);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22324__$1,cljs.core.cst$kw$start);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22324__$1,cljs.core.cst$kw$end);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22324__$1,cljs.core.cst$kw$type);
 return (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(start,((ch - (1)) + offset))) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(end,((ch + (1)) + offset))) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(type,"string-2"));
 });
 
@@ -482,23 +482,23 @@ return paredit_cm.core.in_escaped_char_QMARK_.cljs$core$IFn$_invoke$arity$3(cm,c
  *   the cursor inside the pair. this returns the new cursor.
  */
 paredit_cm.core.insert = (function paredit_cm$core$insert(var_args){
-var args25700 = [];
-var len__7927__auto___25705 = arguments.length;
-var i__7928__auto___25706 = (0);
+var args22330 = [];
+var len__7927__auto___22335 = arguments.length;
+var i__7928__auto___22336 = (0);
 while(true){
-if((i__7928__auto___25706 < len__7927__auto___25705)){
-args25700.push((arguments[i__7928__auto___25706]));
+if((i__7928__auto___22336 < len__7927__auto___22335)){
+args22330.push((arguments[i__7928__auto___22336]));
 
-var G__25707 = (i__7928__auto___25706 + (1));
-i__7928__auto___25706 = G__25707;
+var G__22337 = (i__7928__auto___22336 + (1));
+i__7928__auto___22336 = G__22337;
 continue;
 } else {
 }
 break;
 }
 
-var G__25702 = args25700.length;
-switch (G__25702) {
+var G__22332 = args22330.length;
+switch (G__22332) {
 case 2:
 return paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -512,7 +512,7 @@ return paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$4((arguments[(0)]),(ar
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25700.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22330.length)].join('')));
 
 }
 });
@@ -526,10 +526,10 @@ return paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$4(cm,text,offset,pared
 });
 
 paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$4 = (function (cm,text,offset,cur){
-var map__25703 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25703__$1 = ((((!((map__25703 == null)))?((((map__25703.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25703.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25703):map__25703);
-var line = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25703__$1,cljs.core.cst$kw$line);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25703__$1,cljs.core.cst$kw$ch);
+var map__22333 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22333__$1 = ((((!((map__22333 == null)))?((((map__22333.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22333.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22333):map__22333);
+var line = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22333__$1,cljs.core.cst$kw$line);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22333__$1,cljs.core.cst$kw$ch);
 cm.replaceRange(text,cur);
 
 cm.setCursor(line,((ch + cljs.core.count(text)) + offset));
@@ -544,23 +544,23 @@ paredit_cm.core.insert.cljs$lang$maxFixedArity = 4;
  *   supports brackets [] {} () but not double-quote
  */
 paredit_cm.core.open_round = (function paredit_cm$core$open_round(var_args){
-var args25709 = [];
-var len__7927__auto___25714 = arguments.length;
-var i__7928__auto___25715 = (0);
+var args22339 = [];
+var len__7927__auto___22344 = arguments.length;
+var i__7928__auto___22345 = (0);
 while(true){
-if((i__7928__auto___25715 < len__7927__auto___25714)){
-args25709.push((arguments[i__7928__auto___25715]));
+if((i__7928__auto___22345 < len__7927__auto___22344)){
+args22339.push((arguments[i__7928__auto___22345]));
 
-var G__25716 = (i__7928__auto___25715 + (1));
-i__7928__auto___25715 = G__25716;
+var G__22346 = (i__7928__auto___22345 + (1));
+i__7928__auto___22345 = G__22346;
 continue;
 } else {
 }
 break;
 }
 
-var G__25711 = args25709.length;
-switch (G__25711) {
+var G__22341 = args22339.length;
+switch (G__22341) {
 case 1:
 return paredit_cm.core.open_round.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -570,7 +570,7 @@ return paredit_cm.core.open_round.cljs$core$IFn$_invoke$arity$2((arguments[(0)])
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25709.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22339.length)].join('')));
 
 }
 });
@@ -581,11 +581,11 @@ return paredit_cm.core.open_round.cljs$core$IFn$_invoke$arity$2(cm,"(");
 });
 
 paredit_cm.core.open_round.cljs$core$IFn$_invoke$arity$2 = (function (cm,c){
-var map__25712 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
-var map__25712__$1 = ((((!((map__25712 == null)))?((((map__25712.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25712.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25712):map__25712);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25712__$1,cljs.core.cst$kw$type);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25712__$1,cljs.core.cst$kw$left_DASH_char);
-var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25712__$1,cljs.core.cst$kw$right_DASH_char);
+var map__22342 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
+var map__22342__$1 = ((((!((map__22342 == null)))?((((map__22342.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22342.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22342):map__22342);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22342__$1,cljs.core.cst$kw$type);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22342__$1,cljs.core.cst$kw$left_DASH_char);
+var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22342__$1,cljs.core.cst$kw$right_DASH_char);
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("\\",left_char)){
 return paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$2(cm,c);
 } else {
@@ -616,12 +616,12 @@ goog.exportSymbol('paredit_cm.core.open_brace', paredit_cm.core.open_brace);
  *   assuming the cm has matched brackets for now. moves to the right.
  */
 paredit_cm.core.parent_closer_sp = (function paredit_cm$core$parent_closer_sp(cm,cur,state){
-var map__25720 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25720__$1 = ((((!((map__25720 == null)))?((((map__25720.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25720.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25720):map__25720);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25720__$1,cljs.core.cst$kw$string);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25720__$1,cljs.core.cst$kw$type);
-var top = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25720__$1,cljs.core.cst$kw$top);
-var eof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25720__$1,cljs.core.cst$kw$eof);
+var map__22350 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22350__$1 = ((((!((map__22350 == null)))?((((map__22350.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22350.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22350):map__22350);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22350__$1,cljs.core.cst$kw$string);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22350__$1,cljs.core.cst$kw$type);
+var top = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22350__$1,cljs.core.cst$kw$top);
+var eof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22350__$1,cljs.core.cst$kw$eof);
 if(cljs.core.truth_((function (){var and__6802__auto__ = paredit_cm.core.is_bracket_type_QMARK_(type);
 if(cljs.core.truth_(and__6802__auto__)){
 return paredit_cm.core.opener_QMARK_(string);
@@ -689,34 +689,34 @@ return state;
  * returns the cursor for the start of the current token
  */
 paredit_cm.core.token_start = (function paredit_cm$core$token_start(cm,cur){
-var map__25724 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25724__$1 = ((((!((map__25724 == null)))?((((map__25724.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25724.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25724):map__25724);
-var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25724__$1,cljs.core.cst$kw$i);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25724__$1,cljs.core.cst$kw$start);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25724__$1,cljs.core.cst$kw$ch);
+var map__22354 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22354__$1 = ((((!((map__22354 == null)))?((((map__22354.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22354.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22354):map__22354);
+var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22354__$1,cljs.core.cst$kw$i);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22354__$1,cljs.core.cst$kw$start);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22354__$1,cljs.core.cst$kw$ch);
 return paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i - (ch - start)));
 });
 /**
  * returns the cursor for the end of the current token
  */
 paredit_cm.core.token_end = (function paredit_cm$core$token_end(var_args){
-var args25726 = [];
-var len__7927__auto___25731 = arguments.length;
-var i__7928__auto___25732 = (0);
+var args22356 = [];
+var len__7927__auto___22361 = arguments.length;
+var i__7928__auto___22362 = (0);
 while(true){
-if((i__7928__auto___25732 < len__7927__auto___25731)){
-args25726.push((arguments[i__7928__auto___25732]));
+if((i__7928__auto___22362 < len__7927__auto___22361)){
+args22356.push((arguments[i__7928__auto___22362]));
 
-var G__25733 = (i__7928__auto___25732 + (1));
-i__7928__auto___25732 = G__25733;
+var G__22363 = (i__7928__auto___22362 + (1));
+i__7928__auto___22362 = G__22363;
 continue;
 } else {
 }
 break;
 }
 
-var G__25728 = args25726.length;
-switch (G__25728) {
+var G__22358 = args22356.length;
+switch (G__22358) {
 case 2:
 return paredit_cm.core.token_end.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -726,7 +726,7 @@ return paredit_cm.core.token_end.cljs$core$IFn$_invoke$arity$3((arguments[(0)]),
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25726.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22356.length)].join('')));
 
 }
 });
@@ -736,11 +736,11 @@ return paredit_cm.core.token_end.cljs$core$IFn$_invoke$arity$3(cm,cur,(0));
 });
 
 paredit_cm.core.token_end.cljs$core$IFn$_invoke$arity$3 = (function (cm,cur,offset){
-var map__25729 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25729__$1 = ((((!((map__25729 == null)))?((((map__25729.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25729.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25729):map__25729);
-var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25729__$1,cljs.core.cst$kw$i);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25729__$1,cljs.core.cst$kw$end);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25729__$1,cljs.core.cst$kw$ch);
+var map__22359 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22359__$1 = ((((!((map__22359 == null)))?((((map__22359.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22359.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22359):map__22359);
+var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22359__$1,cljs.core.cst$kw$i);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22359__$1,cljs.core.cst$kw$end);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22359__$1,cljs.core.cst$kw$ch);
 return paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,((i + offset) + (end - ch)));
 });
 
@@ -760,13 +760,13 @@ return paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.to
  */
 paredit_cm.core.skip_trampoline_helper = (function paredit_cm$core$skip_trampoline_helper(cm,cur,sp,state,n){
 if((n >= (0))){
-var map__25743 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25743__$1 = ((((!((map__25743 == null)))?((((map__25743.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25743.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25743):map__25743);
-var left_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25743__$1,cljs.core.cst$kw$left_DASH_cur);
-var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25743__$1,cljs.core.cst$kw$i);
+var map__22373 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22373__$1 = ((((!((map__22373 == null)))?((((map__22373.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22373.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22373):map__22373);
+var left_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22373__$1,cljs.core.cst$kw$left_DASH_cur);
+var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22373__$1,cljs.core.cst$kw$i);
 var result = (sp.cljs$core$IFn$_invoke$arity$3 ? sp.cljs$core$IFn$_invoke$arity$3(cm,cur,state) : sp.call(null,cm,cur,state));
-var G__25745 = (((result instanceof cljs.core.Keyword))?result.fqn:null);
-switch (G__25745) {
+var G__22375 = (((result instanceof cljs.core.Keyword))?result.fqn:null);
+switch (G__22375) {
 case "eof":
 return null;
 
@@ -793,16 +793,16 @@ return paredit_cm.core.token_start(cm,cur);
 break;
 default:
 var next_cur = paredit_cm.core.token_end.cljs$core$IFn$_invoke$arity$3(cm,cur,(1));
-return ((function (next_cur,G__25745,map__25743,map__25743__$1,left_cur,i,result){
+return ((function (next_cur,G__22375,map__22373,map__22373__$1,left_cur,i,result){
 return (function (){
-var G__25746 = cm;
-var G__25747 = next_cur;
-var G__25748 = sp;
-var G__25749 = result;
-var G__25750 = (n - (1));
-return (paredit_cm.core.skip_trampoline_helper.cljs$core$IFn$_invoke$arity$5 ? paredit_cm.core.skip_trampoline_helper.cljs$core$IFn$_invoke$arity$5(G__25746,G__25747,G__25748,G__25749,G__25750) : paredit_cm.core.skip_trampoline_helper.call(null,G__25746,G__25747,G__25748,G__25749,G__25750));
+var G__22376 = cm;
+var G__22377 = next_cur;
+var G__22378 = sp;
+var G__22379 = result;
+var G__22380 = (n - (1));
+return (paredit_cm.core.skip_trampoline_helper.cljs$core$IFn$_invoke$arity$5 ? paredit_cm.core.skip_trampoline_helper.cljs$core$IFn$_invoke$arity$5(G__22376,G__22377,G__22378,G__22379,G__22380) : paredit_cm.core.skip_trampoline_helper.call(null,G__22376,G__22377,G__22378,G__22379,G__22380));
 });
-;})(next_cur,G__25745,map__25743,map__25743__$1,left_cur,i,result))
+;})(next_cur,G__22375,map__22373,map__22373__$1,left_cur,i,result))
 
 }
 } else {
@@ -814,16 +814,16 @@ return cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_se
  */
 paredit_cm.core.skip_trampoline_helper_left = (function paredit_cm$core$skip_trampoline_helper_left(cm,cur,sp,state,n){
 if((n >= (0))){
-var map__25760 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25760__$1 = ((((!((map__25760 == null)))?((((map__25760.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25760.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25760):map__25760);
-var left_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25760__$1,cljs.core.cst$kw$left_DASH_cur);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25760__$1,cljs.core.cst$kw$right_DASH_cur);
-var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25760__$1,cljs.core.cst$kw$i);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25760__$1,cljs.core.cst$kw$start);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25760__$1,cljs.core.cst$kw$ch);
+var map__22390 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22390__$1 = ((((!((map__22390 == null)))?((((map__22390.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22390.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22390):map__22390);
+var left_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22390__$1,cljs.core.cst$kw$left_DASH_cur);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22390__$1,cljs.core.cst$kw$right_DASH_cur);
+var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22390__$1,cljs.core.cst$kw$i);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22390__$1,cljs.core.cst$kw$start);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22390__$1,cljs.core.cst$kw$ch);
 var result = (sp.cljs$core$IFn$_invoke$arity$3 ? sp.cljs$core$IFn$_invoke$arity$3(cm,cur,state) : sp.call(null,cm,cur,state));
-var G__25762 = (((result instanceof cljs.core.Keyword))?result.fqn:null);
-switch (G__25762) {
+var G__22392 = (((result instanceof cljs.core.Keyword))?result.fqn:null);
+switch (G__22392) {
 case "bof":
 return null;
 
@@ -850,16 +850,16 @@ return paredit_cm.core.token_start(cm,cur);
 break;
 default:
 var next_cur = ((cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(ch,start))?paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i - (1))):paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i - (ch - start))));
-return ((function (next_cur,G__25762,map__25760,map__25760__$1,left_cur,right_cur,i,start,ch,result){
+return ((function (next_cur,G__22392,map__22390,map__22390__$1,left_cur,right_cur,i,start,ch,result){
 return (function (){
-var G__25763 = cm;
-var G__25764 = next_cur;
-var G__25765 = sp;
-var G__25766 = result;
-var G__25767 = (n - (1));
-return (paredit_cm.core.skip_trampoline_helper_left.cljs$core$IFn$_invoke$arity$5 ? paredit_cm.core.skip_trampoline_helper_left.cljs$core$IFn$_invoke$arity$5(G__25763,G__25764,G__25765,G__25766,G__25767) : paredit_cm.core.skip_trampoline_helper_left.call(null,G__25763,G__25764,G__25765,G__25766,G__25767));
+var G__22393 = cm;
+var G__22394 = next_cur;
+var G__22395 = sp;
+var G__22396 = result;
+var G__22397 = (n - (1));
+return (paredit_cm.core.skip_trampoline_helper_left.cljs$core$IFn$_invoke$arity$5 ? paredit_cm.core.skip_trampoline_helper_left.cljs$core$IFn$_invoke$arity$5(G__22393,G__22394,G__22395,G__22396,G__22397) : paredit_cm.core.skip_trampoline_helper_left.call(null,G__22393,G__22394,G__22395,G__22396,G__22397));
 });
-;})(next_cur,G__25762,map__25760,map__25760__$1,left_cur,right_cur,i,start,ch,result))
+;})(next_cur,G__22392,map__22390,map__22390__$1,left_cur,right_cur,i,start,ch,result))
 
 }
 } else {
@@ -872,23 +872,23 @@ return cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_se
  *   info.
  */
 paredit_cm.core.skip = (function paredit_cm$core$skip(var_args){
-var args25769 = [];
-var len__7927__auto___25772 = arguments.length;
-var i__7928__auto___25773 = (0);
+var args22399 = [];
+var len__7927__auto___22402 = arguments.length;
+var i__7928__auto___22403 = (0);
 while(true){
-if((i__7928__auto___25773 < len__7927__auto___25772)){
-args25769.push((arguments[i__7928__auto___25773]));
+if((i__7928__auto___22403 < len__7927__auto___22402)){
+args22399.push((arguments[i__7928__auto___22403]));
 
-var G__25774 = (i__7928__auto___25773 + (1));
-i__7928__auto___25773 = G__25774;
+var G__22404 = (i__7928__auto___22403 + (1));
+i__7928__auto___22403 = G__22404;
 continue;
 } else {
 }
 break;
 }
 
-var G__25771 = args25769.length;
-switch (G__25771) {
+var G__22401 = args22399.length;
+switch (G__22401) {
 case 2:
 return paredit_cm.core.skip.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -898,7 +898,7 @@ return paredit_cm.core.skip.cljs$core$IFn$_invoke$arity$3((arguments[(0)]),(argu
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25769.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22399.length)].join('')));
 
 }
 });
@@ -937,23 +937,23 @@ return null;
  * if cur is in whitespace, deletes it optionally without ruining indentation.
  */
 paredit_cm.core.delete_whitespace = (function paredit_cm$core$delete_whitespace(var_args){
-var args25776 = [];
-var len__7927__auto___25781 = arguments.length;
-var i__7928__auto___25782 = (0);
+var args22406 = [];
+var len__7927__auto___22411 = arguments.length;
+var i__7928__auto___22412 = (0);
 while(true){
-if((i__7928__auto___25782 < len__7927__auto___25781)){
-args25776.push((arguments[i__7928__auto___25782]));
+if((i__7928__auto___22412 < len__7927__auto___22411)){
+args22406.push((arguments[i__7928__auto___22412]));
 
-var G__25783 = (i__7928__auto___25782 + (1));
-i__7928__auto___25782 = G__25783;
+var G__22413 = (i__7928__auto___22412 + (1));
+i__7928__auto___22412 = G__22413;
 continue;
 } else {
 }
 break;
 }
 
-var G__25778 = args25776.length;
-switch (G__25778) {
+var G__22408 = args22406.length;
+switch (G__22408) {
 case 1:
 return paredit_cm.core.delete_whitespace.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -967,7 +967,7 @@ return paredit_cm.core.delete_whitespace.cljs$core$IFn$_invoke$arity$3((argument
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25776.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22406.length)].join('')));
 
 }
 });
@@ -981,14 +981,14 @@ return paredit_cm.core.delete_whitespace.cljs$core$IFn$_invoke$arity$3(cm,cur,tr
 });
 
 paredit_cm.core.delete_whitespace.cljs$core$IFn$_invoke$arity$3 = (function (cm,cur,indent_after){
-var map__25779 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25779__$1 = ((((!((map__25779 == null)))?((((map__25779.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25779.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25779):map__25779);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25779__$1,cljs.core.cst$kw$start);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25779__$1,cljs.core.cst$kw$end);
-var line = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25779__$1,cljs.core.cst$kw$line);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25779__$1,cljs.core.cst$kw$ch);
-var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25779__$1,cljs.core.cst$kw$i);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25779__$1,cljs.core.cst$kw$type);
+var map__22409 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22409__$1 = ((((!((map__22409 == null)))?((((map__22409.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22409.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22409):map__22409);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22409__$1,cljs.core.cst$kw$start);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22409__$1,cljs.core.cst$kw$end);
+var line = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22409__$1,cljs.core.cst$kw$line);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22409__$1,cljs.core.cst$kw$ch);
+var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22409__$1,cljs.core.cst$kw$i);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22409__$1,cljs.core.cst$kw$type);
 var c1 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i + (start - ch)));
 var c2 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i + (end - ch)));
 if((type == null)){
@@ -1007,23 +1007,23 @@ return null;
 paredit_cm.core.delete_whitespace.cljs$lang$maxFixedArity = 3;
 
 paredit_cm.core.just_one_space = (function paredit_cm$core$just_one_space(var_args){
-var args25785 = [];
-var len__7927__auto___25790 = arguments.length;
-var i__7928__auto___25791 = (0);
+var args22415 = [];
+var len__7927__auto___22420 = arguments.length;
+var i__7928__auto___22421 = (0);
 while(true){
-if((i__7928__auto___25791 < len__7927__auto___25790)){
-args25785.push((arguments[i__7928__auto___25791]));
+if((i__7928__auto___22421 < len__7927__auto___22420)){
+args22415.push((arguments[i__7928__auto___22421]));
 
-var G__25792 = (i__7928__auto___25791 + (1));
-i__7928__auto___25791 = G__25792;
+var G__22422 = (i__7928__auto___22421 + (1));
+i__7928__auto___22421 = G__22422;
 continue;
 } else {
 }
 break;
 }
 
-var G__25787 = args25785.length;
-switch (G__25787) {
+var G__22417 = args22415.length;
+switch (G__22417) {
 case 1:
 return paredit_cm.core.just_one_space.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -1037,7 +1037,7 @@ return paredit_cm.core.just_one_space.cljs$core$IFn$_invoke$arity$3((arguments[(
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25785.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22415.length)].join('')));
 
 }
 });
@@ -1051,14 +1051,14 @@ return paredit_cm.core.just_one_space.cljs$core$IFn$_invoke$arity$3(cm,cur,true)
 });
 
 paredit_cm.core.just_one_space.cljs$core$IFn$_invoke$arity$3 = (function (cm,cur,indent_after){
-var map__25788 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25788__$1 = ((((!((map__25788 == null)))?((((map__25788.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25788.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25788):map__25788);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25788__$1,cljs.core.cst$kw$start);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25788__$1,cljs.core.cst$kw$end);
-var line = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25788__$1,cljs.core.cst$kw$line);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25788__$1,cljs.core.cst$kw$ch);
-var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25788__$1,cljs.core.cst$kw$i);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25788__$1,cljs.core.cst$kw$type);
+var map__22418 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22418__$1 = ((((!((map__22418 == null)))?((((map__22418.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22418.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22418):map__22418);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22418__$1,cljs.core.cst$kw$start);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22418__$1,cljs.core.cst$kw$end);
+var line = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22418__$1,cljs.core.cst$kw$line);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22418__$1,cljs.core.cst$kw$ch);
+var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22418__$1,cljs.core.cst$kw$i);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22418__$1,cljs.core.cst$kw$type);
 var c1 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i + (start - ch)));
 var c2 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i + (end - ch)));
 if((type == null)){
@@ -1122,23 +1122,23 @@ return null;
  *   entering the next top level form. 's' is the character as a string.
  */
 paredit_cm.core.close_round = (function paredit_cm$core$close_round(var_args){
-var args25794 = [];
-var len__7927__auto___25799 = arguments.length;
-var i__7928__auto___25800 = (0);
+var args22424 = [];
+var len__7927__auto___22429 = arguments.length;
+var i__7928__auto___22430 = (0);
 while(true){
-if((i__7928__auto___25800 < len__7927__auto___25799)){
-args25794.push((arguments[i__7928__auto___25800]));
+if((i__7928__auto___22430 < len__7927__auto___22429)){
+args22424.push((arguments[i__7928__auto___22430]));
 
-var G__25801 = (i__7928__auto___25800 + (1));
-i__7928__auto___25800 = G__25801;
+var G__22431 = (i__7928__auto___22430 + (1));
+i__7928__auto___22430 = G__22431;
 continue;
 } else {
 }
 break;
 }
 
-var G__25796 = args25794.length;
-switch (G__25796) {
+var G__22426 = args22424.length;
+switch (G__22426) {
 case 1:
 return paredit_cm.core.close_round.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -1148,7 +1148,7 @@ return paredit_cm.core.close_round.cljs$core$IFn$_invoke$arity$2((arguments[(0)]
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25794.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22424.length)].join('')));
 
 }
 });
@@ -1159,10 +1159,10 @@ return paredit_cm.core.close_round.cljs$core$IFn$_invoke$arity$2(cm,")");
 });
 
 paredit_cm.core.close_round.cljs$core$IFn$_invoke$arity$2 = (function (cm,s){
-var map__25797 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
-var map__25797__$1 = ((((!((map__25797 == null)))?((((map__25797.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25797.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25797):map__25797);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25797__$1,cljs.core.cst$kw$type);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25797__$1,cljs.core.cst$kw$left_DASH_char);
+var map__22427 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
+var map__22427__$1 = ((((!((map__22427 == null)))?((((map__22427.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22427.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22427):map__22427);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22427__$1,cljs.core.cst$kw$type);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22427__$1,cljs.core.cst$kw$left_DASH_char);
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("\\",left_char)){
 return paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$2(cm,s);
 } else {
@@ -1185,23 +1185,23 @@ return paredit_cm.core.close_round.cljs$core$IFn$_invoke$arity$2(cm,"}");
 });
 goog.exportSymbol('paredit_cm.core.close_brace', paredit_cm.core.close_brace);
 paredit_cm.core.close_round_and_newline = (function paredit_cm$core$close_round_and_newline(var_args){
-var args25803 = [];
-var len__7927__auto___25806 = arguments.length;
-var i__7928__auto___25807 = (0);
+var args22433 = [];
+var len__7927__auto___22436 = arguments.length;
+var i__7928__auto___22437 = (0);
 while(true){
-if((i__7928__auto___25807 < len__7927__auto___25806)){
-args25803.push((arguments[i__7928__auto___25807]));
+if((i__7928__auto___22437 < len__7927__auto___22436)){
+args22433.push((arguments[i__7928__auto___22437]));
 
-var G__25808 = (i__7928__auto___25807 + (1));
-i__7928__auto___25807 = G__25808;
+var G__22438 = (i__7928__auto___22437 + (1));
+i__7928__auto___22437 = G__22438;
 continue;
 } else {
 }
 break;
 }
 
-var G__25805 = args25803.length;
-switch (G__25805) {
+var G__22435 = args22433.length;
+switch (G__22435) {
 case 1:
 return paredit_cm.core.close_round_and_newline.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -1211,7 +1211,7 @@ return paredit_cm.core.close_round_and_newline.cljs$core$IFn$_invoke$arity$2((ar
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25803.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22433.length)].join('')));
 
 }
 });
@@ -1244,13 +1244,13 @@ return paredit_cm.core.close_round.cljs$core$IFn$_invoke$arity$2(cm,"]");
 });
 goog.exportSymbol('paredit_cm.core.close_square', paredit_cm.core.close_square);
 paredit_cm.core.doublequote = (function paredit_cm$core$doublequote(cm){
-var map__25812 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
-var map__25812__$1 = ((((!((map__25812 == null)))?((((map__25812.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25812.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25812):map__25812);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25812__$1,cljs.core.cst$kw$type);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25812__$1,cljs.core.cst$kw$left_DASH_char);
-var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25812__$1,cljs.core.cst$kw$right_DASH_char);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25812__$1,cljs.core.cst$kw$ch);
-var cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25812__$1,cljs.core.cst$kw$cur);
+var map__22442 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
+var map__22442__$1 = ((((!((map__22442 == null)))?((((map__22442.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22442.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22442):map__22442);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22442__$1,cljs.core.cst$kw$type);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22442__$1,cljs.core.cst$kw$left_DASH_char);
+var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22442__$1,cljs.core.cst$kw$right_DASH_char);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22442__$1,cljs.core.cst$kw$ch);
+var cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22442__$1,cljs.core.cst$kw$cur);
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("\\",left_char)){
 return paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$2(cm,"\"");
 } else {
@@ -1290,26 +1290,26 @@ return and__6802__auto__;
  * returns true if at the start of a string.
  */
 paredit_cm.core.start_of_a_string_QMARK_ = (function paredit_cm$core$start_of_a_string_QMARK_(cm,cur){
-var map__25816 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25816__$1 = ((((!((map__25816 == null)))?((((map__25816.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25816.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25816):map__25816);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25816__$1,cljs.core.cst$kw$string);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25816__$1,cljs.core.cst$kw$type);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25816__$1,cljs.core.cst$kw$start);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25816__$1,cljs.core.cst$kw$end);
-var mode = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25816__$1,cljs.core.cst$kw$mode);
+var map__22446 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22446__$1 = ((((!((map__22446 == null)))?((((map__22446.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22446.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22446):map__22446);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22446__$1,cljs.core.cst$kw$string);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22446__$1,cljs.core.cst$kw$type);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22446__$1,cljs.core.cst$kw$start);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22446__$1,cljs.core.cst$kw$end);
+var mode = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22446__$1,cljs.core.cst$kw$mode);
 return (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(type,"string")) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2((1),(end - start))) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(string,"\"")) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(mode,"string"));
 });
 /**
  * returns true if just to the right of a closing doublequote of a string.
  */
 paredit_cm.core.end_of_a_string_QMARK_ = (function paredit_cm$core$end_of_a_string_QMARK_(cm,cur){
-var map__25820 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25820__$1 = ((((!((map__25820 == null)))?((((map__25820.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25820.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25820):map__25820);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25820__$1,cljs.core.cst$kw$type);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25820__$1,cljs.core.cst$kw$ch);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25820__$1,cljs.core.cst$kw$end);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25820__$1,cljs.core.cst$kw$string);
-var mode = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25820__$1,cljs.core.cst$kw$mode);
+var map__22450 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22450__$1 = ((((!((map__22450 == null)))?((((map__22450.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22450.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22450):map__22450);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22450__$1,cljs.core.cst$kw$type);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22450__$1,cljs.core.cst$kw$ch);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22450__$1,cljs.core.cst$kw$end);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22450__$1,cljs.core.cst$kw$string);
+var mode = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22450__$1,cljs.core.cst$kw$mode);
 return (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(type,"string")) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(ch,end)) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("\"",cljs.core.last(string))) && (cljs.core.not_EQ_.cljs$core$IFn$_invoke$arity$2("\\",cljs.core.last(cljs.core.drop_last.cljs$core$IFn$_invoke$arity$1(string)))) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(mode,false));
 });
 /**
@@ -1322,13 +1322,13 @@ return (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(type,"string")) && (cljs.co
  *   word). assuming the cm has matched brackets for now.
  */
 paredit_cm.core.end_of_next_sibling_sp = (function paredit_cm$core$end_of_next_sibling_sp(cm,cur,stack){
-var map__25824 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25824__$1 = ((((!((map__25824 == null)))?((((map__25824.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25824.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25824):map__25824);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25824__$1,cljs.core.cst$kw$string);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25824__$1,cljs.core.cst$kw$type);
-var eof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25824__$1,cljs.core.cst$kw$eof);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25824__$1,cljs.core.cst$kw$ch);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25824__$1,cljs.core.cst$kw$end);
+var map__22454 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22454__$1 = ((((!((map__22454 == null)))?((((map__22454.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22454.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22454):map__22454);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22454__$1,cljs.core.cst$kw$string);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22454__$1,cljs.core.cst$kw$type);
+var eof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22454__$1,cljs.core.cst$kw$eof);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22454__$1,cljs.core.cst$kw$ch);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22454__$1,cljs.core.cst$kw$end);
 var stack_empty = (stack === (0));
 var one_left = cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2((1),stack);
 var string_extends = (cljs.core.not_EQ_.cljs$core$IFn$_invoke$arity$2("\"",cljs.core.last(string))) || (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("\\",cljs.core.last(cljs.core.drop_last.cljs$core$IFn$_invoke$arity$1(string))));
@@ -1493,23 +1493,23 @@ return cljs.core.cst$kw$stop;
  * get the cursor for the end of the sibling to the right.
  */
 paredit_cm.core.end_of_next_sibling = (function paredit_cm$core$end_of_next_sibling(var_args){
-var args25826 = [];
-var len__7927__auto___25829 = arguments.length;
-var i__7928__auto___25830 = (0);
+var args22456 = [];
+var len__7927__auto___22459 = arguments.length;
+var i__7928__auto___22460 = (0);
 while(true){
-if((i__7928__auto___25830 < len__7927__auto___25829)){
-args25826.push((arguments[i__7928__auto___25830]));
+if((i__7928__auto___22460 < len__7927__auto___22459)){
+args22456.push((arguments[i__7928__auto___22460]));
 
-var G__25831 = (i__7928__auto___25830 + (1));
-i__7928__auto___25830 = G__25831;
+var G__22461 = (i__7928__auto___22460 + (1));
+i__7928__auto___22460 = G__22461;
 continue;
 } else {
 }
 break;
 }
 
-var G__25828 = args25826.length;
-switch (G__25828) {
+var G__22458 = args22456.length;
+switch (G__22458) {
 case 1:
 return paredit_cm.core.end_of_next_sibling.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -1519,7 +1519,7 @@ return paredit_cm.core.end_of_next_sibling.cljs$core$IFn$_invoke$arity$2((argume
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25826.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22456.length)].join('')));
 
 }
 });
@@ -1550,13 +1550,13 @@ paredit_cm.core.end_of_next_sibling.cljs$lang$maxFixedArity = 2;
  *   word). assuming the cm has matched brackets for now.
  */
 paredit_cm.core.start_of_prev_sibling_sp = (function paredit_cm$core$start_of_prev_sibling_sp(cm,cur,stack){
-var map__25835 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25835__$1 = ((((!((map__25835 == null)))?((((map__25835.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25835.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25835):map__25835);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25835__$1,cljs.core.cst$kw$string);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25835__$1,cljs.core.cst$kw$type);
-var bof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25835__$1,cljs.core.cst$kw$bof);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25835__$1,cljs.core.cst$kw$ch);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25835__$1,cljs.core.cst$kw$start);
+var map__22465 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22465__$1 = ((((!((map__22465 == null)))?((((map__22465.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22465.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22465):map__22465);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22465__$1,cljs.core.cst$kw$string);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22465__$1,cljs.core.cst$kw$type);
+var bof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22465__$1,cljs.core.cst$kw$bof);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22465__$1,cljs.core.cst$kw$ch);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22465__$1,cljs.core.cst$kw$start);
 var stack_empty = (stack === (0));
 var one_left = cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2((1),stack);
 var string_extends = cljs.core.not_EQ_.cljs$core$IFn$_invoke$arity$2("\"",cljs.core.first(string));
@@ -1741,23 +1741,23 @@ return cljs.core.cst$kw$stop;
  * return the cursor at the start of the sibling to the left.
  */
 paredit_cm.core.start_of_prev_sibling = (function paredit_cm$core$start_of_prev_sibling(var_args){
-var args25837 = [];
-var len__7927__auto___25840 = arguments.length;
-var i__7928__auto___25841 = (0);
+var args22467 = [];
+var len__7927__auto___22470 = arguments.length;
+var i__7928__auto___22471 = (0);
 while(true){
-if((i__7928__auto___25841 < len__7927__auto___25840)){
-args25837.push((arguments[i__7928__auto___25841]));
+if((i__7928__auto___22471 < len__7927__auto___22470)){
+args22467.push((arguments[i__7928__auto___22471]));
 
-var G__25842 = (i__7928__auto___25841 + (1));
-i__7928__auto___25841 = G__25842;
+var G__22472 = (i__7928__auto___22471 + (1));
+i__7928__auto___22471 = G__22472;
 continue;
 } else {
 }
 break;
 }
 
-var G__25839 = args25837.length;
-switch (G__25839) {
+var G__22469 = args22467.length;
+switch (G__22469) {
 case 1:
 return paredit_cm.core.start_of_prev_sibling.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -1767,7 +1767,7 @@ return paredit_cm.core.start_of_prev_sibling.cljs$core$IFn$_invoke$arity$2((argu
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25837.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22467.length)].join('')));
 
 }
 });
@@ -1816,12 +1816,12 @@ return cm.setCursor(paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(par
  * moves cursor right, out of the current string
  */
 paredit_cm.core.exit_string = (function paredit_cm$core$exit_string(cm){
-var map__25846 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
-var map__25846__$1 = ((((!((map__25846 == null)))?((((map__25846.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25846.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25846):map__25846);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25846__$1,cljs.core.cst$kw$type);
-var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25846__$1,cljs.core.cst$kw$i);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25846__$1,cljs.core.cst$kw$ch);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25846__$1,cljs.core.cst$kw$end);
+var map__22476 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
+var map__22476__$1 = ((((!((map__22476 == null)))?((((map__22476.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22476.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22476):map__22476);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22476__$1,cljs.core.cst$kw$type);
+var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22476__$1,cljs.core.cst$kw$i);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22476__$1,cljs.core.cst$kw$ch);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22476__$1,cljs.core.cst$kw$end);
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(type,"string")){
 return cm.setCursor(paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i + (end - ch))));
 } else {
@@ -1832,23 +1832,23 @@ return null;
  * returns true if token is in the middle of a string.
  */
 paredit_cm.core.in_string_QMARK_ = (function paredit_cm$core$in_string_QMARK_(var_args){
-var args25848 = [];
-var len__7927__auto___25851 = arguments.length;
-var i__7928__auto___25852 = (0);
+var args22478 = [];
+var len__7927__auto___22481 = arguments.length;
+var i__7928__auto___22482 = (0);
 while(true){
-if((i__7928__auto___25852 < len__7927__auto___25851)){
-args25848.push((arguments[i__7928__auto___25852]));
+if((i__7928__auto___22482 < len__7927__auto___22481)){
+args22478.push((arguments[i__7928__auto___22482]));
 
-var G__25853 = (i__7928__auto___25852 + (1));
-i__7928__auto___25852 = G__25853;
+var G__22483 = (i__7928__auto___22482 + (1));
+i__7928__auto___22482 = G__22483;
 continue;
 } else {
 }
 break;
 }
 
-var G__25850 = args25848.length;
-switch (G__25850) {
+var G__22480 = args22478.length;
+switch (G__22480) {
 case 1:
 return paredit_cm.core.in_string_QMARK_.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -1858,7 +1858,7 @@ return paredit_cm.core.in_string_QMARK_.cljs$core$IFn$_invoke$arity$2((arguments
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25848.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22478.length)].join('')));
 
 }
 });
@@ -1883,11 +1883,11 @@ paredit_cm.core.in_string_QMARK_.cljs$lang$maxFixedArity = 2;
  *   form, escaping backslashes and doublequotes.
  */
 paredit_cm.core.meta_doublequote = (function paredit_cm$core$meta_doublequote(cm){
-var map__25857 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
-var map__25857__$1 = ((((!((map__25857 == null)))?((((map__25857.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25857.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25857):map__25857);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25857__$1,cljs.core.cst$kw$type);
-var eof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25857__$1,cljs.core.cst$kw$eof);
-var cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25857__$1,cljs.core.cst$kw$cur);
+var map__22487 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
+var map__22487__$1 = ((((!((map__22487 == null)))?((((map__22487.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22487.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22487):map__22487);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22487__$1,cljs.core.cst$kw$type);
+var eof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22487__$1,cljs.core.cst$kw$eof);
+var cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22487__$1,cljs.core.cst$kw$cur);
 if(cljs.core.truth_(eof)){
 return cljs.core.cst$kw$do_DASH_nothing;
 } else {
@@ -1963,18 +1963,18 @@ paredit_cm.core.get_types = (function paredit_cm$core$get_types(cm,c1,c2){
 var types = cljs.core.PersistentVector.EMPTY;
 var cur = c1;
 while(true){
-var map__25861 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25861__$1 = ((((!((map__25861 == null)))?((((map__25861.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25861.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25861):map__25861);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25861__$1,cljs.core.cst$kw$type);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25861__$1,cljs.core.cst$kw$right_DASH_cur);
+var map__22491 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22491__$1 = ((((!((map__22491 == null)))?((((map__22491.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22491.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22491):map__22491);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22491__$1,cljs.core.cst$kw$type);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22491__$1,cljs.core.cst$kw$right_DASH_cur);
 var types_SINGLEQUOTE_ = cljs.core.conj.cljs$core$IFn$_invoke$arity$2(types,type);
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(cur,c2)){
 return types_SINGLEQUOTE_;
 } else {
-var G__25863 = types_SINGLEQUOTE_;
-var G__25864 = right_cur;
-types = G__25863;
-cur = G__25864;
+var G__22493 = types_SINGLEQUOTE_;
+var G__22494 = right_cur;
+types = G__22493;
+cur = G__22494;
 continue;
 }
 break;
@@ -1987,10 +1987,10 @@ break;
 paredit_cm.core.selection_completely_satisfies_pred_QMARK_ = (function paredit_cm$core$selection_completely_satisfies_pred_QMARK_(cm,pred){
 var temp__4657__auto__ = paredit_cm.core.selection_info(cm);
 if(cljs.core.truth_(temp__4657__auto__)){
-var vec__25868 = temp__4657__auto__;
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25868,(0),null);
-var c1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25868,(1),null);
-var c2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25868,(2),null);
+var vec__22498 = temp__4657__auto__;
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22498,(0),null);
+var c1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22498,(1),null);
+var c2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22498,(2),null);
 return cljs.core.every_QMARK_(pred,paredit_cm.core.get_types(cm,c1,c2));
 } else {
 return null;
@@ -2009,8 +2009,8 @@ return paredit_cm.core.selection_completely_satisfies_pred_QMARK_(cm,paredit_cm.
  * starts each line in 's' with ;; and appends 'post-script'
  */
 paredit_cm.core.to_comment = (function paredit_cm$core$to_comment(s,postscript){
-var cmnt = clojure.string.join.cljs$core$IFn$_invoke$arity$2("\n",cljs.core.map.cljs$core$IFn$_invoke$arity$2((function (p1__25871_SHARP_){
-return clojure.string.replace(p1__25871_SHARP_,/^/,";; ");
+var cmnt = clojure.string.join.cljs$core$IFn$_invoke$arity$2("\n",cljs.core.map.cljs$core$IFn$_invoke$arity$2((function (p1__22501_SHARP_){
+return clojure.string.replace(p1__22501_SHARP_,/^/,";; ");
 }),clojure.string.split_lines(s)));
 return [cljs.core.str.cljs$core$IFn$_invoke$arity$1(cmnt),cljs.core.str.cljs$core$IFn$_invoke$arity$1("\n"),cljs.core.str.cljs$core$IFn$_invoke$arity$1(postscript)].join('');
 });
@@ -2018,59 +2018,59 @@ return [cljs.core.str.cljs$core$IFn$_invoke$arity$1(cmnt),cljs.core.str.cljs$cor
  * removes leading whitespace and semicolons from lines in 's'
  */
 paredit_cm.core.uncomment = (function paredit_cm$core$uncomment(s){
-return clojure.string.join.cljs$core$IFn$_invoke$arity$2("\n",cljs.core.map.cljs$core$IFn$_invoke$arity$2((function (p1__25872_SHARP_){
-return clojure.string.replace(p1__25872_SHARP_,/^\s*;+/,"");
+return clojure.string.join.cljs$core$IFn$_invoke$arity$2("\n",cljs.core.map.cljs$core$IFn$_invoke$arity$2((function (p1__22502_SHARP_){
+return clojure.string.replace(p1__22502_SHARP_,/^\s*;+/,"");
 }),clojure.string.split_lines(s)));
 });
 /**
  * indents lines from a to z (line numbers). assumes a is before z.
  */
 paredit_cm.core.indent_lines = (function paredit_cm$core$indent_lines(cm,a,z){
-var seq__25877 = cljs.core.seq(cljs.core.range.cljs$core$IFn$_invoke$arity$2(a,(z + (1))));
-var chunk__25878 = null;
-var count__25879 = (0);
-var i__25880 = (0);
+var seq__22507 = cljs.core.seq(cljs.core.range.cljs$core$IFn$_invoke$arity$2(a,(z + (1))));
+var chunk__22508 = null;
+var count__22509 = (0);
+var i__22510 = (0);
 while(true){
-if((i__25880 < count__25879)){
-var line = chunk__25878.cljs$core$IIndexed$_nth$arity$2(null,i__25880);
+if((i__22510 < count__22509)){
+var line = chunk__22508.cljs$core$IIndexed$_nth$arity$2(null,i__22510);
 cm.indentLine(line);
 
-var G__25881 = seq__25877;
-var G__25882 = chunk__25878;
-var G__25883 = count__25879;
-var G__25884 = (i__25880 + (1));
-seq__25877 = G__25881;
-chunk__25878 = G__25882;
-count__25879 = G__25883;
-i__25880 = G__25884;
+var G__22511 = seq__22507;
+var G__22512 = chunk__22508;
+var G__22513 = count__22509;
+var G__22514 = (i__22510 + (1));
+seq__22507 = G__22511;
+chunk__22508 = G__22512;
+count__22509 = G__22513;
+i__22510 = G__22514;
 continue;
 } else {
-var temp__4657__auto__ = cljs.core.seq(seq__25877);
+var temp__4657__auto__ = cljs.core.seq(seq__22507);
 if(temp__4657__auto__){
-var seq__25877__$1 = temp__4657__auto__;
-if(cljs.core.chunked_seq_QMARK_(seq__25877__$1)){
-var c__7633__auto__ = cljs.core.chunk_first(seq__25877__$1);
-var G__25885 = cljs.core.chunk_rest(seq__25877__$1);
-var G__25886 = c__7633__auto__;
-var G__25887 = cljs.core.count(c__7633__auto__);
-var G__25888 = (0);
-seq__25877 = G__25885;
-chunk__25878 = G__25886;
-count__25879 = G__25887;
-i__25880 = G__25888;
+var seq__22507__$1 = temp__4657__auto__;
+if(cljs.core.chunked_seq_QMARK_(seq__22507__$1)){
+var c__7633__auto__ = cljs.core.chunk_first(seq__22507__$1);
+var G__22515 = cljs.core.chunk_rest(seq__22507__$1);
+var G__22516 = c__7633__auto__;
+var G__22517 = cljs.core.count(c__7633__auto__);
+var G__22518 = (0);
+seq__22507 = G__22515;
+chunk__22508 = G__22516;
+count__22509 = G__22517;
+i__22510 = G__22518;
 continue;
 } else {
-var line = cljs.core.first(seq__25877__$1);
+var line = cljs.core.first(seq__22507__$1);
 cm.indentLine(line);
 
-var G__25889 = cljs.core.next(seq__25877__$1);
-var G__25890 = null;
-var G__25891 = (0);
-var G__25892 = (0);
-seq__25877 = G__25889;
-chunk__25878 = G__25890;
-count__25879 = G__25891;
-i__25880 = G__25892;
+var G__22519 = cljs.core.next(seq__22507__$1);
+var G__22520 = null;
+var G__22521 = (0);
+var G__22522 = (0);
+seq__22507 = G__22519;
+chunk__22508 = G__22520;
+count__22509 = G__22521;
+i__22510 = G__22522;
 continue;
 }
 } else {
@@ -2087,11 +2087,11 @@ break;
 paredit_cm.core.uncomment_selection = (function paredit_cm$core$uncomment_selection(cm){
 var temp__4657__auto__ = paredit_cm.core.selection_info(cm);
 if(cljs.core.truth_(temp__4657__auto__)){
-var vec__25896 = temp__4657__auto__;
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25896,(0),null);
-var c1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25896,(1),null);
-var c2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25896,(2),null);
-var text = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25896,(3),null);
+var vec__22526 = temp__4657__auto__;
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22526,(0),null);
+var c1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22526,(1),null);
+var c2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22526,(2),null);
+var text = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22526,(3),null);
 cm.replaceSelection(paredit_cm.core.uncomment(text));
 
 return paredit_cm.core.indent_lines(cm,c1.line,c2.line);
@@ -2119,13 +2119,13 @@ var ch = cur.ch;
 return cljs.core.reduce.cljs$core$IFn$_invoke$arity$3(cljs.core.partial.cljs$core$IFn$_invoke$arity$2(paredit_cm.core.append,ch),"",toks);
 });
 paredit_cm.core.comment_selection = (function paredit_cm$core$comment_selection(cm){
-var vec__25902 = paredit_cm.core.selection_info(cm);
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25902,(0),null);
-var c1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25902,(1),null);
-var c2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25902,(2),null);
-var text = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25902,(3),null);
-var l1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25902,(4),null);
-var l2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25902,(5),null);
+var vec__22532 = paredit_cm.core.selection_info(cm);
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22532,(0),null);
+var c1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22532,(1),null);
+var c2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22532,(2),null);
+var text = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22532,(3),null);
+var l1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22532,(4),null);
+var l2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22532,(5),null);
 var text_after_selection = paredit_cm.core.get_text_to_end_of_line(cm,c2);
 var code_follows_selection = cljs.core.not_EQ_.cljs$core$IFn$_invoke$arity$2(text_after_selection,"");
 var end_of_line = paredit_cm.core.last_cur.cljs$core$IFn$_invoke$arity$1(cm);
@@ -2158,8 +2158,8 @@ var i = paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,cur);
 var c_tok = paredit_cm.core.last_token(cm,cur);
 var start = c_tok.start;
 var offset = cljs.core.count(cljs.core.take_while.cljs$core$IFn$_invoke$arity$2(((function (cur,ch,i,c_tok,start){
-return (function (p1__25905_SHARP_){
-return cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(";",p1__25905_SHARP_);
+return (function (p1__22535_SHARP_){
+return cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(";",p1__22535_SHARP_);
 });})(cur,ch,i,c_tok,start))
 ,c_tok.string));
 return cm.setCursor(paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,((i + (start - ch)) + offset)));
@@ -2201,8 +2201,8 @@ var cur = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1(cm);
 var toks = cm.getLineTokens(cur.line);
 var ch = cur.ch;
 var tests = cljs.core.map.cljs$core$IFn$_invoke$arity$2(((function (cur,toks,ch){
-return (function (p1__25906_SHARP_){
-return ((p1__25906_SHARP_.end <= ch)) || ((p1__25906_SHARP_.type == null));
+return (function (p1__22536_SHARP_){
+return ((p1__22536_SHARP_.end <= ch)) || ((p1__22536_SHARP_.type == null));
 });})(cur,toks,ch))
 ,toks);
 var and__6802__auto__ = cljs.core.seq(toks);
@@ -2210,8 +2210,8 @@ if(and__6802__auto__){
 var and__6802__auto____$1 = cljs.core.every_QMARK_(cljs.core.true_QMARK_,tests);
 if(and__6802__auto____$1){
 return cljs.core.some(((function (and__6802__auto____$1,and__6802__auto__,cur,toks,ch,tests){
-return (function (p1__25907_SHARP_){
-return !((p1__25907_SHARP_.type == null));
+return (function (p1__22537_SHARP_){
+return !((p1__22537_SHARP_.type == null));
 });})(and__6802__auto____$1,and__6802__auto__,cur,toks,ch,tests))
 ,toks);
 } else {
@@ -2226,23 +2226,23 @@ return and__6802__auto__;
  *   returns a vector of new index, new ch, and new cursor.
  */
 paredit_cm.core.move_to_end_of_line = (function paredit_cm$core$move_to_end_of_line(var_args){
-var args25909 = [];
-var len__7927__auto___25912 = arguments.length;
-var i__7928__auto___25913 = (0);
+var args22539 = [];
+var len__7927__auto___22542 = arguments.length;
+var i__7928__auto___22543 = (0);
 while(true){
-if((i__7928__auto___25913 < len__7927__auto___25912)){
-args25909.push((arguments[i__7928__auto___25913]));
+if((i__7928__auto___22543 < len__7927__auto___22542)){
+args22539.push((arguments[i__7928__auto___22543]));
 
-var G__25914 = (i__7928__auto___25913 + (1));
-i__7928__auto___25913 = G__25914;
+var G__22544 = (i__7928__auto___22543 + (1));
+i__7928__auto___22543 = G__22544;
 continue;
 } else {
 }
 break;
 }
 
-var G__25911 = args25909.length;
-switch (G__25911) {
+var G__22541 = args22539.length;
+switch (G__22541) {
 case 1:
 return paredit_cm.core.move_to_end_of_line.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -2252,7 +2252,7 @@ return paredit_cm.core.move_to_end_of_line.cljs$core$IFn$_invoke$arity$2((argume
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25909.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22539.length)].join('')));
 
 }
 });
@@ -2262,8 +2262,8 @@ return paredit_cm.core.move_to_end_of_line.cljs$core$IFn$_invoke$arity$2(cm,pare
 });
 
 paredit_cm.core.move_to_end_of_line.cljs$core$IFn$_invoke$arity$2 = (function (cm,cur){
-var end = cljs.core.last(cljs.core.remove.cljs$core$IFn$_invoke$arity$2((function (p1__25908_SHARP_){
-return (p1__25908_SHARP_.type == null);
+var end = cljs.core.last(cljs.core.remove.cljs$core$IFn$_invoke$arity$2((function (p1__22538_SHARP_){
+return (p1__22538_SHARP_.type == null);
 }),cm.getLineTokens(cur.line))).end;
 var ch = cur.ch;
 var i = paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,cur);
@@ -2308,8 +2308,8 @@ return paredit_cm.core.delete_to_end_of_line(cm);
  * returns true if line is all whitespace
  */
 paredit_cm.core.line_is_whitespace_QMARK_ = (function paredit_cm$core$line_is_whitespace_QMARK_(cm){
-return cljs.core.every_QMARK_((function (p1__25916_SHARP_){
-return (p1__25916_SHARP_.type == null);
+return cljs.core.every_QMARK_((function (p1__22546_SHARP_){
+return (p1__22546_SHARP_.type == null);
 }),cm.getLineTokens(paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1(cm).line));
 });
 /**
@@ -2359,12 +2359,12 @@ return paredit_cm.core.create_line_comment(cm);
  *   out comments.
  */
 paredit_cm.core.in_code_QMARK_ = (function paredit_cm$core$in_code_QMARK_(cm){
-var map__25919 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
-var map__25919__$1 = ((((!((map__25919 == null)))?((((map__25919.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25919.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25919):map__25919);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25919__$1,cljs.core.cst$kw$type);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25919__$1,cljs.core.cst$kw$start);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25919__$1,cljs.core.cst$kw$end);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25919__$1,cljs.core.cst$kw$ch);
+var map__22549 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
+var map__22549__$1 = ((((!((map__22549 == null)))?((((map__22549.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22549.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22549):map__22549);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22549__$1,cljs.core.cst$kw$type);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22549__$1,cljs.core.cst$kw$start);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22549__$1,cljs.core.cst$kw$end);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22549__$1,cljs.core.cst$kw$ch);
 return ((start < ch)) && ((ch < end)) && (!((type == null)));
 });
 /**
@@ -2382,8 +2382,8 @@ var cur = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1(cm);
 var toks = cm.getLineTokens(cur.line);
 var ch = cur.ch;
 var code = cljs.core.map.cljs$core$IFn$_invoke$arity$2(((function (cur,toks,ch){
-return (function (p1__25921_SHARP_){
-return (!((p1__25921_SHARP_.type == null))) && (((p1__25921_SHARP_.end <= ch)) || (((p1__25921_SHARP_.start < ch)) && ((ch < p1__25921_SHARP_.end))));
+return (function (p1__22551_SHARP_){
+return (!((p1__22551_SHARP_.type == null))) && (((p1__22551_SHARP_.end <= ch)) || (((p1__22551_SHARP_.start < ch)) && ((ch < p1__22551_SHARP_.end))));
 });})(cur,toks,ch))
 ,toks);
 var and__6802__auto__ = cljs.core.seq(toks);
@@ -2448,23 +2448,23 @@ goog.exportSymbol('paredit_cm.core.comment_dwim', paredit_cm.core.comment_dwim);
  * delete 1 or n char to left
  */
 paredit_cm.core.backspace = (function paredit_cm$core$backspace(var_args){
-var args25923 = [];
-var len__7927__auto___25926 = arguments.length;
-var i__7928__auto___25927 = (0);
+var args22553 = [];
+var len__7927__auto___22556 = arguments.length;
+var i__7928__auto___22557 = (0);
 while(true){
-if((i__7928__auto___25927 < len__7927__auto___25926)){
-args25923.push((arguments[i__7928__auto___25927]));
+if((i__7928__auto___22557 < len__7927__auto___22556)){
+args22553.push((arguments[i__7928__auto___22557]));
 
-var G__25928 = (i__7928__auto___25927 + (1));
-i__7928__auto___25927 = G__25928;
+var G__22558 = (i__7928__auto___22557 + (1));
+i__7928__auto___22557 = G__22558;
 continue;
 } else {
 }
 break;
 }
 
-var G__25925 = args25923.length;
-switch (G__25925) {
+var G__22555 = args22553.length;
+switch (G__22555) {
 case 1:
 return paredit_cm.core.backspace.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -2474,7 +2474,7 @@ return paredit_cm.core.backspace.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25923.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22553.length)].join('')));
 
 }
 });
@@ -2484,8 +2484,8 @@ return paredit_cm.core.backspace.cljs$core$IFn$_invoke$arity$2(cm,(1));
 });
 
 paredit_cm.core.backspace.cljs$core$IFn$_invoke$arity$2 = (function (cm,n){
-var _n = (function (p1__25922_SHARP_){
-return (p1__25922_SHARP_ - n);
+var _n = (function (p1__22552_SHARP_){
+return (p1__22552_SHARP_ - n);
 });
 var cur = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1(cm);
 var cur0 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,_n(paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,cur)));
@@ -2511,14 +2511,12 @@ return answer;
  * returns true for closing brackets and for closing double-quotes
  */
 paredit_cm.core.closing_delim_QMARK_ = (function paredit_cm$core$closing_delim_QMARK_(cm,cur){
-var map__25932 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25932__$1 = ((((!((map__25932 == null)))?((((map__25932.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25932.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25932):map__25932);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25932__$1,cljs.core.cst$kw$string);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25932__$1,cljs.core.cst$kw$type);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25932__$1,cljs.core.cst$kw$left_DASH_char);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25932__$1,cljs.core.cst$kw$right_DASH_cur);
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["closing delim?",type,string,left_char], 0));
-
+var map__22562 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22562__$1 = ((((!((map__22562 == null)))?((((map__22562.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22562.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22562):map__22562);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22562__$1,cljs.core.cst$kw$string);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22562__$1,cljs.core.cst$kw$type);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22562__$1,cljs.core.cst$kw$left_DASH_char);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22562__$1,cljs.core.cst$kw$right_DASH_cur);
 var or__6814__auto__ = (function (){var and__6802__auto__ = paredit_cm.core.is_bracket_type_QMARK_(type);
 if(cljs.core.truth_(and__6802__auto__)){
 return paredit_cm.core.closer_QMARK_(left_char);
@@ -2546,23 +2544,23 @@ return and__6802__auto__;
  * returns true if cur is just to the right of an opening doublequote
  */
 paredit_cm.core.opening_doublequote_QMARK_ = (function paredit_cm$core$opening_doublequote_QMARK_(var_args){
-var args25934 = [];
-var len__7927__auto___25939 = arguments.length;
-var i__7928__auto___25940 = (0);
+var args22564 = [];
+var len__7927__auto___22569 = arguments.length;
+var i__7928__auto___22570 = (0);
 while(true){
-if((i__7928__auto___25940 < len__7927__auto___25939)){
-args25934.push((arguments[i__7928__auto___25940]));
+if((i__7928__auto___22570 < len__7927__auto___22569)){
+args22564.push((arguments[i__7928__auto___22570]));
 
-var G__25941 = (i__7928__auto___25940 + (1));
-i__7928__auto___25940 = G__25941;
+var G__22571 = (i__7928__auto___22570 + (1));
+i__7928__auto___22570 = G__22571;
 continue;
 } else {
 }
 break;
 }
 
-var G__25936 = args25934.length;
-switch (G__25936) {
+var G__22566 = args22564.length;
+switch (G__22566) {
 case 2:
 return paredit_cm.core.opening_doublequote_QMARK_.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -2572,17 +2570,17 @@ return paredit_cm.core.opening_doublequote_QMARK_.cljs$core$IFn$_invoke$arity$4(
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25934.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22564.length)].join('')));
 
 }
 });
 
 paredit_cm.core.opening_doublequote_QMARK_.cljs$core$IFn$_invoke$arity$2 = (function (cm,cur){
-var map__25937 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25937__$1 = ((((!((map__25937 == null)))?((((map__25937.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25937.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25937):map__25937);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25937__$1,cljs.core.cst$kw$type);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25937__$1,cljs.core.cst$kw$left_DASH_char);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25937__$1,cljs.core.cst$kw$right_DASH_cur);
+var map__22567 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22567__$1 = ((((!((map__22567 == null)))?((((map__22567.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22567.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22567):map__22567);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22567__$1,cljs.core.cst$kw$type);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22567__$1,cljs.core.cst$kw$left_DASH_char);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22567__$1,cljs.core.cst$kw$right_DASH_cur);
 return paredit_cm.core.opening_doublequote_QMARK_.cljs$core$IFn$_invoke$arity$4(cm,type,left_char,right_cur);
 });
 
@@ -2611,11 +2609,11 @@ paredit_cm.core.opening_doublequote_QMARK_.cljs$lang$maxFixedArity = 4;
  * returns true if cur is just to the right of a closing doublequote
  */
 paredit_cm.core.closing_doublequote_QMARK_ = (function paredit_cm$core$closing_doublequote_QMARK_(cm,cur){
-var map__25945 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25945__$1 = ((((!((map__25945 == null)))?((((map__25945.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25945.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25945):map__25945);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25945__$1,cljs.core.cst$kw$type);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25945__$1,cljs.core.cst$kw$left_DASH_char);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25945__$1,cljs.core.cst$kw$right_DASH_cur);
+var map__22575 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22575__$1 = ((((!((map__22575 == null)))?((((map__22575.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22575.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22575):map__22575);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22575__$1,cljs.core.cst$kw$type);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22575__$1,cljs.core.cst$kw$left_DASH_char);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22575__$1,cljs.core.cst$kw$right_DASH_cur);
 var right_type = paredit_cm.core.get_type.cljs$core$IFn$_invoke$arity$2(cm,right_cur);
 return (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(type,"string")) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("\"",left_char)) && (cljs.core.not_EQ_.cljs$core$IFn$_invoke$arity$2(right_type,"string"));
 });
@@ -2623,12 +2621,12 @@ return (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(type,"string")) && (cljs.co
  * returns true for opening brackets and for opening double-quotes
  */
 paredit_cm.core.opening_delim_QMARK_ = (function paredit_cm$core$opening_delim_QMARK_(cm,cur){
-var map__25949 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25949__$1 = ((((!((map__25949 == null)))?((((map__25949.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25949.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25949):map__25949);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25949__$1,cljs.core.cst$kw$string);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25949__$1,cljs.core.cst$kw$type);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25949__$1,cljs.core.cst$kw$left_DASH_char);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25949__$1,cljs.core.cst$kw$right_DASH_cur);
+var map__22579 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22579__$1 = ((((!((map__22579 == null)))?((((map__22579.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22579.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22579):map__22579);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22579__$1,cljs.core.cst$kw$string);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22579__$1,cljs.core.cst$kw$type);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22579__$1,cljs.core.cst$kw$left_DASH_char);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22579__$1,cljs.core.cst$kw$right_DASH_cur);
 var or__6814__auto__ = (function (){var and__6802__auto__ = paredit_cm.core.is_bracket_type_QMARK_(type);
 if(cljs.core.truth_(and__6802__auto__)){
 return paredit_cm.core.opener_QMARK_(left_char);
@@ -2646,11 +2644,11 @@ return paredit_cm.core.opening_doublequote_QMARK_.cljs$core$IFn$_invoke$arity$4(
  * returns true for an opening bracket of an empty pair ()
  */
 paredit_cm.core.opening_delim_for_empty_pair_QMARK_ = (function paredit_cm$core$opening_delim_for_empty_pair_QMARK_(cm,cur){
-var map__25953 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25953__$1 = ((((!((map__25953 == null)))?((((map__25953.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25953.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25953):map__25953);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25953__$1,cljs.core.cst$kw$left_DASH_char);
-var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25953__$1,cljs.core.cst$kw$right_DASH_char);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25953__$1,cljs.core.cst$kw$right_DASH_cur);
+var map__22583 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22583__$1 = ((((!((map__22583 == null)))?((((map__22583.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22583.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22583):map__22583);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22583__$1,cljs.core.cst$kw$left_DASH_char);
+var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22583__$1,cljs.core.cst$kw$right_DASH_char);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22583__$1,cljs.core.cst$kw$right_DASH_cur);
 var and__6802__auto__ = paredit_cm.core.opening_delim_QMARK_(cm,cur);
 if(cljs.core.truth_(and__6802__auto__)){
 var and__6802__auto____$1 = right_cur;
@@ -2673,11 +2671,11 @@ return and__6802__auto__;
  *   chars.
  */
 paredit_cm.core.opening_delim_for_non_empty_pair_QMARK_ = (function paredit_cm$core$opening_delim_for_non_empty_pair_QMARK_(cm){
-var map__25957 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
-var map__25957__$1 = ((((!((map__25957 == null)))?((((map__25957.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25957.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25957):map__25957);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25957__$1,cljs.core.cst$kw$left_DASH_char);
-var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25957__$1,cljs.core.cst$kw$right_DASH_char);
-var cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25957__$1,cljs.core.cst$kw$cur);
+var map__22587 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
+var map__22587__$1 = ((((!((map__22587 == null)))?((((map__22587.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22587.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22587):map__22587);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22587__$1,cljs.core.cst$kw$left_DASH_char);
+var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22587__$1,cljs.core.cst$kw$right_DASH_char);
+var cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22587__$1,cljs.core.cst$kw$cur);
 var and__6802__auto__ = paredit_cm.core.opening_delim_QMARK_(cm,cur);
 if(cljs.core.truth_(and__6802__auto__)){
 return cljs.core.not(paredit_cm.core.pair_QMARK_(left_char,right_char));
@@ -2697,23 +2695,23 @@ return paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1(cm);
  * delete 1 or n char to right
  */
 paredit_cm.core.delete$ = (function paredit_cm$core$delete(var_args){
-var args25960 = [];
-var len__7927__auto___25963 = arguments.length;
-var i__7928__auto___25964 = (0);
+var args22590 = [];
+var len__7927__auto___22593 = arguments.length;
+var i__7928__auto___22594 = (0);
 while(true){
-if((i__7928__auto___25964 < len__7927__auto___25963)){
-args25960.push((arguments[i__7928__auto___25964]));
+if((i__7928__auto___22594 < len__7927__auto___22593)){
+args22590.push((arguments[i__7928__auto___22594]));
 
-var G__25965 = (i__7928__auto___25964 + (1));
-i__7928__auto___25964 = G__25965;
+var G__22595 = (i__7928__auto___22594 + (1));
+i__7928__auto___22594 = G__22595;
 continue;
 } else {
 }
 break;
 }
 
-var G__25962 = args25960.length;
-switch (G__25962) {
+var G__22592 = args22590.length;
+switch (G__22592) {
 case 1:
 return paredit_cm.core.delete$.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -2723,7 +2721,7 @@ return paredit_cm.core.delete$.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(a
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25960.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22590.length)].join('')));
 
 }
 });
@@ -2733,8 +2731,8 @@ return paredit_cm.core.delete$.cljs$core$IFn$_invoke$arity$2(cm,(1));
 });
 
 paredit_cm.core.delete$.cljs$core$IFn$_invoke$arity$2 = (function (cm,n){
-var _PLUS_n = (function (p1__25959_SHARP_){
-return (p1__25959_SHARP_ + n);
+var _PLUS_n = (function (p1__22589_SHARP_){
+return (p1__22589_SHARP_ + n);
 });
 var cur = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1(cm);
 var cur2 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,_PLUS_n(paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,cur)));
@@ -2754,11 +2752,11 @@ return (!((info == null))) && ((cljs.core.cst$kw$type.cljs$core$IFn$_invoke$arit
  * true if cursor info indicates opening/closing bracket or quote
  */
 paredit_cm.core.bracket_QMARK_ = (function paredit_cm$core$bracket_QMARK_(cm,cur){
-var map__25969 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25969__$1 = ((((!((map__25969 == null)))?((((map__25969.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25969.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25969):map__25969);
-var info = map__25969__$1;
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25969__$1,cljs.core.cst$kw$type);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25969__$1,cljs.core.cst$kw$left_DASH_char);
+var map__22599 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22599__$1 = ((((!((map__22599 == null)))?((((map__22599.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22599.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22599):map__22599);
+var info = map__22599__$1;
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22599__$1,cljs.core.cst$kw$type);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22599__$1,cljs.core.cst$kw$left_DASH_char);
 var or__6814__auto__ = paredit_cm.core.is_bracket_type_QMARK_(type);
 if(cljs.core.truth_(or__6814__auto__)){
 return or__6814__auto__;
@@ -2796,11 +2794,11 @@ return paredit_cm.core.move(cm,(-1));
  * paredit-forward-delete exposed for keymap
  */
 paredit_cm.core.forward_delete = (function paredit_cm$core$forward_delete(cm){
-var map__25973 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
-var map__25973__$1 = ((((!((map__25973 == null)))?((((map__25973.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25973.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25973):map__25973);
-var info = map__25973__$1;
-var cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25973__$1,cljs.core.cst$kw$cur);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25973__$1,cljs.core.cst$kw$right_DASH_cur);
+var map__22603 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
+var map__22603__$1 = ((((!((map__22603 == null)))?((((map__22603.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22603.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22603):map__22603);
+var info = map__22603__$1;
+var cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22603__$1,cljs.core.cst$kw$cur);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22603__$1,cljs.core.cst$kw$right_DASH_cur);
 if(cljs.core.truth_(cm.somethingSelected())){
 return paredit_cm.core.delete_selection(cm);
 } else {
@@ -2830,41 +2828,24 @@ goog.exportSymbol('paredit_cm.core.forward_delete', paredit_cm.core.forward_dele
  */
 paredit_cm.core.backward_delete = (function paredit_cm$core$backward_delete(cm){
 var cur = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1(cm);
-var info = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$1(cm);
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["backward-delete: mode ",cm.getOption("mode"),info], 0));
-
 if(cljs.core.truth_(cm.somethingSelected())){
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["(.somethingSelected cm)"], 0));
-
 return paredit_cm.core.delete_selection(cm);
 } else {
 if(cljs.core.truth_(paredit_cm.core.in_escaped_char_QMARK_.cljs$core$IFn$_invoke$arity$2(cm,cur))){
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["(in-escaped-char? cm cur)"], 0));
-
 return paredit_cm.core.delete_pair(cm);
 } else {
 if(cljs.core.truth_(paredit_cm.core.escaped_char_to_left_QMARK_(cm,cur))){
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["(escaped-char-to-left? cm cur)"], 0));
-
 return paredit_cm.core.backspace.cljs$core$IFn$_invoke$arity$2(cm,(2));
 } else {
 if(cljs.core.truth_(paredit_cm.core.opening_delim_for_non_empty_pair_QMARK_(cm))){
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["(opening-delim-for-non-empty-pair? cm)"], 0));
-
 return cljs.core.cst$kw$do_DASH_nothing;
 } else {
 if(cljs.core.truth_(paredit_cm.core.opening_delim_for_empty_pair_QMARK_(cm,cur))){
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["(opening-delim-for-empty-pair? cm cur)"], 0));
-
 return paredit_cm.core.delete_pair(cm);
 } else {
 if(cljs.core.truth_(paredit_cm.core.closing_delim_QMARK_(cm,cur))){
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["(closing-delim? cm cur)"], 0));
-
 return paredit_cm.core.move_left(cm);
 } else {
-cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq([":default"], 0));
-
 return paredit_cm.core.backspace.cljs$core$IFn$_invoke$arity$1(cm);
 
 }
@@ -2898,23 +2879,23 @@ return (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("string",type)) && (cljs.co
  *   on a different line from where you start
  */
 paredit_cm.core.go_to_end_of_string = (function paredit_cm$core$go_to_end_of_string(var_args){
-var args25975 = [];
-var len__7927__auto___25980 = arguments.length;
-var i__7928__auto___25981 = (0);
+var args22605 = [];
+var len__7927__auto___22610 = arguments.length;
+var i__7928__auto___22611 = (0);
 while(true){
-if((i__7928__auto___25981 < len__7927__auto___25980)){
-args25975.push((arguments[i__7928__auto___25981]));
+if((i__7928__auto___22611 < len__7927__auto___22610)){
+args22605.push((arguments[i__7928__auto___22611]));
 
-var G__25982 = (i__7928__auto___25981 + (1));
-i__7928__auto___25981 = G__25982;
+var G__22612 = (i__7928__auto___22611 + (1));
+i__7928__auto___22611 = G__22612;
 continue;
 } else {
 }
 break;
 }
 
-var G__25977 = args25975.length;
-switch (G__25977) {
+var G__22607 = args22605.length;
+switch (G__22607) {
 case 1:
 return paredit_cm.core.go_to_end_of_string.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -2924,7 +2905,7 @@ return paredit_cm.core.go_to_end_of_string.cljs$core$IFn$_invoke$arity$2((argume
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args25975.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22605.length)].join('')));
 
 }
 });
@@ -2934,14 +2915,14 @@ return paredit_cm.core.go_to_end_of_string.cljs$core$IFn$_invoke$arity$2(cm,pare
 });
 
 paredit_cm.core.go_to_end_of_string.cljs$core$IFn$_invoke$arity$2 = (function (cm,cur){
-var map__25978 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__25978__$1 = ((((!((map__25978 == null)))?((((map__25978.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__25978.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__25978):map__25978);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25978__$1,cljs.core.cst$kw$left_DASH_char);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25978__$1,cljs.core.cst$kw$right_DASH_cur);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25978__$1,cljs.core.cst$kw$type);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25978__$1,cljs.core.cst$kw$string);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25978__$1,cljs.core.cst$kw$ch);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__25978__$1,cljs.core.cst$kw$end);
+var map__22608 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22608__$1 = ((((!((map__22608 == null)))?((((map__22608.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22608.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22608):map__22608);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22608__$1,cljs.core.cst$kw$left_DASH_char);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22608__$1,cljs.core.cst$kw$right_DASH_cur);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22608__$1,cljs.core.cst$kw$type);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22608__$1,cljs.core.cst$kw$string);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22608__$1,cljs.core.cst$kw$ch);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22608__$1,cljs.core.cst$kw$end);
 if((type == null)){
 return paredit_cm.core.go_to_end_of_string.cljs$core$IFn$_invoke$arity$2(cm,right_cur);
 } else {
@@ -2986,8 +2967,8 @@ if(cljs.core.truth_(cur)){
 var toks = cm.getLineTokens(cur.line);
 var ch = cur.ch;
 var tests = cljs.core.map.cljs$core$IFn$_invoke$arity$2(((function (toks,ch){
-return (function (p1__25984_SHARP_){
-return ((p1__25984_SHARP_.end <= ch)) || (((p1__25984_SHARP_.type == null)) || (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("comment",p1__25984_SHARP_.type)));
+return (function (p1__22614_SHARP_){
+return ((p1__22614_SHARP_.end <= ch)) || (((p1__22614_SHARP_.type == null)) || (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("comment",p1__22614_SHARP_.type)));
 });})(toks,ch))
 ,toks);
 var and__6802__auto__ = cljs.core.seq(toks);
@@ -2995,8 +2976,8 @@ if(and__6802__auto__){
 var and__6802__auto____$1 = cljs.core.every_QMARK_(cljs.core.true_QMARK_,tests);
 if(and__6802__auto____$1){
 return cljs.core.some(((function (and__6802__auto____$1,and__6802__auto__,toks,ch,tests){
-return (function (p1__25985_SHARP_){
-return !((p1__25985_SHARP_.type == null));
+return (function (p1__22615_SHARP_){
+return !((p1__22615_SHARP_.type == null));
 });})(and__6802__auto____$1,and__6802__auto__,toks,ch,tests))
 ,toks);
 } else {
@@ -3016,9 +2997,9 @@ var c2 = (cljs.core.truth_(parent_closer)?paredit_cm.core.cursor.cljs$core$IFn$_
 return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [c1,c2], null);
 });
 paredit_cm.core.select_rest_of_siblings = (function paredit_cm$core$select_rest_of_siblings(cm){
-var vec__25989 = paredit_cm.core.rest_of_siblings(cm);
-var c1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25989,(0),null);
-var c2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__25989,(1),null);
+var vec__22619 = paredit_cm.core.rest_of_siblings(cm);
+var c1 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22619,(0),null);
+var c2 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22619,(1),null);
 var c1__$1 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$1(cm);
 if(cljs.core.truth_(c2)){
 return cm.setSelection(c1__$1,c2);
@@ -3028,10 +3009,10 @@ return null;
 });
 paredit_cm.core.kill_from_to = (function paredit_cm$core$kill_from_to(cm,i,j){
 var cur = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i);
-var G__25995_25998 = cm;
-var G__25996_25999 = cur;
-var G__25997_26000 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,j);
-(CodeMirror.emacs.kill.cljs$core$IFn$_invoke$arity$3 ? CodeMirror.emacs.kill.cljs$core$IFn$_invoke$arity$3(G__25995_25998,G__25996_25999,G__25997_26000) : CodeMirror.emacs.kill.call(null,G__25995_25998,G__25996_25999,G__25997_26000));
+var G__22625_22628 = cm;
+var G__22626_22629 = cur;
+var G__22627_22630 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,j);
+(CodeMirror.emacs.kill.cljs$core$IFn$_invoke$arity$3 ? CodeMirror.emacs.kill.cljs$core$IFn$_invoke$arity$3(G__22625_22628,G__22626_22629,G__22627_22630) : CodeMirror.emacs.kill.call(null,G__22625_22628,G__22626_22629,G__22627_22630));
 
 return cm.setCursor(cur);
 });
@@ -3115,33 +3096,33 @@ return cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("comment",paredit_cm.core.ge
  * true if block cursor is on the first ; of a line comment
  */
 paredit_cm.core.start_of_comment_QMARK_ = (function paredit_cm$core$start_of_comment_QMARK_(cm,cur){
-var map__26003 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__26003__$1 = ((((!((map__26003 == null)))?((((map__26003.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__26003.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__26003):map__26003);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26003__$1,cljs.core.cst$kw$type);
-var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26003__$1,cljs.core.cst$kw$right_DASH_cur);
+var map__22633 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22633__$1 = ((((!((map__22633 == null)))?((((map__22633.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22633.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22633):map__22633);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22633__$1,cljs.core.cst$kw$type);
+var right_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22633__$1,cljs.core.cst$kw$right_DASH_cur);
 var right_type = paredit_cm.core.get_type.cljs$core$IFn$_invoke$arity$2(cm,right_cur);
 return (cljs.core.not_EQ_.cljs$core$IFn$_invoke$arity$2("comment",type)) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$1("comment right-type"));
 });
 paredit_cm.core.idx_of_next = (function paredit_cm$core$idx_of_next(cm,i,chars,member,max){
-var map__26012 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
-var map__26012__$1 = ((((!((map__26012 == null)))?((((map__26012.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__26012.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__26012):map__26012);
-var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26012__$1,cljs.core.cst$kw$right_DASH_char);
+var map__22642 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
+var map__22642__$1 = ((((!((map__22642 == null)))?((((map__22642.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22642.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22642):map__22642);
+var right_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22642__$1,cljs.core.cst$kw$right_DASH_char);
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(i,max)){
 return cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["infinite loop"], 0));
 } else {
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(member,cljs.core.contains_QMARK_(chars,right_char))){
 return i;
 } else {
-return ((function (map__26012,map__26012__$1,right_char){
+return ((function (map__22642,map__22642__$1,right_char){
 return (function (){
-var G__26014 = cm;
-var G__26015 = (i + (1));
-var G__26016 = chars;
-var G__26017 = member;
-var G__26018 = max;
-return (paredit_cm.core.idx_of_next.cljs$core$IFn$_invoke$arity$5 ? paredit_cm.core.idx_of_next.cljs$core$IFn$_invoke$arity$5(G__26014,G__26015,G__26016,G__26017,G__26018) : paredit_cm.core.idx_of_next.call(null,G__26014,G__26015,G__26016,G__26017,G__26018));
+var G__22644 = cm;
+var G__22645 = (i + (1));
+var G__22646 = chars;
+var G__22647 = member;
+var G__22648 = max;
+return (paredit_cm.core.idx_of_next.cljs$core$IFn$_invoke$arity$5 ? paredit_cm.core.idx_of_next.cljs$core$IFn$_invoke$arity$5(G__22644,G__22645,G__22646,G__22647,G__22648) : paredit_cm.core.idx_of_next.call(null,G__22644,G__22645,G__22646,G__22647,G__22648));
 });
-;})(map__26012,map__26012__$1,right_char))
+;})(map__22642,map__22642__$1,right_char))
 
 }
 }
@@ -3161,11 +3142,11 @@ paredit_cm.core.comment_whitespace = cljs.core.PersistentHashSet.createAsIfByAss
  *   the next word (going to the right) in this comment/string
  */
 paredit_cm.core.end_of_next_word = (function paredit_cm$core$end_of_next_word(cm,i){
-var map__26021 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
-var map__26021__$1 = ((((!((map__26021 == null)))?((((map__26021.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__26021.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__26021):map__26021);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26021__$1,cljs.core.cst$kw$ch);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26021__$1,cljs.core.cst$kw$start);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26021__$1,cljs.core.cst$kw$string);
+var map__22651 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
+var map__22651__$1 = ((((!((map__22651 == null)))?((((map__22651.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22651.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22651):map__22651);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22651__$1,cljs.core.cst$kw$ch);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22651__$1,cljs.core.cst$kw$start);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22651__$1,cljs.core.cst$kw$string);
 var tail = cljs.core.subs.cljs$core$IFn$_invoke$arity$2(string,(ch - start));
 var word = cljs.core.re_find(/^\s*[\S]*/,tail);
 var length = cljs.core.count(word);
@@ -3177,11 +3158,11 @@ return ((i + length) + quote);
  *   the prev word (going to the left) in this comment/string
  */
 paredit_cm.core.start_of_prev_word = (function paredit_cm$core$start_of_prev_word(cm,i){
-var map__26025 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
-var map__26025__$1 = ((((!((map__26025 == null)))?((((map__26025.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__26025.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__26025):map__26025);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26025__$1,cljs.core.cst$kw$ch);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26025__$1,cljs.core.cst$kw$start);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26025__$1,cljs.core.cst$kw$string);
+var map__22655 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
+var map__22655__$1 = ((((!((map__22655 == null)))?((((map__22655.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22655.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22655):map__22655);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22655__$1,cljs.core.cst$kw$ch);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22655__$1,cljs.core.cst$kw$start);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22655__$1,cljs.core.cst$kw$string);
 var head = cljs.core.subs.cljs$core$IFn$_invoke$arity$3(string,(0),(ch - start));
 var last_word = cljs.core.re_find(/[\S]*\s*$/,head);
 var length = cljs.core.count(last_word);
@@ -3217,11 +3198,11 @@ return cljs.core.cst$kw$do_DASH_nothing;
 if(cljs.core.truth_(paredit_cm.core.whitespace_QMARK_(cm,right_cur))){
 return ((function (m,j,cur,right_cur){
 return (function (){
-var G__26031 = cm;
-var G__26032 = mark;
-var G__26033 = paredit_cm.core.token_end_index(cm,j);
-var G__26034 = m;
-return (paredit_cm.core.fwd_kill_word.cljs$core$IFn$_invoke$arity$4 ? paredit_cm.core.fwd_kill_word.cljs$core$IFn$_invoke$arity$4(G__26031,G__26032,G__26033,G__26034) : paredit_cm.core.fwd_kill_word.call(null,G__26031,G__26032,G__26033,G__26034));
+var G__22661 = cm;
+var G__22662 = mark;
+var G__22663 = paredit_cm.core.token_end_index(cm,j);
+var G__22664 = m;
+return (paredit_cm.core.fwd_kill_word.cljs$core$IFn$_invoke$arity$4 ? paredit_cm.core.fwd_kill_word.cljs$core$IFn$_invoke$arity$4(G__22661,G__22662,G__22663,G__22664) : paredit_cm.core.fwd_kill_word.call(null,G__22661,G__22662,G__22663,G__22664));
 });
 ;})(m,j,cur,right_cur))
 } else {
@@ -3285,10 +3266,10 @@ return cljs.core.trampoline.cljs$core$IFn$_invoke$arity$variadic(paredit_cm.core
 });
 goog.exportSymbol('paredit_cm.core.forward_kill_word', paredit_cm.core.forward_kill_word);
 paredit_cm.core.start_of_token_at = (function paredit_cm$core$start_of_token_at(cm,i){
-var map__26037 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
-var map__26037__$1 = ((((!((map__26037 == null)))?((((map__26037.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__26037.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__26037):map__26037);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26037__$1,cljs.core.cst$kw$ch);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26037__$1,cljs.core.cst$kw$start);
+var map__22667 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
+var map__22667__$1 = ((((!((map__22667 == null)))?((((map__22667.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22667.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22667):map__22667);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22667__$1,cljs.core.cst$kw$ch);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22667__$1,cljs.core.cst$kw$start);
 return (i - (ch - start));
 });
 /**
@@ -3296,11 +3277,11 @@ return (i - (ch - start));
  *   word in this comment
  */
 paredit_cm.core.kill_prev_word_in_comment = (function paredit_cm$core$kill_prev_word_in_comment(cm,i){
-var map__26041 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
-var map__26041__$1 = ((((!((map__26041 == null)))?((((map__26041.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__26041.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__26041):map__26041);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26041__$1,cljs.core.cst$kw$ch);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26041__$1,cljs.core.cst$kw$start);
-var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26041__$1,cljs.core.cst$kw$string);
+var map__22671 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,i));
+var map__22671__$1 = ((((!((map__22671 == null)))?((((map__22671.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22671.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22671):map__22671);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22671__$1,cljs.core.cst$kw$ch);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22671__$1,cljs.core.cst$kw$start);
+var string = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22671__$1,cljs.core.cst$kw$string);
 var cur_offset_in_string = (ch - start);
 var head = cljs.core.subs.cljs$core$IFn$_invoke$arity$3(string,(0),cur_offset_in_string);
 var tail = cljs.core.subs.cljs$core$IFn$_invoke$arity$2(string,cur_offset_in_string);
@@ -3311,20 +3292,20 @@ paredit_cm.core.kill_from_to(cm,(i - length),i);
 return cm.setCursor(paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i - length)));
 });
 paredit_cm.core.beginning_of_line_QMARK_ = (function paredit_cm$core$beginning_of_line_QMARK_(cm,cur){
-var map__26045 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__26045__$1 = ((((!((map__26045 == null)))?((((map__26045.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__26045.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__26045):map__26045);
-var info = map__26045__$1;
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26045__$1,cljs.core.cst$kw$start);
-var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26045__$1,cljs.core.cst$kw$end);
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26045__$1,cljs.core.cst$kw$type);
+var map__22675 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22675__$1 = ((((!((map__22675 == null)))?((((map__22675.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22675.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22675):map__22675);
+var info = map__22675__$1;
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22675__$1,cljs.core.cst$kw$start);
+var end = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22675__$1,cljs.core.cst$kw$end);
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22675__$1,cljs.core.cst$kw$type);
 return (!((info == null))) && ((type == null)) && (cljs.core._EQ_.cljs$core$IFn$_invoke$arity$variadic(start,end,cljs.core.array_seq([(0)], 0)));
 });
 paredit_cm.core.bkwd_kill_skippable_comment_char_QMARK_ = (function paredit_cm$core$bkwd_kill_skippable_comment_char_QMARK_(cm,cur){
-var map__26049 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__26049__$1 = ((((!((map__26049 == null)))?((((map__26049.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__26049.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__26049):map__26049);
-var info = map__26049__$1;
-var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26049__$1,cljs.core.cst$kw$type);
-var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26049__$1,cljs.core.cst$kw$left_DASH_char);
+var map__22679 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22679__$1 = ((((!((map__22679 == null)))?((((map__22679.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22679.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22679):map__22679);
+var info = map__22679__$1;
+var type = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22679__$1,cljs.core.cst$kw$type);
+var left_char = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22679__$1,cljs.core.cst$kw$left_DASH_char);
 var and__6802__auto__ = !((info == null));
 if(and__6802__auto__){
 var and__6802__auto____$1 = cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2("comment",type);
@@ -3363,11 +3344,11 @@ return (paredit_cm.core.bkwd_kill_word.cljs$core$IFn$_invoke$arity$4 ? paredit_c
 if(cljs.core.truth_(paredit_cm.core.whitespace_QMARK_(cm,cur))){
 return ((function (h,m,cur){
 return (function (){
-var G__26055 = cm;
-var G__26056 = mark;
-var G__26057 = paredit_cm.core.start_of_token_at(cm,i);
-var G__26058 = m;
-return (paredit_cm.core.bkwd_kill_word.cljs$core$IFn$_invoke$arity$4 ? paredit_cm.core.bkwd_kill_word.cljs$core$IFn$_invoke$arity$4(G__26055,G__26056,G__26057,G__26058) : paredit_cm.core.bkwd_kill_word.call(null,G__26055,G__26056,G__26057,G__26058));
+var G__22685 = cm;
+var G__22686 = mark;
+var G__22687 = paredit_cm.core.start_of_token_at(cm,i);
+var G__22688 = m;
+return (paredit_cm.core.bkwd_kill_word.cljs$core$IFn$_invoke$arity$4 ? paredit_cm.core.bkwd_kill_word.cljs$core$IFn$_invoke$arity$4(G__22685,G__22686,G__22687,G__22688) : paredit_cm.core.bkwd_kill_word.call(null,G__22685,G__22686,G__22687,G__22688));
 });
 ;})(h,m,cur))
 } else {
@@ -3465,10 +3446,10 @@ return cm.setCursor(paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,pare
 if(cljs.core.truth_(paredit_cm.core.comment_QMARK_(cm,right_cur))){
 return ((function (j,m,cur,right_cur){
 return (function (){
-var G__26062 = cm;
-var G__26063 = paredit_cm.core.token_end_index(cm,j);
-var G__26064 = m;
-return (paredit_cm.core.fwd.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.fwd.cljs$core$IFn$_invoke$arity$3(G__26062,G__26063,G__26064) : paredit_cm.core.fwd.call(null,G__26062,G__26063,G__26064));
+var G__22692 = cm;
+var G__22693 = paredit_cm.core.token_end_index(cm,j);
+var G__22694 = m;
+return (paredit_cm.core.fwd.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.fwd.cljs$core$IFn$_invoke$arity$3(G__22692,G__22693,G__22694) : paredit_cm.core.fwd.call(null,G__22692,G__22693,G__22694));
 });
 ;})(j,m,cur,right_cur))
 } else {
@@ -3532,10 +3513,10 @@ return cm.setCursor(paredit_cm.core.start_of_prev_sibling.cljs$core$IFn$_invoke$
 if(cljs.core.truth_(paredit_cm.core.comment_QMARK_(cm,cur))){
 return ((function (h,m,cur){
 return (function (){
-var G__26068 = cm;
-var G__26069 = paredit_cm.core.start_of_prev_sibling.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var G__26070 = m;
-return (paredit_cm.core.bkwd.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd.cljs$core$IFn$_invoke$arity$3(G__26068,G__26069,G__26070) : paredit_cm.core.bkwd.call(null,G__26068,G__26069,G__26070));
+var G__22698 = cm;
+var G__22699 = paredit_cm.core.start_of_prev_sibling.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var G__22700 = m;
+return (paredit_cm.core.bkwd.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd.cljs$core$IFn$_invoke$arity$3(G__22698,G__22699,G__22700) : paredit_cm.core.bkwd.call(null,G__22698,G__22699,G__22700));
 });
 ;})(h,m,cur))
 } else {
@@ -3565,23 +3546,23 @@ goog.exportSymbol('paredit_cm.core.backward', paredit_cm.core.backward);
  * get cursor corresponding to paredit forward up
  */
 paredit_cm.core.forward_up_cur = (function paredit_cm$core$forward_up_cur(var_args){
-var args26071 = [];
-var len__7927__auto___26074 = arguments.length;
-var i__7928__auto___26075 = (0);
+var args22701 = [];
+var len__7927__auto___22704 = arguments.length;
+var i__7928__auto___22705 = (0);
 while(true){
-if((i__7928__auto___26075 < len__7927__auto___26074)){
-args26071.push((arguments[i__7928__auto___26075]));
+if((i__7928__auto___22705 < len__7927__auto___22704)){
+args22701.push((arguments[i__7928__auto___22705]));
 
-var G__26076 = (i__7928__auto___26075 + (1));
-i__7928__auto___26075 = G__26076;
+var G__22706 = (i__7928__auto___22705 + (1));
+i__7928__auto___22705 = G__22706;
 continue;
 } else {
 }
 break;
 }
 
-var G__26073 = args26071.length;
-switch (G__26073) {
+var G__22703 = args22701.length;
+switch (G__22703) {
 case 1:
 return paredit_cm.core.forward_up_cur.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -3591,7 +3572,7 @@ return paredit_cm.core.forward_up_cur.cljs$core$IFn$_invoke$arity$2((arguments[(
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26071.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22701.length)].join('')));
 
 }
 });
@@ -3625,23 +3606,23 @@ paredit_cm.core.forward_up_cur.cljs$lang$maxFixedArity = 2;
  * paredit forward-up exposed for keymap.
  */
 paredit_cm.core.forward_up = (function paredit_cm$core$forward_up(var_args){
-var args26078 = [];
-var len__7927__auto___26081 = arguments.length;
-var i__7928__auto___26082 = (0);
+var args22708 = [];
+var len__7927__auto___22711 = arguments.length;
+var i__7928__auto___22712 = (0);
 while(true){
-if((i__7928__auto___26082 < len__7927__auto___26081)){
-args26078.push((arguments[i__7928__auto___26082]));
+if((i__7928__auto___22712 < len__7927__auto___22711)){
+args22708.push((arguments[i__7928__auto___22712]));
 
-var G__26083 = (i__7928__auto___26082 + (1));
-i__7928__auto___26082 = G__26083;
+var G__22713 = (i__7928__auto___22712 + (1));
+i__7928__auto___22712 = G__22713;
 continue;
 } else {
 }
 break;
 }
 
-var G__26080 = args26078.length;
-switch (G__26080) {
+var G__22710 = args22708.length;
+switch (G__22710) {
 case 1:
 return paredit_cm.core.forward_up.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -3651,7 +3632,7 @@ return paredit_cm.core.forward_up.cljs$core$IFn$_invoke$arity$2((arguments[(0)])
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26078.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22708.length)].join('')));
 
 }
 });
@@ -3677,23 +3658,23 @@ paredit_cm.core.forward_up.cljs$lang$maxFixedArity = 2;
  * get cursor corresponding to paredit backward up
  */
 paredit_cm.core.backward_up_cur = (function paredit_cm$core$backward_up_cur(var_args){
-var args26085 = [];
-var len__7927__auto___26088 = arguments.length;
-var i__7928__auto___26089 = (0);
+var args22715 = [];
+var len__7927__auto___22718 = arguments.length;
+var i__7928__auto___22719 = (0);
 while(true){
-if((i__7928__auto___26089 < len__7927__auto___26088)){
-args26085.push((arguments[i__7928__auto___26089]));
+if((i__7928__auto___22719 < len__7927__auto___22718)){
+args22715.push((arguments[i__7928__auto___22719]));
 
-var G__26090 = (i__7928__auto___26089 + (1));
-i__7928__auto___26089 = G__26090;
+var G__22720 = (i__7928__auto___22719 + (1));
+i__7928__auto___22719 = G__22720;
 continue;
 } else {
 }
 break;
 }
 
-var G__26087 = args26085.length;
-switch (G__26087) {
+var G__22717 = args22715.length;
+switch (G__22717) {
 case 1:
 return paredit_cm.core.backward_up_cur.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -3703,7 +3684,7 @@ return paredit_cm.core.backward_up_cur.cljs$core$IFn$_invoke$arity$2((arguments[
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26085.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22715.length)].join('')));
 
 }
 });
@@ -3722,23 +3703,23 @@ paredit_cm.core.backward_up_cur.cljs$lang$maxFixedArity = 2;
  * paredit backward-up exposed for keymap.
  */
 paredit_cm.core.backward_up = (function paredit_cm$core$backward_up(var_args){
-var args26092 = [];
-var len__7927__auto___26095 = arguments.length;
-var i__7928__auto___26096 = (0);
+var args22722 = [];
+var len__7927__auto___22725 = arguments.length;
+var i__7928__auto___22726 = (0);
 while(true){
-if((i__7928__auto___26096 < len__7927__auto___26095)){
-args26092.push((arguments[i__7928__auto___26096]));
+if((i__7928__auto___22726 < len__7927__auto___22725)){
+args22722.push((arguments[i__7928__auto___22726]));
 
-var G__26097 = (i__7928__auto___26096 + (1));
-i__7928__auto___26096 = G__26097;
+var G__22727 = (i__7928__auto___22726 + (1));
+i__7928__auto___22726 = G__22727;
 continue;
 } else {
 }
 break;
 }
 
-var G__26094 = args26092.length;
-switch (G__26094) {
+var G__22724 = args22722.length;
+switch (G__22724) {
 case 1:
 return paredit_cm.core.backward_up.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -3748,7 +3729,7 @@ return paredit_cm.core.backward_up.cljs$core$IFn$_invoke$arity$2((arguments[(0)]
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26092.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22722.length)].join('')));
 
 }
 });
@@ -3784,23 +3765,23 @@ return paredit_cm.core.end_of_next_sibling.cljs$core$IFn$_invoke$arity$2(cm,cur)
  * paredit wrap-round exposed for keymap.
  */
 paredit_cm.core.wrap_round = (function paredit_cm$core$wrap_round(var_args){
-var args26099 = [];
-var len__7927__auto___26102 = arguments.length;
-var i__7928__auto___26103 = (0);
+var args22729 = [];
+var len__7927__auto___22732 = arguments.length;
+var i__7928__auto___22733 = (0);
 while(true){
-if((i__7928__auto___26103 < len__7927__auto___26102)){
-args26099.push((arguments[i__7928__auto___26103]));
+if((i__7928__auto___22733 < len__7927__auto___22732)){
+args22729.push((arguments[i__7928__auto___22733]));
 
-var G__26104 = (i__7928__auto___26103 + (1));
-i__7928__auto___26103 = G__26104;
+var G__22734 = (i__7928__auto___22733 + (1));
+i__7928__auto___22733 = G__22734;
 continue;
 } else {
 }
 break;
 }
 
-var G__26101 = args26099.length;
-switch (G__26101) {
+var G__22731 = args22729.length;
+switch (G__22731) {
 case 1:
 return paredit_cm.core.wrap_round.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -3810,7 +3791,7 @@ return paredit_cm.core.wrap_round.cljs$core$IFn$_invoke$arity$2((arguments[(0)])
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26099.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22729.length)].join('')));
 
 }
 });
@@ -3838,23 +3819,23 @@ paredit_cm.core.wrap_round.cljs$lang$maxFixedArity = 2;
  *   splice a string by dropping its double-quotes.
  */
 paredit_cm.core.splice_sexp = (function paredit_cm$core$splice_sexp(var_args){
-var args26106 = [];
-var len__7927__auto___26109 = arguments.length;
-var i__7928__auto___26110 = (0);
+var args22736 = [];
+var len__7927__auto___22739 = arguments.length;
+var i__7928__auto___22740 = (0);
 while(true){
-if((i__7928__auto___26110 < len__7927__auto___26109)){
-args26106.push((arguments[i__7928__auto___26110]));
+if((i__7928__auto___22740 < len__7927__auto___22739)){
+args22736.push((arguments[i__7928__auto___22740]));
 
-var G__26111 = (i__7928__auto___26110 + (1));
-i__7928__auto___26110 = G__26111;
+var G__22741 = (i__7928__auto___22740 + (1));
+i__7928__auto___22740 = G__22741;
 continue;
 } else {
 }
 break;
 }
 
-var G__26108 = args26106.length;
-switch (G__26108) {
+var G__22738 = args22736.length;
+switch (G__22738) {
 case 1:
 return paredit_cm.core.splice_sexp.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -3864,7 +3845,7 @@ return paredit_cm.core.splice_sexp.cljs$core$IFn$_invoke$arity$2((arguments[(0)]
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26106.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22736.length)].join('')));
 
 }
 });
@@ -3896,23 +3877,23 @@ paredit_cm.core.splice_sexp.cljs$lang$maxFixedArity = 2;
  *   emacs, this does not splice a string by dropping its double-quotes.
  */
 paredit_cm.core.splice_sexp_killing_backward = (function paredit_cm$core$splice_sexp_killing_backward(var_args){
-var args26113 = [];
-var len__7927__auto___26116 = arguments.length;
-var i__7928__auto___26117 = (0);
+var args22743 = [];
+var len__7927__auto___22746 = arguments.length;
+var i__7928__auto___22747 = (0);
 while(true){
-if((i__7928__auto___26117 < len__7927__auto___26116)){
-args26113.push((arguments[i__7928__auto___26117]));
+if((i__7928__auto___22747 < len__7927__auto___22746)){
+args22743.push((arguments[i__7928__auto___22747]));
 
-var G__26118 = (i__7928__auto___26117 + (1));
-i__7928__auto___26117 = G__26118;
+var G__22748 = (i__7928__auto___22747 + (1));
+i__7928__auto___22747 = G__22748;
 continue;
 } else {
 }
 break;
 }
 
-var G__26115 = args26113.length;
-switch (G__26115) {
+var G__22745 = args22743.length;
+switch (G__22745) {
 case 1:
 return paredit_cm.core.splice_sexp_killing_backward.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -3922,7 +3903,7 @@ return paredit_cm.core.splice_sexp_killing_backward.cljs$core$IFn$_invoke$arity$
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26113.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22743.length)].join('')));
 
 }
 });
@@ -3959,23 +3940,23 @@ paredit_cm.core.splice_sexp_killing_backward.cljs$lang$maxFixedArity = 2;
  *   emacs, this does not splice a string by dropping its double-quotes.
  */
 paredit_cm.core.splice_sexp_killing_forward = (function paredit_cm$core$splice_sexp_killing_forward(var_args){
-var args26120 = [];
-var len__7927__auto___26123 = arguments.length;
-var i__7928__auto___26124 = (0);
+var args22750 = [];
+var len__7927__auto___22753 = arguments.length;
+var i__7928__auto___22754 = (0);
 while(true){
-if((i__7928__auto___26124 < len__7927__auto___26123)){
-args26120.push((arguments[i__7928__auto___26124]));
+if((i__7928__auto___22754 < len__7927__auto___22753)){
+args22750.push((arguments[i__7928__auto___22754]));
 
-var G__26125 = (i__7928__auto___26124 + (1));
-i__7928__auto___26124 = G__26125;
+var G__22755 = (i__7928__auto___22754 + (1));
+i__7928__auto___22754 = G__22755;
 continue;
 } else {
 }
 break;
 }
 
-var G__26122 = args26120.length;
-switch (G__26122) {
+var G__22752 = args22750.length;
+switch (G__22752) {
 case 1:
 return paredit_cm.core.splice_sexp_killing_forward.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -3985,7 +3966,7 @@ return paredit_cm.core.splice_sexp_killing_forward.cljs$core$IFn$_invoke$arity$2
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26120.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22750.length)].join('')));
 
 }
 });
@@ -4023,23 +4004,23 @@ paredit_cm.core.splice_sexp_killing_forward.cljs$lang$maxFixedArity = 2;
  * paredit raise-sexp exposed for keymap.
  */
 paredit_cm.core.raise_sexp = (function paredit_cm$core$raise_sexp(var_args){
-var args26127 = [];
-var len__7927__auto___26130 = arguments.length;
-var i__7928__auto___26131 = (0);
+var args22757 = [];
+var len__7927__auto___22760 = arguments.length;
+var i__7928__auto___22761 = (0);
 while(true){
-if((i__7928__auto___26131 < len__7927__auto___26130)){
-args26127.push((arguments[i__7928__auto___26131]));
+if((i__7928__auto___22761 < len__7927__auto___22760)){
+args22757.push((arguments[i__7928__auto___22761]));
 
-var G__26132 = (i__7928__auto___26131 + (1));
-i__7928__auto___26131 = G__26132;
+var G__22762 = (i__7928__auto___22761 + (1));
+i__7928__auto___22761 = G__22762;
 continue;
 } else {
 }
 break;
 }
 
-var G__26129 = args26127.length;
-switch (G__26129) {
+var G__22759 = args22757.length;
+switch (G__22759) {
 case 1:
 return paredit_cm.core.raise_sexp.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4049,7 +4030,7 @@ return paredit_cm.core.raise_sexp.cljs$core$IFn$_invoke$arity$2((arguments[(0)])
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26127.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22757.length)].join('')));
 
 }
 });
@@ -4097,10 +4078,10 @@ return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMP
 } else {
 return ((function (parent,sibling){
 return (function (){
-var G__26137 = cm;
-var G__26138 = parent;
-var G__26139 = (n - (1));
-return (paredit_cm.core.fwd_slurp.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.fwd_slurp.cljs$core$IFn$_invoke$arity$3(G__26137,G__26138,G__26139) : paredit_cm.core.fwd_slurp.call(null,G__26137,G__26138,G__26139));
+var G__22767 = cm;
+var G__22768 = parent;
+var G__22769 = (n - (1));
+return (paredit_cm.core.fwd_slurp.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.fwd_slurp.cljs$core$IFn$_invoke$arity$3(G__22767,G__22768,G__22769) : paredit_cm.core.fwd_slurp.call(null,G__22767,G__22768,G__22769));
 });
 ;})(parent,sibling))
 }
@@ -4112,23 +4093,23 @@ return null;
  * paredit forward-slurp-sexp exposed for keymap.
  */
 paredit_cm.core.forward_slurp_sexp = (function paredit_cm$core$forward_slurp_sexp(var_args){
-var args26140 = [];
-var len__7927__auto___26146 = arguments.length;
-var i__7928__auto___26147 = (0);
+var args22770 = [];
+var len__7927__auto___22776 = arguments.length;
+var i__7928__auto___22777 = (0);
 while(true){
-if((i__7928__auto___26147 < len__7927__auto___26146)){
-args26140.push((arguments[i__7928__auto___26147]));
+if((i__7928__auto___22777 < len__7927__auto___22776)){
+args22770.push((arguments[i__7928__auto___22777]));
 
-var G__26148 = (i__7928__auto___26147 + (1));
-i__7928__auto___26147 = G__26148;
+var G__22778 = (i__7928__auto___22777 + (1));
+i__7928__auto___22777 = G__22778;
 continue;
 } else {
 }
 break;
 }
 
-var G__26142 = args26140.length;
-switch (G__26142) {
+var G__22772 = args22770.length;
+switch (G__22772) {
 case 1:
 return paredit_cm.core.forward_slurp_sexp.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4138,7 +4119,7 @@ return paredit_cm.core.forward_slurp_sexp.cljs$core$IFn$_invoke$arity$2((argumen
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26140.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22770.length)].join('')));
 
 }
 });
@@ -4149,15 +4130,15 @@ return paredit_cm.core.forward_slurp_sexp.cljs$core$IFn$_invoke$arity$2(cm,pared
 });
 
 paredit_cm.core.forward_slurp_sexp.cljs$core$IFn$_invoke$arity$2 = (function (cm,cur){
-var temp__4657__auto___26150 = cljs.core.trampoline.cljs$core$IFn$_invoke$arity$variadic(paredit_cm.core.fwd_slurp,cljs.core.array_seq([cm,cur,paredit_cm.core.char_count(cm)], 0));
-if(cljs.core.truth_(temp__4657__auto___26150)){
-var vec__26143_26151 = temp__4657__auto___26150;
-var parent_26152 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26143_26151,(0),null);
-var sibling_26153 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26143_26151,(1),null);
-var bracket_26154 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26143_26151,(2),null);
-paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$4(cm,bracket_26154,(0),sibling_26153);
+var temp__4657__auto___22780 = cljs.core.trampoline.cljs$core$IFn$_invoke$arity$variadic(paredit_cm.core.fwd_slurp,cljs.core.array_seq([cm,cur,paredit_cm.core.char_count(cm)], 0));
+if(cljs.core.truth_(temp__4657__auto___22780)){
+var vec__22773_22781 = temp__4657__auto___22780;
+var parent_22782 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22773_22781,(0),null);
+var sibling_22783 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22773_22781,(1),null);
+var bracket_22784 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22773_22781,(2),null);
+paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$4(cm,bracket_22784,(0),sibling_22783);
 
-cm.replaceRange("",paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,parent_26152) - cljs.core.count(bracket_26154))),parent_26152);
+cm.replaceRange("",paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,parent_22782) - cljs.core.count(bracket_22784))),parent_22782);
 } else {
 }
 
@@ -4186,10 +4167,10 @@ if(cljs.core.truth_(temp__4657__auto__)){
 var cur_SINGLEQUOTE_ = temp__4657__auto__;
 return ((function (cur_SINGLEQUOTE_,temp__4657__auto__){
 return (function (){
-var G__26158 = cm;
-var G__26159 = cur_SINGLEQUOTE_;
-var G__26160 = (n - (1));
-return (paredit_cm.core.fwd_down.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.fwd_down.cljs$core$IFn$_invoke$arity$3(G__26158,G__26159,G__26160) : paredit_cm.core.fwd_down.call(null,G__26158,G__26159,G__26160));
+var G__22788 = cm;
+var G__22789 = cur_SINGLEQUOTE_;
+var G__22790 = (n - (1));
+return (paredit_cm.core.fwd_down.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.fwd_down.cljs$core$IFn$_invoke$arity$3(G__22788,G__22789,G__22790) : paredit_cm.core.fwd_down.call(null,G__22788,G__22789,G__22790));
 });
 ;})(cur_SINGLEQUOTE_,temp__4657__auto__))
 } else {
@@ -4201,23 +4182,23 @@ return null;
 }
 });
 paredit_cm.core.forward_down_cur = (function paredit_cm$core$forward_down_cur(var_args){
-var args26161 = [];
-var len__7927__auto___26164 = arguments.length;
-var i__7928__auto___26165 = (0);
+var args22791 = [];
+var len__7927__auto___22794 = arguments.length;
+var i__7928__auto___22795 = (0);
 while(true){
-if((i__7928__auto___26165 < len__7927__auto___26164)){
-args26161.push((arguments[i__7928__auto___26165]));
+if((i__7928__auto___22795 < len__7927__auto___22794)){
+args22791.push((arguments[i__7928__auto___22795]));
 
-var G__26166 = (i__7928__auto___26165 + (1));
-i__7928__auto___26165 = G__26166;
+var G__22796 = (i__7928__auto___22795 + (1));
+i__7928__auto___22795 = G__22796;
 continue;
 } else {
 }
 break;
 }
 
-var G__26163 = args26161.length;
-switch (G__26163) {
+var G__22793 = args22791.length;
+switch (G__22793) {
 case 1:
 return paredit_cm.core.forward_down_cur.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4227,7 +4208,7 @@ return paredit_cm.core.forward_down_cur.cljs$core$IFn$_invoke$arity$2((arguments
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26161.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22791.length)].join('')));
 
 }
 });
@@ -4243,23 +4224,23 @@ return cljs.core.trampoline.cljs$core$IFn$_invoke$arity$variadic(paredit_cm.core
 paredit_cm.core.forward_down_cur.cljs$lang$maxFixedArity = 2;
 
 paredit_cm.core.forward_down = (function paredit_cm$core$forward_down(var_args){
-var args26168 = [];
-var len__7927__auto___26171 = arguments.length;
-var i__7928__auto___26172 = (0);
+var args22798 = [];
+var len__7927__auto___22801 = arguments.length;
+var i__7928__auto___22802 = (0);
 while(true){
-if((i__7928__auto___26172 < len__7927__auto___26171)){
-args26168.push((arguments[i__7928__auto___26172]));
+if((i__7928__auto___22802 < len__7927__auto___22801)){
+args22798.push((arguments[i__7928__auto___22802]));
 
-var G__26173 = (i__7928__auto___26172 + (1));
-i__7928__auto___26172 = G__26173;
+var G__22803 = (i__7928__auto___22802 + (1));
+i__7928__auto___22802 = G__22803;
 continue;
 } else {
 }
 break;
 }
 
-var G__26170 = args26168.length;
-switch (G__26170) {
+var G__22800 = args22798.length;
+switch (G__22800) {
 case 1:
 return paredit_cm.core.forward_down.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4269,7 +4250,7 @@ return paredit_cm.core.forward_down.cljs$core$IFn$_invoke$arity$2((arguments[(0)
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26168.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22798.length)].join('')));
 
 }
 });
@@ -4297,13 +4278,13 @@ paredit_cm.core.forward_down.cljs$lang$maxFixedArity = 2;
  *   sibling to enter.
  */
 paredit_cm.core.bkwd_down = (function paredit_cm$core$bkwd_down(cm,cur,n){
-var map__26183 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var map__26183__$1 = ((((!((map__26183 == null)))?((((map__26183.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__26183.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__26183):map__26183);
-var left_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26183__$1,cljs.core.cst$kw$left_DASH_cur);
-var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26183__$1,cljs.core.cst$kw$i);
-var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26183__$1,cljs.core.cst$kw$start);
-var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26183__$1,cljs.core.cst$kw$ch);
-var bof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__26183__$1,cljs.core.cst$kw$bof);
+var map__22813 = paredit_cm.core.get_info.cljs$core$IFn$_invoke$arity$2(cm,cur);
+var map__22813__$1 = ((((!((map__22813 == null)))?((((map__22813.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__22813.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.hash_map,map__22813):map__22813);
+var left_cur = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22813__$1,cljs.core.cst$kw$left_DASH_cur);
+var i = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22813__$1,cljs.core.cst$kw$i);
+var start = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22813__$1,cljs.core.cst$kw$start);
+var ch = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22813__$1,cljs.core.cst$kw$ch);
+var bof = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__22813__$1,cljs.core.cst$kw$bof);
 if((n <= (0))){
 cljs.core.println.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq(["infinite loop"], 0));
 
@@ -4316,23 +4297,23 @@ if(cljs.core.truth_(bof)){
 return null;
 } else {
 if((ch === (0))){
-return ((function (map__26183,map__26183__$1,left_cur,i,start,ch,bof){
+return ((function (map__22813,map__22813__$1,left_cur,i,start,ch,bof){
 return (function (){
-var G__26185 = cm;
-var G__26186 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i - (1)));
-var G__26187 = (n - (1));
-return (paredit_cm.core.bkwd_down.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd_down.cljs$core$IFn$_invoke$arity$3(G__26185,G__26186,G__26187) : paredit_cm.core.bkwd_down.call(null,G__26185,G__26186,G__26187));
+var G__22815 = cm;
+var G__22816 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i - (1)));
+var G__22817 = (n - (1));
+return (paredit_cm.core.bkwd_down.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd_down.cljs$core$IFn$_invoke$arity$3(G__22815,G__22816,G__22817) : paredit_cm.core.bkwd_down.call(null,G__22815,G__22816,G__22817));
 });
-;})(map__26183,map__26183__$1,left_cur,i,start,ch,bof))
+;})(map__22813,map__22813__$1,left_cur,i,start,ch,bof))
 } else {
-return ((function (map__26183,map__26183__$1,left_cur,i,start,ch,bof){
+return ((function (map__22813,map__22813__$1,left_cur,i,start,ch,bof){
 return (function (){
-var G__26188 = cm;
-var G__26189 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i - (ch - start)));
-var G__26190 = (n - (1));
-return (paredit_cm.core.bkwd_down.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd_down.cljs$core$IFn$_invoke$arity$3(G__26188,G__26189,G__26190) : paredit_cm.core.bkwd_down.call(null,G__26188,G__26189,G__26190));
+var G__22818 = cm;
+var G__22819 = paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(i - (ch - start)));
+var G__22820 = (n - (1));
+return (paredit_cm.core.bkwd_down.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd_down.cljs$core$IFn$_invoke$arity$3(G__22818,G__22819,G__22820) : paredit_cm.core.bkwd_down.call(null,G__22818,G__22819,G__22820));
 });
-;})(map__26183,map__26183__$1,left_cur,i,start,ch,bof))
+;})(map__22813,map__22813__$1,left_cur,i,start,ch,bof))
 
 }
 }
@@ -4340,23 +4321,23 @@ return (paredit_cm.core.bkwd_down.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.cor
 }
 });
 paredit_cm.core.backward_down = (function paredit_cm$core$backward_down(var_args){
-var args26191 = [];
-var len__7927__auto___26194 = arguments.length;
-var i__7928__auto___26195 = (0);
+var args22821 = [];
+var len__7927__auto___22824 = arguments.length;
+var i__7928__auto___22825 = (0);
 while(true){
-if((i__7928__auto___26195 < len__7927__auto___26194)){
-args26191.push((arguments[i__7928__auto___26195]));
+if((i__7928__auto___22825 < len__7927__auto___22824)){
+args22821.push((arguments[i__7928__auto___22825]));
 
-var G__26196 = (i__7928__auto___26195 + (1));
-i__7928__auto___26195 = G__26196;
+var G__22826 = (i__7928__auto___22825 + (1));
+i__7928__auto___22825 = G__22826;
 continue;
 } else {
 }
 break;
 }
 
-var G__26193 = args26191.length;
-switch (G__26193) {
+var G__22823 = args22821.length;
+switch (G__22823) {
 case 1:
 return paredit_cm.core.backward_down.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4366,7 +4347,7 @@ return paredit_cm.core.backward_down.cljs$core$IFn$_invoke$arity$2((arguments[(0
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26191.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22821.length)].join('')));
 
 }
 });
@@ -4406,10 +4387,10 @@ return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMP
 } else {
 return ((function (ending,parent,sibling,bracket_cur){
 return (function (){
-var G__26201 = cm;
-var G__26202 = parent;
-var G__26203 = (n - (1));
-return (paredit_cm.core.bkwd_slurp.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd_slurp.cljs$core$IFn$_invoke$arity$3(G__26201,G__26202,G__26203) : paredit_cm.core.bkwd_slurp.call(null,G__26201,G__26202,G__26203));
+var G__22831 = cm;
+var G__22832 = parent;
+var G__22833 = (n - (1));
+return (paredit_cm.core.bkwd_slurp.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd_slurp.cljs$core$IFn$_invoke$arity$3(G__22831,G__22832,G__22833) : paredit_cm.core.bkwd_slurp.call(null,G__22831,G__22832,G__22833));
 });
 ;})(ending,parent,sibling,bracket_cur))
 }
@@ -4421,23 +4402,23 @@ return null;
  * paredit backward-slurp-sexp exposed for keymap.
  */
 paredit_cm.core.backward_slurp_sexp = (function paredit_cm$core$backward_slurp_sexp(var_args){
-var args26204 = [];
-var len__7927__auto___26210 = arguments.length;
-var i__7928__auto___26211 = (0);
+var args22834 = [];
+var len__7927__auto___22840 = arguments.length;
+var i__7928__auto___22841 = (0);
 while(true){
-if((i__7928__auto___26211 < len__7927__auto___26210)){
-args26204.push((arguments[i__7928__auto___26211]));
+if((i__7928__auto___22841 < len__7927__auto___22840)){
+args22834.push((arguments[i__7928__auto___22841]));
 
-var G__26212 = (i__7928__auto___26211 + (1));
-i__7928__auto___26211 = G__26212;
+var G__22842 = (i__7928__auto___22841 + (1));
+i__7928__auto___22841 = G__22842;
 continue;
 } else {
 }
 break;
 }
 
-var G__26206 = args26204.length;
-switch (G__26206) {
+var G__22836 = args22834.length;
+switch (G__22836) {
 case 1:
 return paredit_cm.core.backward_slurp_sexp.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4447,7 +4428,7 @@ return paredit_cm.core.backward_slurp_sexp.cljs$core$IFn$_invoke$arity$2((argume
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26204.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22834.length)].join('')));
 
 }
 });
@@ -4459,15 +4440,15 @@ return paredit_cm.core.backward_slurp_sexp.cljs$core$IFn$_invoke$arity$2(cm,pare
 
 paredit_cm.core.backward_slurp_sexp.cljs$core$IFn$_invoke$arity$2 = (function (cm,cur){
 var i = paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,cur);
-var temp__4657__auto___26214 = cljs.core.trampoline.cljs$core$IFn$_invoke$arity$variadic(paredit_cm.core.bkwd_slurp,cljs.core.array_seq([cm,cur,paredit_cm.core.char_count(cm)], 0));
-if(cljs.core.truth_(temp__4657__auto___26214)){
-var vec__26207_26215 = temp__4657__auto___26214;
-var parent_26216 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26207_26215,(0),null);
-var sibling_26217 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26207_26215,(1),null);
-var bracket_26218 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26207_26215,(2),null);
-cm.replaceRange("",parent_26216,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,parent_26216) + cljs.core.count(bracket_26218))));
+var temp__4657__auto___22844 = cljs.core.trampoline.cljs$core$IFn$_invoke$arity$variadic(paredit_cm.core.bkwd_slurp,cljs.core.array_seq([cm,cur,paredit_cm.core.char_count(cm)], 0));
+if(cljs.core.truth_(temp__4657__auto___22844)){
+var vec__22837_22845 = temp__4657__auto___22844;
+var parent_22846 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22837_22845,(0),null);
+var sibling_22847 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22837_22845,(1),null);
+var bracket_22848 = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22837_22845,(2),null);
+cm.replaceRange("",parent_22846,paredit_cm.core.cursor.cljs$core$IFn$_invoke$arity$2(cm,(paredit_cm.core.index.cljs$core$IFn$_invoke$arity$2(cm,parent_22846) + cljs.core.count(bracket_22848))));
 
-paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$4(cm,bracket_26218,(0),sibling_26217);
+paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$4(cm,bracket_22848,(0),sibling_22847);
 } else {
 }
 
@@ -4511,10 +4492,10 @@ return null;
 if((bracket_cur == null)){
 return ((function (parent,inside,sibling,prevsib,bracket_cur,moved,bracket){
 return (function (){
-var G__26222 = cm;
-var G__26223 = parent;
-var G__26224 = (n - (1));
-return (paredit_cm.core.fwd_barf.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.fwd_barf.cljs$core$IFn$_invoke$arity$3(G__26222,G__26223,G__26224) : paredit_cm.core.fwd_barf.call(null,G__26222,G__26223,G__26224));
+var G__22852 = cm;
+var G__22853 = parent;
+var G__22854 = (n - (1));
+return (paredit_cm.core.fwd_barf.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.fwd_barf.cljs$core$IFn$_invoke$arity$3(G__22852,G__22853,G__22854) : paredit_cm.core.fwd_barf.call(null,G__22852,G__22853,G__22854));
 });
 ;})(parent,inside,sibling,prevsib,bracket_cur,moved,bracket))
 } else {
@@ -4530,23 +4511,23 @@ return null;
  * paredit forward-barf-sexp exposed for keymap.
  */
 paredit_cm.core.forward_barf_sexp = (function paredit_cm$core$forward_barf_sexp(var_args){
-var args26225 = [];
-var len__7927__auto___26231 = arguments.length;
-var i__7928__auto___26232 = (0);
+var args22855 = [];
+var len__7927__auto___22861 = arguments.length;
+var i__7928__auto___22862 = (0);
 while(true){
-if((i__7928__auto___26232 < len__7927__auto___26231)){
-args26225.push((arguments[i__7928__auto___26232]));
+if((i__7928__auto___22862 < len__7927__auto___22861)){
+args22855.push((arguments[i__7928__auto___22862]));
 
-var G__26233 = (i__7928__auto___26232 + (1));
-i__7928__auto___26232 = G__26233;
+var G__22863 = (i__7928__auto___22862 + (1));
+i__7928__auto___22862 = G__22863;
 continue;
 } else {
 }
 break;
 }
 
-var G__26227 = args26225.length;
-switch (G__26227) {
+var G__22857 = args22855.length;
+switch (G__22857) {
 case 1:
 return paredit_cm.core.forward_barf_sexp.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4556,7 +4537,7 @@ return paredit_cm.core.forward_barf_sexp.cljs$core$IFn$_invoke$arity$2((argument
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26225.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22855.length)].join('')));
 
 }
 });
@@ -4569,12 +4550,12 @@ return paredit_cm.core.forward_barf_sexp.cljs$core$IFn$_invoke$arity$2(cm,paredi
 paredit_cm.core.forward_barf_sexp.cljs$core$IFn$_invoke$arity$2 = (function (cm,cur){
 var temp__4655__auto__ = cljs.core.trampoline.cljs$core$IFn$_invoke$arity$variadic(paredit_cm.core.fwd_barf,cljs.core.array_seq([cm,cur,paredit_cm.core.char_count(cm)], 0));
 if(cljs.core.truth_(temp__4655__auto__)){
-var vec__26228 = temp__4655__auto__;
-var parent = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26228,(0),null);
-var inside = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26228,(1),null);
-var sibling = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26228,(2),null);
-var bracket = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26228,(3),null);
-var moved = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26228,(4),null);
+var vec__22858 = temp__4655__auto__;
+var parent = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22858,(0),null);
+var inside = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22858,(1),null);
+var sibling = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22858,(2),null);
+var bracket = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22858,(3),null);
+var moved = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22858,(4),null);
 cm.replaceRange("",inside,parent);
 
 paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$4(cm,bracket,(0),sibling);
@@ -4617,10 +4598,10 @@ return null;
 if((end_of_barfed_sexp == null)){
 return ((function (outside,inside,end_of_barfed_sexp,end_of_new_first_sib,bracket_cur,bracket_text,moved){
 return (function (){
-var G__26238 = cm;
-var G__26239 = outside;
-var G__26240 = (n - (1));
-return (paredit_cm.core.bkwd_barf.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd_barf.cljs$core$IFn$_invoke$arity$3(G__26238,G__26239,G__26240) : paredit_cm.core.bkwd_barf.call(null,G__26238,G__26239,G__26240));
+var G__22868 = cm;
+var G__22869 = outside;
+var G__22870 = (n - (1));
+return (paredit_cm.core.bkwd_barf.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.bkwd_barf.cljs$core$IFn$_invoke$arity$3(G__22868,G__22869,G__22870) : paredit_cm.core.bkwd_barf.call(null,G__22868,G__22869,G__22870));
 });
 ;})(outside,inside,end_of_barfed_sexp,end_of_new_first_sib,bracket_cur,bracket_text,moved))
 } else {
@@ -4636,23 +4617,23 @@ return null;
  * paredit backward-barf-sexp exposed for keymap.
  */
 paredit_cm.core.backward_barf_sexp = (function paredit_cm$core$backward_barf_sexp(var_args){
-var args26241 = [];
-var len__7927__auto___26247 = arguments.length;
-var i__7928__auto___26248 = (0);
+var args22871 = [];
+var len__7927__auto___22877 = arguments.length;
+var i__7928__auto___22878 = (0);
 while(true){
-if((i__7928__auto___26248 < len__7927__auto___26247)){
-args26241.push((arguments[i__7928__auto___26248]));
+if((i__7928__auto___22878 < len__7927__auto___22877)){
+args22871.push((arguments[i__7928__auto___22878]));
 
-var G__26249 = (i__7928__auto___26248 + (1));
-i__7928__auto___26248 = G__26249;
+var G__22879 = (i__7928__auto___22878 + (1));
+i__7928__auto___22878 = G__22879;
 continue;
 } else {
 }
 break;
 }
 
-var G__26243 = args26241.length;
-switch (G__26243) {
+var G__22873 = args22871.length;
+switch (G__22873) {
 case 1:
 return paredit_cm.core.backward_barf_sexp.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4662,7 +4643,7 @@ return paredit_cm.core.backward_barf_sexp.cljs$core$IFn$_invoke$arity$2((argumen
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26241.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22871.length)].join('')));
 
 }
 });
@@ -4675,12 +4656,12 @@ return paredit_cm.core.backward_barf_sexp.cljs$core$IFn$_invoke$arity$2(cm,pared
 paredit_cm.core.backward_barf_sexp.cljs$core$IFn$_invoke$arity$2 = (function (cm,cur){
 var temp__4655__auto__ = cljs.core.trampoline.cljs$core$IFn$_invoke$arity$variadic(paredit_cm.core.bkwd_barf,cljs.core.array_seq([cm,cur,paredit_cm.core.char_count(cm)], 0));
 if(cljs.core.truth_(temp__4655__auto__)){
-var vec__26244 = temp__4655__auto__;
-var outside = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26244,(0),null);
-var inside = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26244,(1),null);
-var bracket_cur = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26244,(2),null);
-var bracket_text = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26244,(3),null);
-var moved = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26244,(4),null);
+var vec__22874 = temp__4655__auto__;
+var outside = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22874,(0),null);
+var inside = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22874,(1),null);
+var bracket_cur = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22874,(2),null);
+var bracket_text = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22874,(3),null);
+var moved = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__22874,(4),null);
 paredit_cm.core.insert.cljs$core$IFn$_invoke$arity$4(cm,bracket_text,(0),bracket_cur);
 
 cm.replaceRange("",outside,inside);
@@ -4756,23 +4737,23 @@ return paredit_cm.core.move_left(cm);
  * paredit split-sexp exposed for keymap.
  */
 paredit_cm.core.split_sexp = (function paredit_cm$core$split_sexp(var_args){
-var args26251 = [];
-var len__7927__auto___26254 = arguments.length;
-var i__7928__auto___26255 = (0);
+var args22881 = [];
+var len__7927__auto___22884 = arguments.length;
+var i__7928__auto___22885 = (0);
 while(true){
-if((i__7928__auto___26255 < len__7927__auto___26254)){
-args26251.push((arguments[i__7928__auto___26255]));
+if((i__7928__auto___22885 < len__7927__auto___22884)){
+args22881.push((arguments[i__7928__auto___22885]));
 
-var G__26256 = (i__7928__auto___26255 + (1));
-i__7928__auto___26255 = G__26256;
+var G__22886 = (i__7928__auto___22885 + (1));
+i__7928__auto___22885 = G__22886;
 continue;
 } else {
 }
 break;
 }
 
-var G__26253 = args26251.length;
-switch (G__26253) {
+var G__22883 = args22881.length;
+switch (G__22883) {
 case 1:
 return paredit_cm.core.split_sexp.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4782,7 +4763,7 @@ return paredit_cm.core.split_sexp.cljs$core$IFn$_invoke$arity$2((arguments[(0)])
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26251.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22881.length)].join('')));
 
 }
 });
@@ -4806,23 +4787,23 @@ paredit_cm.core.split_sexp.cljs$lang$maxFixedArity = 2;
  * paredit join-sexps exposed for keymap.
  */
 paredit_cm.core.join_sexps = (function paredit_cm$core$join_sexps(var_args){
-var args26258 = [];
-var len__7927__auto___26261 = arguments.length;
-var i__7928__auto___26262 = (0);
+var args22888 = [];
+var len__7927__auto___22891 = arguments.length;
+var i__7928__auto___22892 = (0);
 while(true){
-if((i__7928__auto___26262 < len__7927__auto___26261)){
-args26258.push((arguments[i__7928__auto___26262]));
+if((i__7928__auto___22892 < len__7927__auto___22891)){
+args22888.push((arguments[i__7928__auto___22892]));
 
-var G__26263 = (i__7928__auto___26262 + (1));
-i__7928__auto___26262 = G__26263;
+var G__22893 = (i__7928__auto___22892 + (1));
+i__7928__auto___22892 = G__22893;
 continue;
 } else {
 }
 break;
 }
 
-var G__26260 = args26258.length;
-switch (G__26260) {
+var G__22890 = args22888.length;
+switch (G__22890) {
 case 1:
 return paredit_cm.core.join_sexps.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4832,7 +4813,7 @@ return paredit_cm.core.join_sexps.cljs$core$IFn$_invoke$arity$2((arguments[(0)])
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26258.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22888.length)].join('')));
 
 }
 });
@@ -4889,10 +4870,10 @@ if(cljs.core.truth_(temp__4655__auto__)){
 var parent = temp__4655__auto__;
 return ((function (parent,temp__4655__auto__){
 return (function (){
-var G__26268 = cm;
-var G__26269 = parent;
-var G__26270 = (n - (1));
-return (paredit_cm.core.top_most_opener_candidate.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.top_most_opener_candidate.cljs$core$IFn$_invoke$arity$3(G__26268,G__26269,G__26270) : paredit_cm.core.top_most_opener_candidate.call(null,G__26268,G__26269,G__26270));
+var G__22898 = cm;
+var G__22899 = parent;
+var G__22900 = (n - (1));
+return (paredit_cm.core.top_most_opener_candidate.cljs$core$IFn$_invoke$arity$3 ? paredit_cm.core.top_most_opener_candidate.cljs$core$IFn$_invoke$arity$3(G__22898,G__22899,G__22900) : paredit_cm.core.top_most_opener_candidate.call(null,G__22898,G__22899,G__22900));
 });
 ;})(parent,temp__4655__auto__))
 } else {
@@ -4907,23 +4888,23 @@ return null;
  *   there is no such bracket.
  */
 paredit_cm.core.top_most_opener = (function paredit_cm$core$top_most_opener(var_args){
-var args26271 = [];
-var len__7927__auto___26274 = arguments.length;
-var i__7928__auto___26275 = (0);
+var args22901 = [];
+var len__7927__auto___22904 = arguments.length;
+var i__7928__auto___22905 = (0);
 while(true){
-if((i__7928__auto___26275 < len__7927__auto___26274)){
-args26271.push((arguments[i__7928__auto___26275]));
+if((i__7928__auto___22905 < len__7927__auto___22904)){
+args22901.push((arguments[i__7928__auto___22905]));
 
-var G__26276 = (i__7928__auto___26275 + (1));
-i__7928__auto___26275 = G__26276;
+var G__22906 = (i__7928__auto___22905 + (1));
+i__7928__auto___22905 = G__22906;
 continue;
 } else {
 }
 break;
 }
 
-var G__26273 = args26271.length;
-switch (G__26273) {
+var G__22903 = args22901.length;
+switch (G__22903) {
 case 1:
 return paredit_cm.core.top_most_opener.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4933,7 +4914,7 @@ return paredit_cm.core.top_most_opener.cljs$core$IFn$_invoke$arity$2((arguments[
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26271.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22901.length)].join('')));
 
 }
 });
@@ -4957,23 +4938,23 @@ paredit_cm.core.top_most_opener.cljs$lang$maxFixedArity = 2;
  * paredit reindent-defun exposed for keymap.
  */
 paredit_cm.core.reindent_defun = (function paredit_cm$core$reindent_defun(var_args){
-var args26278 = [];
-var len__7927__auto___26281 = arguments.length;
-var i__7928__auto___26282 = (0);
+var args22908 = [];
+var len__7927__auto___22911 = arguments.length;
+var i__7928__auto___22912 = (0);
 while(true){
-if((i__7928__auto___26282 < len__7927__auto___26281)){
-args26278.push((arguments[i__7928__auto___26282]));
+if((i__7928__auto___22912 < len__7927__auto___22911)){
+args22908.push((arguments[i__7928__auto___22912]));
 
-var G__26283 = (i__7928__auto___26282 + (1));
-i__7928__auto___26282 = G__26283;
+var G__22913 = (i__7928__auto___22912 + (1));
+i__7928__auto___22912 = G__22913;
 continue;
 } else {
 }
 break;
 }
 
-var G__26280 = args26278.length;
-switch (G__26280) {
+var G__22910 = args22908.length;
+switch (G__22910) {
 case 1:
 return paredit_cm.core.reindent_defun.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -4983,7 +4964,7 @@ return paredit_cm.core.reindent_defun.cljs$core$IFn$_invoke$arity$2((arguments[(
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26278.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22908.length)].join('')));
 
 }
 });
@@ -5021,23 +5002,23 @@ paredit_cm.core.reindent_defun.cljs$lang$maxFixedArity = 2;
  *   things other than emacs itself.
  */
 paredit_cm.core.forward_sexp = (function paredit_cm$core$forward_sexp(var_args){
-var args26285 = [];
-var len__7927__auto___26288 = arguments.length;
-var i__7928__auto___26289 = (0);
+var args22915 = [];
+var len__7927__auto___22918 = arguments.length;
+var i__7928__auto___22919 = (0);
 while(true){
-if((i__7928__auto___26289 < len__7927__auto___26288)){
-args26285.push((arguments[i__7928__auto___26289]));
+if((i__7928__auto___22919 < len__7927__auto___22918)){
+args22915.push((arguments[i__7928__auto___22919]));
 
-var G__26290 = (i__7928__auto___26289 + (1));
-i__7928__auto___26289 = G__26290;
+var G__22920 = (i__7928__auto___22919 + (1));
+i__7928__auto___22919 = G__22920;
 continue;
 } else {
 }
 break;
 }
 
-var G__26287 = args26285.length;
-switch (G__26287) {
+var G__22917 = args22915.length;
+switch (G__22917) {
 case 1:
 return paredit_cm.core.forward_sexp.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -5047,7 +5028,7 @@ return paredit_cm.core.forward_sexp.cljs$core$IFn$_invoke$arity$2((arguments[(0)
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26285.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22915.length)].join('')));
 
 }
 });
@@ -5075,23 +5056,23 @@ paredit_cm.core.forward_sexp.cljs$lang$maxFixedArity = 2;
  *   things other than emacs itself.
  */
 paredit_cm.core.backward_sexp = (function paredit_cm$core$backward_sexp(var_args){
-var args26292 = [];
-var len__7927__auto___26295 = arguments.length;
-var i__7928__auto___26296 = (0);
+var args22922 = [];
+var len__7927__auto___22925 = arguments.length;
+var i__7928__auto___22926 = (0);
 while(true){
-if((i__7928__auto___26296 < len__7927__auto___26295)){
-args26292.push((arguments[i__7928__auto___26296]));
+if((i__7928__auto___22926 < len__7927__auto___22925)){
+args22922.push((arguments[i__7928__auto___22926]));
 
-var G__26297 = (i__7928__auto___26296 + (1));
-i__7928__auto___26296 = G__26297;
+var G__22927 = (i__7928__auto___22926 + (1));
+i__7928__auto___22926 = G__22927;
 continue;
 } else {
 }
 break;
 }
 
-var G__26294 = args26292.length;
-switch (G__26294) {
+var G__22924 = args22922.length;
+switch (G__22924) {
 case 1:
 return paredit_cm.core.backward_sexp.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -5101,7 +5082,7 @@ return paredit_cm.core.backward_sexp.cljs$core$IFn$_invoke$arity$2((arguments[(0
 
 break;
 default:
-throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args26292.length)].join('')));
+throw (new Error([cljs.core.str.cljs$core$IFn$_invoke$arity$1("Invalid arity: "),cljs.core.str.cljs$core$IFn$_invoke$arity$1(args22922.length)].join('')));
 
 }
 });

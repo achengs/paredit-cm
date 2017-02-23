@@ -1,4 +1,4 @@
-(defproject paredit-cm "0.1.0"
+(defproject paredit-cm "0.1.1"
   :description "paredit for codemirror"
   :url "https://github.com/achengs/paredit-cm"
             :license {:name "MIT License"
@@ -8,9 +8,9 @@
 
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.473"]
-                 [org.clojure/core.async "0.2.395"
+                 [org.clojure/core.async "0.3.441"
                   :exclusions [org.clojure/tools.reader]]
-                 [cljsjs/codemirror "5.24.0-0"]]
+                 [cljsjs/codemirror "5.24.0-1"]]
 
   :plugins [[lein-figwheel "0.5.9" :exclusions [org.clojure/clojure]]
             [lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]

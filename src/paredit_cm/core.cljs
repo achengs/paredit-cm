@@ -1093,7 +1093,7 @@
   "returns true for closing brackets and for closing double-quotes"
   [cm cur]
   (let [{:keys [string type left-char right-cur]} (get-info cm cur)]
-    (println "closing delim?" type string left-char)
+    ;;(println "closing delim?" type string left-char)
     (or (and (is-bracket-type? type) (closer? left-char))
         (and (= type "string")
              (= "\"" left-char)

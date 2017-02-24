@@ -306,6 +306,8 @@
        (token-end cm)
        (index cm)))
 
+(defn guard [] (println "past"))
+
 (defn skip-trampoline-helper
   "returns the cursor that satsifies skipping predicate 'sp' or nil if eof
   reached. does this by making sp something we can trampoline. sp takes these
@@ -325,7 +327,7 @@
         (let [next-cur (token-end cm cur 1)]
           (fn [] ;; for trampoline
             (skip-trampoline-helper cm next-cur sp result (dec n))))))
-    (println "infinite loop")))
+    (guard)))
 
 (defn skip-trampoline-helper-left
   "like skip-trampoline-helper but in the opposite direction."
@@ -345,7 +347,7 @@
                          (cursor cm (- i (- ch start))))]
           (fn [] ;; for trampoline
             (skip-trampoline-helper-left cm next-cur sp result (dec n))))))
-    (println "infinite loop")))
+    (guard)))
 
 (defn skip
   "returns the cursor that satisfies sp or nil if either eof reached
@@ -1366,7 +1368,7 @@
 (defn idx-of-next [cm i chars member max]
   (let [{:keys [right-char]} (get-info cm (cursor cm i))]
     (cond
-      (= i max), (println "infinite loop")
+      (= i max), (guard)
       (= member (contains? chars right-char)), i
       :default, (fn [] (idx-of-next cm (inc i) chars member max)))))
 
@@ -1420,7 +1422,7 @@
   (let [m (dec n), j (inc i), cur (cursor cm i), right-cur (cursor cm j)]
     (cond
       (neg? n)
-      (println "infinite loop")
+      (guard)
 
       (eof? cm right-cur)
       :do-nothing
@@ -1504,7 +1506,7 @@
   (let [h (dec i), m (dec n), cur (cursor cm i)]
     (cond
       (neg? n)
-      (println "infinite loop")
+      (guard)
 
       (bof? cm cur)
       :do-nothing
@@ -1555,7 +1557,7 @@
   (let [j (inc i), m (dec n), cur (cursor cm i), right-cur (cursor cm j)]
     (cond
       (neg? n)
-      (println "infinite loop")
+      (guard)
 
       (nil? right-cur)
       :do-nothing
@@ -1602,7 +1604,7 @@
   (let [h (dec i), m (dec n), cur (cursor cm i)]
     (cond
       (neg? n)
-      (println "infinite loop")
+      (guard)
 
       (nil? cur)
       :do-nothing
@@ -1846,9 +1848,9 @@
   [cm cur n]
   (let [{:keys [left-cur i start ch bof]} (get-info cm cur)]
     (cond
-      (<= n 0), (do (println "infinite loop") nil)
+      (<= n 0), (guard)
       (closing-delim? cm cur), left-cur
-      bof, nil;
+      bof, nil
       (zero? ch), (fn [] (bkwd-down cm (cursor cm (dec i)) (dec n)))
       :default, (fn [] (bkwd-down cm (cursor cm (- i (- ch start))) (dec n))))))
 

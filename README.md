@@ -10,14 +10,12 @@ All the Paredit operations from [EmacsWiki Paredit CheatSheet](https://emacswiki
 
 ## Demo
 
-[Here is a page that hosts a demo.](http://htmlpreview.github.io/?https://github.com/achengs/paredit-cm/blob/master/demo/index.html)
-
-If you want to experiment with the demo locally,
+To run a local demo,
 1. clone this repo
 1. `lein cljsbuild once`
 1. then visit `resources/public/index.html`
 
-Note: your browser may interfere with the capture of many modifiers and combinations.
+Note: some browsers interfere with the capture of many modifiers and combinations.
 
 ## Features / Keys
 

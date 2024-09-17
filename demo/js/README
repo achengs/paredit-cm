@@ -1,4 +1,0 @@
-To make codemirror-compressed.js, go to http://codemirror.net/3/doc/compress.html and select
-- codemirror.js
-- modes you want like clojure.js
-- emacs.js

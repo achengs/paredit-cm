@@ -1,3 +1,0 @@
-{:require  [paredit-cm.core]
- :init-fns [paredit-cm.core/init]
- :compiler-options {:asset-path "js/paredit_cm.out"}}

@@ -1,0 +1,1 @@
+{:output-dir "resources/public/compiled", :externs ["closure-js/externs"], :optimizations :none, :preloads [devtools.preload], :output-to "resources/public/compiled/paredit-cm.js", :source-map-timestamp true, :asset-path "compiled", :output-wrapper false, :libs ["closure-js/libs"], :main paredit-cm.core}

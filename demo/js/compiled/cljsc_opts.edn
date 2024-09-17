@@ -1,0 +1,1 @@
+{:output-wrapper false, :externs ["closure-js/externs"], :libs ["closure-js/libs"], :output-to "resources/test/compiled.js", :output-dir "resources/test/js/compiled", :optimizations :whitespace, :pretty-print true}

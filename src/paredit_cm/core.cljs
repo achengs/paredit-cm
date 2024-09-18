@@ -1999,26 +1999,30 @@
   there is no such anscestor that can barf"
   [cm cur n]
   (when (>= n 0)
-    (let [outside (backward-up-cur cm cur)
-          inside (forward-down-cur cm outside)
-          end-of-barfed-sexp (end-of-next-sibling cm inside)
+    (let [outside              (backward-up-cur cm cur)
+          inside               (forward-down-cur cm outside)
+          end-of-barfed-sexp   (end-of-next-sibling cm inside)
           end-of-new-first-sib (end-of-next-sibling cm end-of-barfed-sexp)
-          bracket-cur (start-of-prev-sibling cm end-of-new-first-sib)
-          bracket-text (get-string cm inside)
-          moved (and bracket-cur (< (index cm cur) (index cm bracket-cur)))]
+          bracket-cur          (start-of-prev-sibling cm end-of-new-first-sib)
+          bracket-text         (get-string cm inside)
+          moved                (and bracket-cur (< (index cm cur) (index cm bracket-cur)))
+          bracket-cur'         end-of-barfed-sexp
+          moved'               true
+          word                 (at-a-word? cm outside)]
       (cond
-       (nil? outside) nil
-       (nil? end-of-barfed-sexp) (fn [] (bkwd-barf cm outside (dec n)))
-       :default [outside inside bracket-cur bracket-text moved]))))
+        (nil? outside)               nil
+        (nil? end-of-barfed-sexp)    #(bkwd-barf cm outside (min (dec n)(index cm outside)))
+        (some? end-of-new-first-sib) [outside inside bracket-cur  bracket-text moved  word]
+        :default                     [outside inside bracket-cur' bracket-text moved' word]))))
 
 (defn ^:export backward-barf-sexp
   "paredit backward-barf-sexp exposed for keymap."
   ([cm] (backward-barf-sexp cm (cursor cm)))
   ([cm cur]
-   (if-let [[outside inside bracket-cur bracket-text moved]
-            (trampoline bkwd-barf cm cur (char-count cm))]
+   (if-let [[outside inside bracket-cur bracket-text moved word]
+            (trampoline bkwd-barf cm cur (index cm cur))]
      (do (insert cm bracket-text 0 bracket-cur)
-         (.replaceRange cm "" outside inside)
+         (.replaceRange cm (if word " " "") outside inside)
          (if moved
            (.setCursor cm (cursor cm (- (index cm cur) (count bracket-text))))
            (.setCursor cm cur)))

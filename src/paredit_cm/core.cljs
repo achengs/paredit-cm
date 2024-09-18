@@ -1344,17 +1344,26 @@
       (.setSelection cm from to)
       (kill-region cm))))
 
+(defn in-string-and-backslash-to-the-left?
+  ([cm] (in-string-and-backslash-to-the-left? cm (cursor cm)))
+  ([cm cur]
+   (and (in-regular-string? cm cur)
+        (= "\\" (-> cm get-info :left-char)))))
+
 (defn ^:export kill
   "paredit kill exposed for keymap."
   [cm]
+  (while (in-string-and-backslash-to-the-left? cm)
+    (move-left cm))
   (let [cur (cursor cm)]
     (cond
-      (.somethingSelected cm)         (kill-region cm)
+      ;;(.somethingSelected cm)         (kill-region cm) ;; bad selection if killed leads to invalid code
       (in-regular-string? cm cur)     (kill-rest-of-string cm)
       (betw-code-and-comment? cm cur) (kill-rest-of-line cm)
-      (in-escaped-char? cm cur)       (kill-pair cm)
       (code-to-left? cm)              (kill-rest-of-siblings cm)
-      :default                        (kill-next-sibling cm))))
+      :default                        (kill-rest-of-siblings cm)
+      ;; :default                        (kill-next-sibling cm)
+      )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-kill-word M-d

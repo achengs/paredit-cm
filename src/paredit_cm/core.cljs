@@ -6,7 +6,7 @@
             [cljsjs.codemirror.keymap.emacs]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ** PAREDI PROJECT CONVENTIONS **
+;; ** PROJECT CONVENTIONS **
 ;;
 ;; consider this notation: aXbc
 ;;
@@ -306,7 +306,9 @@
        (token-end cm)
        (index cm)))
 
-(defn guard [] (println "past"))
+(defn guard []
+  ;;(println "past")
+  )
 
 (defn skip-trampoline-helper
   "returns the cursor that satsifies skipping predicate 'sp' or nil if eof
@@ -429,7 +431,8 @@
        :else                     (move-past-parent-closer cm)))))
 
 (defn ^:export close-brace
-  "close curly brace like close-rond"
+  "close curly brace like close-round"
+  ;; todo verify behavior of "X}
   ([cm] (close-round cm "}")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1095,7 +1098,6 @@
   "returns true for closing brackets and for closing double-quotes"
   [cm cur]
   (let [{:keys [string type left-char right-cur]} (get-info cm cur)]
-    ;;(println "closing delim?" type string left-char)
     (or (and (is-bracket-type? type) (closer? left-char))
         (and (= type "string")
              (= "\"" left-char)

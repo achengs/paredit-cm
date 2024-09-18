@@ -145,7 +145,7 @@
 
 (defn get-info
   "make info from CodeMirror more conveniently accessed by our code.
-  we'll use destructuring and just name what we rant. hypothesizing
+  we'll use destructuring and just name what we want. hypothesizing
   that performance hit won't be that bad."
   ([cm] (get-info cm (cursor cm)))
   ([cm cur]
@@ -1385,7 +1385,7 @@
     (cond
       (= i max)                               (guard)
       (= member (contains? chars right-char)) i
-      :default                                (fn [] (idx-of-next cm (dir i) chars member dir max)))))
+      :default                                #(idx-of-next cm (dir i) chars member dir max))))
 
 (defn index-of-next [cm i chars dir]
   (trampoline idx-of-next cm i chars true dir (char-count cm)))

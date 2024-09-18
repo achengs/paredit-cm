@@ -1855,18 +1855,27 @@
   "trampoline-able that looks for the cursor where we'd be if we went forward
   and then down into the next sibling that is available. nil if there is no
   sibling to enter."
-  [cm cur n]
-  (cond
-    (<= n 0), nil
-    (nil? cur), nil
-    (opening-delim? cm cur), cur
-    :default, (when-let [cur' (token-end cm cur 1)]
-                (fn [] (fwd-down cm cur' (dec n))))))
+  [cm i n]
+  (let [cur (cursor cm i)]
+    (cond
+      ;; ran out of chars to consider, so stop:
+      (<= n 0)                nil
+      ;; edge case, so stop:
+      (nil? cur)              nil
+      ;; we've just entered a sibling, so this is our target:
+      (opening-delim? cm cur) cur
+      ;; we got to the end of a sexp, no child to decend into, stop:
+      (closing-delim? cm cur) nil
+      ;; consider the next position:
+      :default                #(fwd-down cm (inc i) (dec n)))))
 
 (defn forward-down-cur
   ([cm] (forward-down-cur cm (cursor cm)))
   ([cm cur]
-   (trampoline fwd-down cm cur (char-count cm))))
+   (let [i (index cm cur)]
+     (trampoline fwd-down cm
+                 (inc i)
+                 (- (char-count cm) i)))))
 
 (defn ^:export forward-down
   ([cm] (forward-down cm (cursor cm)))
@@ -1885,17 +1894,22 @@
   [cm cur n]
   (let [{:keys [left-cur i start ch bof]} (get-info cm cur)]
     (cond
-      (<= n 0), (guard)
-      (closing-delim? cm cur), left-cur
-      bof, nil
-      (zero? ch), (fn [] (bkwd-down cm (cursor cm (dec i)) (dec n)))
-      :default, (fn [] (bkwd-down cm (cursor cm (- i (- ch start))) (dec n))))))
+      ;; ran out of positions to consider, so stop:
+      (<= n 0)                (guard)
+      ;; on a closing delimiter, so return the position to the left:
+      (closing-delim? cm cur) left-cur
+      ;; on an opening delimiter, no more siblings to consider entering, stop:
+      (opening-delim? cm cur) nil
+      ;; beginning of file, so stop:
+      bof                     nil
+      :default                #(bkwd-down cm (cursor cm (dec i)) (dec n)))))
 
 (defn ^:export backward-down
   ([cm] (backward-down cm (cursor cm)))
   ([cm cur]
-   (when-let [cur' (trampoline bkwd-down cm cur (char-count cm))]
-     (.setCursor cm cur'))))
+   (let [i (index cm cur)]
+     (when-let [cur' (trampoline bkwd-down cm cur i)]
+       (.setCursor cm cur')))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-slurp-sexp C-), C-<right>

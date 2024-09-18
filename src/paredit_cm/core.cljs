@@ -452,14 +452,27 @@
 (defn ^:export  open-square [cm]  (open-round cm "["))
 (defn ^:export close-square [cm] (close-round cm "]"))
 
+(defn move
+  "moves the cursor by 'offset' places, negative for left. returns the cursor."
+  [cm offset]
+  (->> cm index (+ offset) (cursor cm) (.setCursor cm))
+  (cursor cm))
+
+(defn move-right [cm] (move cm  1))
+(defn move-left  [cm] (move cm -1))
+
 (defn ^:export doublequote [cm]
   (let [{:keys [type left-char right-char ch cur]} (get-info cm)]
     (cond
       ;; about to escape this char so insert as-is:
       (= "\\" left-char) (insert cm "\"")
 
+      ;; we're at the end of a string, so move to the right:
+      (and (= type "string") (= "\"" right-char))
+      (move-right cm)
+
       ;; we're in a string so escape this doublequote:
-      (= type "string")  (insert cm "\\\"")
+      (= type "string") (insert cm "\\\"")
 
       ;; we're in code. pad with a space to the left and/or right if necessary
       ;; to separate it from neighboring code. after inserting, move the cursor
@@ -1152,12 +1165,6 @@
     (and (opening-delim? cm cur)
          (not (pair? left-char right-char)))))
 
-(defn move
-  "moves the cursor by 'offset' places, negative for left. returns the cursor."
-  [cm offset]
-  (->> cm index (+ offset) (cursor cm) (.setCursor cm))
-  (cursor cm))
-
 (defn delete
   "delete 1 or n char to right"
   ([cm] (delete cm 1))
@@ -1196,9 +1203,6 @@
   [cm]
   (backspace cm)
   (delete cm))
-
-(defn move-right [cm] (move cm  1))
-(defn move-left  [cm] (move cm -1))
 
 (defn ^:export forward-delete
   "paredit-forward-delete exposed for keymap"

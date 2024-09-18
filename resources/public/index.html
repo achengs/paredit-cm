@@ -3,10 +3,11 @@
 <meta charset="utf-8"/>
 <link rel=stylesheet href="./cm/doc/docs.css">
 <link rel="stylesheet" href="./cm/lib/codemirror.css">
-<script src="./cm/lib/codemirror.js"></script>
-<script src="./cm/mode/clojure/clojure.js"></script>
-<script src="./cm/keymap/emacs.js"></script>
+<!-- <script src="./cm/lib/codemirror.js"></script>
+     <script src="./cm/mode/clojure/clojure.js"></script>
+     <script src="./cm/keymap/emacs.js"></script> -->
 <script src="./compiled/paredit-cm.js"></script>
+<script src="./js/cm.js"></script>
 <script src="./js/keymap-paredit-cm.js"></script>
 <style>.CodeMirror {background: #f8f8f8;}</style>
 <article>
@@ -91,22 +92,23 @@ to <code>"paredit_cm"</code>.</p>
 <ul>
   <li>Delimiters
     <ul>
-      <li>Backspace, Delete, Ctrl-D handle these: () {} [] "" \</li>
+      <li>Backspace and Delete handle these: () {} [] "" \</li>
       <li>Delimiters are created in pairs except when inside a string or comment or when the next character is escaped: () {} [] ""</li>
       <li>Typing a closing delimiter moves past it after deleting any whitespace at the end of the current list.</li>
+      <li>Typing a closing double quote at the end of a string exits it to the right.</li>
       <li>Close round and newline: Shift-Alt-0</li>
     </ul>
   </li>
   <li>Movement
     <ul>
-      <li>Forward: Ctrl-Alt-f</li>
-      <li>Backward: Ctrl-Alt-b</li>
-      <li>Forward sexp: Shift-Ctrl-f</li>
-      <li>Backward sexp: Shift-Ctrl-b</li>
-      <li>Backward Up: Ctrl-Alt-U</li>
-      <li>Forward Down: Ctrl-Alt-D</li>
-      <li>Backward Down: Ctrl-Alt-P</li>
-      <li>Forward Up: Ctrl-Alt-N</li>
+      <li>Backward: Ctrl-1</li>
+      <li>Forward: Ctrl-2</li>
+      <li>Backward sexp: Ctrl-3</li>
+      <li>Forward sexp: Ctrl-4</li>
+      <li>Backward Up: Ctrl-5</li>
+      <li>Forward Down: Ctrl-6</li>
+      <li>Backward Down: Ctrl-7</li>
+      <li>Forward Up: Ctrl-8</li>
     </ul>
   </li>
   <li>Barf / Slurp
@@ -119,26 +121,26 @@ to <code>"paredit_cm"</code>.</p>
   </li>
   <li>Splicing, etc
     <ul>
-      <li>Splice: Alt-s</li>
-      <li>Splice Killing Backward: Alt-Up</li>
-      <li>Splice Killing Forward: Alt-Down</li>
+      <li>Splice Killing Backward: Shift-Ctrl-1</li>
+      <li>Splice: Shift-Ctrl-2</li>
+      <li>Splice Killing Forward: Shift-Ctrl-3</li>
       <li>Wrap round: Shift-Alt-9</li>
-      <li>Raise sexp: Alt-r</li>
-      <li>Split sexp: Shift-Alt-s</li>
-      <li>Join sexps: Shift-Alt-j</li>
+      <li>Raise sexp: Shift-Ctrl-4</li>
+      <li>Split sexp: Shift-Ctrl-5</li>
+      <li>Join sexps: Shift-Ctrl-6</li>
     </ul>
   </li>
   <li>Indentation
     <ul>
-      <li>Indent Defun: Alt-q</li>
+      <li>Indent Defun: Shift-Ctrl-\</li>
     </ul>
   </li>
   <li>Others
     <ul>
-      <li>Kill: Ctrl-k</li>
+      <li>Kill: Shift-Ctrl-7</li>
       <li>Forward Kill Word: Alt-d</li>
       <li>Backward Kill Word: Alt-Backspace</li>
-      <li>Quoting the next sexp: Shift-Alt-"</li>
+      <li>Meta Double Quote: Shift-Alt-"</li>
       <li>Comment DWIM: Shift-Alt-;</li>
     </ul>
   </li>

@@ -1395,9 +1395,9 @@
 
 (def non-word-chars (set "(){}[]|&; \n"))
 
-(def comment-start (set "; "))
 (def semicolons #{";"})
 (def comment-whitespace #{" " (str \tab)})
+(def non-word-in-comment #{";" " " (str \tab)})
 (def non-word-in-string #{" " (str \tab) (str \")})
 
 (defn end-of-next-word
@@ -1659,7 +1659,13 @@
       (.setCursor cm (start-of-prev-sibling cm cur))
 
       (comment? cm cur)
-      #(bkwd cm (start-of-prev-sibling cm cur) m)
+      (let [a (index-of-next-non cm h non-word-in-comment dec)]
+        (if (not(comment? cm (cursor cm a)))
+          #(bkwd cm a a)
+          (->> (index-of-next cm a non-word-in-comment dec)
+               inc
+               (cursor cm)
+               (.setCursor cm))))
 
       (in-string? cm cur)
       (.setCursor cm (cursor cm (start-of-prev-word cm h)))
@@ -1672,7 +1678,8 @@
 (defn ^:export backward
   "paredit backward exposed for keymap."
   [cm]
-  (trampoline bkwd cm (index cm) (char-count cm)))
+  (let [i (index cm)]
+    (trampoline bkwd cm i i)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-up

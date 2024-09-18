@@ -1380,24 +1380,25 @@
     (and (not= "comment" type)
          (= "comment" right-type))))
 
-(defn idx-of-next [cm i chars member max]
+(defn idx-of-next [cm i chars member dir max]
   (let [{:keys [right-char]} (get-info cm (cursor cm i))]
     (cond
-      (= i max), (guard)
-      (= member (contains? chars right-char)), i
-      :default, (fn [] (idx-of-next cm (inc i) chars member max)))))
+      (= i max)                               (guard)
+      (= member (contains? chars right-char)) i
+      :default                                (fn [] (idx-of-next cm (dir i) chars member dir max)))))
 
-(defn index-of-next [cm i chars]
-  (trampoline idx-of-next cm i chars true (char-count cm)))
+(defn index-of-next [cm i chars dir]
+  (trampoline idx-of-next cm i chars true dir (char-count cm)))
 
-(defn index-of-next-non [cm i chars]
-  (trampoline idx-of-next cm i chars false (char-count cm)))
+(defn index-of-next-non [cm i chars dir]
+  (trampoline idx-of-next cm i chars false dir (char-count cm)))
 
 (def non-word-chars (set "(){}[]|&; \n"))
 
 (def comment-start (set "; "))
 (def semicolons #{";"})
 (def comment-whitespace #{" " (str \tab)})
+(def non-word-in-string #{" " (str \tab) (str \")})
 
 (defn end-of-next-word
   "assumes i is in a comment or a string. returns the i at the end of
@@ -1448,7 +1449,7 @@
       (start-of-a-string? cm right-cur)
       #(fwd-kill-word cm j j m)
 
-      (in-regular-string? cm right-cur)
+      (in-string? cm right-cur)
       (kill-next-word cm mark)
 
       (opening-delim? cm right-cur)
@@ -1461,16 +1462,19 @@
       (kill-from-to cm mark (token-end-index cm j))
 
       (start-of-comment? cm cur)
-      (let [j (index-of-next-non cm i semicolons)]
+      (let [j (index-of-next-non cm i semicolons inc)]
         #(fwd-kill-word cm j j m))
 
       (comment? cm right-cur)
       (kill-next-word cm mark)
 
       :else
-      (println "unhandled"))))
+      (do (println "unhandled situation, please let me know (fwd-kill-word)")
+          (println (get-type cm cur))
+          #(fwd-kill-word cm j j m)))))
 
 (defn ^:export forward-kill-word
+  ;; todo does not kill \c characters...
   "paredit forward-kill-word exposed for keymap."
   [cm]
   (let [i (index cm)]
@@ -1542,8 +1546,8 @@
       (kill-from-to cm (start-of-token-at cm i) mark)
 
       (start-of-comment? cm cur)
-      (let [j (index-of-next-non cm i semicolons)]
-        #(fwd-kill-word cm j j m))
+      (let [j (index-of-next-non cm i semicolons dec)]
+        #(bkwd-kill-word cm j j m))
 
       (bkwd-kill-skippable-comment-char? cm cur)
       #(bkwd-kill-word cm mark h m)
@@ -1551,14 +1555,27 @@
       (comment? cm cur)
       (kill-prev-word-in-comment cm mark)
 
+      (start-of-a-string? cm cur)
+      #(bkwd-kill-word cm h h m)
+
+      (in-string? cm cur)
+      (let [;; kill whitespace up to the word or string start in front of it:
+            j (index-of-next-non cm i non-word-in-string dec)
+            k (index-of-next cm j non-word-in-string dec)
+            l (if (start-of-a-string? cm (cursor cm (inc k)))
+                (inc k) k)]
+        (kill-from-to cm l mark))
+
       :else
-      (println "unhandled"))))
+      (do (println "unhandled situation, please let me know (bkwd-kill-word)")
+          (println (get-type cm cur))
+          #(bkwd-kill-word cm h h m)))))
 
 (defn ^:export backward-kill-word
   "paredit backward-kill-word exposed for keymap."
   [cm]
   (let [i (index cm)]
-    (trampoline bkwd-kill-word cm i i (char-count cm))))
+    (trampoline bkwd-kill-word cm i i (inc i))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward
@@ -1599,7 +1616,9 @@
       (.setCursor cm (cursor cm (end-of-next-word cm j)))
 
       :else
-      (println "unhandled"))))
+      (do (println "unhandled situation, please let me know (fwd)")
+          (println (get-type cm cur))
+          #(fwd cm j m)))))
 
 (defn ^:export forward
   "paredit forward exposed for keymap. find the first thing that isn't
@@ -1646,7 +1665,9 @@
       (.setCursor cm (cursor cm (start-of-prev-word cm h)))
 
       :else
-      (println "unhandled"))))
+      (do (println "unhandled situation, please let me know (bkwd)")
+          (println (get-type cm cur))
+          #(bkwd cm h m)))))
 
 (defn ^:export backward
   "paredit backward exposed for keymap."
@@ -2026,7 +2047,7 @@
 (defn split-string
   "split sexp for \"strings like this\""
   [cm cur]
-  (let [open-quote-i (index-of-next-non cm (index cm cur) " ")]
+  (let [open-quote-i (index-of-next-non cm (index cm cur) " " inc)]
     (.replaceRange cm "\" \"" cur (cursor cm open-quote-i))
     (move-left cm)
     (move-left cm)))

@@ -1807,10 +1807,11 @@
   "paredit raise-sexp exposed for keymap."
   ([cm] (raise-sexp cm (cursor cm)))
   ([cm cur]
-   (if (in-string? cm cur) (backward-up cm cur))
-   (let [c1 (cursor cm)
-         c2 (end-of-next-sibling cm c1)
-         text (when c2 (.getRange cm c1 c2))
+   (when (in-string? cm cur) (backward-up cm cur))
+   (when (in-a-word? cm) (.setCursor cm (start-of-prev-sibling cm)))
+   (let [c1        (cursor cm)
+         c2        (end-of-next-sibling cm c1)
+         text      (when c2 (.getRange cm c1 c2))
          cur-close (when text (skip cm parent-closer-sp))
          cur-open (when cur-close (start-of-prev-sibling cm cur-close))]
      (when cur-open

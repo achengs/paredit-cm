@@ -1378,7 +1378,7 @@
   (let [{:keys [type right-cur]} (get-info cm cur)
         right-type (get-type cm right-cur)]
     (and (not= "comment" type)
-         (= "comment right-type"))))
+         (= "comment" right-type))))
 
 (defn idx-of-next [cm i chars member max]
   (let [{:keys [right-char]} (get-info cm (cursor cm i))]

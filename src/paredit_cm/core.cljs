@@ -209,7 +209,7 @@
   "answers what is immediately to the left of a | style cursor"
   ([cm] (linfo cm (cursor cm)))
   ([cm cur]
-   (let [{:keys [type mode bof eof string ch end]
+   (let [{:keys [type mode bof eof string ch start end]
           :as   info}  (get-info cm cur)
          j             (index cm)
          i             (when(not bof)(dec j))
@@ -237,8 +237,8 @@
             (opener? string))        :opener
        (= type "bracket")            :closer
        (word? type)                  :word
-       (and (= type mode "string")
-            (= "\"" string))         :string-start
+       (and (= type "string")
+            (= ch (inc start)))      :string-start
        (and (= type "string")
             (= ch end))              :string-end
        (= type "string")             :string-guts
@@ -1768,43 +1768,44 @@
           (println (get-type cm cur))
           #(fwd cm j m)))))
 
-(defn move-past-right-token [cm]
+(defn move-past-token [cm]
   (when-let [{:keys [right-cur]} (get-info cm)]
     (let [{:keys [ch end]} (get-info cm right-cur)
           i (index cm)]
          (.setCursor cm (cursor cm (+ i 1 (- end ch)))))))
 
-(defn ^:export forward
-  "paredit forward exposed for keymap.
+(comment
+  (defn ^:export forward
+   "paredit forward exposed for keymap.
   Move forward an S-expression, or up an S-expression forward.
   If there are no more S-expressions in this one before the closing
   delimiter, move past that closing delimiter; otherwise, move forward
   past the S-expression following the point."
-  [cm]
-  (loop [stack 0, empty true]
-    (let [r (rinfo cm)]
-      (cond
-        (= r :eof) :done
-        (or(= r :comment)
-           (= r :whitespace)) (do(println"fwd:wh")(move-past-right-token cm)(when(not(zero? stack))(recur stack empty)))
-        (= r :word) (do(println"fwd:word")(move-past-right-token cm)(when(not(zero? stack))(recur stack false)))
-        (or (= r :opener)
-            (= r :string-start)) (do(println"fwd:op")(move-past-right-token cm)(recur (inc stack) false))
-        (or(= r :closer)
-           (= r :string-end)
-           (zero?(dec stack))) (do(println"fwd:FINISHPAIR IN FORWARD")(move-right cm))
-        (or(= r :closer)
-           (= r :string-end)
-           (zero? stack)
-           empty) (do(println"fwd:move up out of parent")(move-right cm))
-        (or(= r :closer)
-           (= r :string-end)) (do(println"fwd:closer in sexp")(move-right cm)(recur (dec stack) empty))
-        :default (do(println"fwd:default")(move-past-right-token cm)(recur stack false))
-        )))
+   [cm]
+   (loop [stack 0, empty true]
+     (let [r (rinfo cm)]
+       (cond
+         (= r :eof)               :done
+         (or(= r :comment)
+            (= r :whitespace))    (do(println"fwd:wh")(move-past-token cm)(when(not(zero? stack))(recur stack empty)))
+         (= r :word)              (do(println"fwd:word")(move-past-token cm)(when(not(zero? stack))(recur stack false)))
+         (or (= r :opener)
+             (= r :string-start)) (do(println"fwd:op")(move-past-token cm)(recur (inc stack) false))
+         (or(= r :closer)
+            (= r :string-end)
+            (zero?(dec stack)))   (do(println"fwd:FINISHPAIR IN FORWARD")(move-right cm))
+         (or(= r :closer)
+            (= r :string-end)
+            (zero? stack)
+            empty)                (do(println"fwd:move up out of parent")(move-right cm))
+         (or(= r :closer)
+            (= r :string-end))    (do(println"fwd:closer in sexp")(move-right cm)(recur (dec stack) empty))
+         :default                 (do(println"fwd:default")(move-past-token cm)(recur stack false))
+         )))
 
-  ;; (let [i (index cm)]
-  ;;   (trampoline fwd cm i (- (char-count cm) i)))
-  )
+   ;; (let [i (index cm)]
+   ;;   (trampoline fwd cm i (- (char-count cm) i)))
+   ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward
@@ -2338,7 +2339,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defn move-past-non-code [cm]
   (while (contains? #{:whitespace :comment}(rinfo cm))
-    (move-past-right-token cm)))
+    (move-past-token cm)))
 
 (defn ^:export forward-sexp
   "forward-sexp exposed for keymap. seems part of emacs and not part
@@ -2353,9 +2354,9 @@
         (= r :eof) :done
         (or(= r :comment)
            (= r :whitespace)) (do(println"fwd:wh")(move-past-non-code cm)(recur stack))
-        (= r :word) (do(println"fwd:word")(move-past-right-token cm)(when(not(zero? stack))(recur stack)))
+        (= r :word) (do(println"fwd:word")(move-past-token cm)(when(not(zero? stack))(recur stack)))
         (= r :opener) (do(println"fwd:op")(move-right cm)(recur (inc stack)))
-        (= r :string-start)(do(println"fwd:os")(move-past-right-token cm)(move-past-right-token cm)(when(not(zero? stack))(recur stack)))
+        (= r :string-start)(do(println["fwd:os" stack (zero? stack)])(move-past-token cm)(when(not(zero? stack))(recur stack)))
         (and(or(= r :closer)
                (= r :string-end))
             (= 1 stack)) (do(println"fwd:finishpair")(move-right cm))
@@ -2364,7 +2365,23 @@
             (zero? stack)) (println"fwd:done")
         (or(= r :closer)
            (= r :string-end)) (do(println"fwd:closer in sexp")(move-right cm)(recur (dec stack)))
-        :default (do(println"fwd:default")(move-past-right-token cm)(recur stack)))))))
+        (= r :string-guts) (do(move-past-token cm)(move-left cm))
+        :default (do(println"fwd:default")(move-past-token cm)(recur stack)))))))
+
+(defn ^:export forward
+   "paredit forward exposed for keymap.
+  Move forward an S-expression, or up an S-expression forward.
+  If there are no more S-expressions in this one before the closing
+  delimiter, move past that closing delimiter; otherwise, move forward
+  past the S-expression following the point."
+   [cm]
+  (let [cur-0 (cursor cm)
+        r (rinfo cm)
+        cur-1 (do(forward-sexp cm)(cursor cm))]
+    (if (and (= cur-0 cur-1)
+             (or (= r :closer)
+                 (= r :string-end)))
+      (move-right cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-sexp

@@ -211,6 +211,38 @@ bXaz\" quux)"
            "(foo \"bar
 b\\\"Xaz\" quux)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (t/check p/forward-sexp
+           "  X  (let [i 1]
+ (do (foo 1)
+     i)) (foo bar)"
+           "    (let [i 1]
+ (do (foo 1)
+     i))X (foo bar)")
+  (t/check p/forward-sexp
+           "(let X[i 1] i)"
+           "(let [i 1]X i)")
+  (t/check p/forward-sexp
+           "(foo X\"bar\" baz)"
+           "(foo \"bar\"X baz)")
+  (t/check p/forward-sexp
+           "(foo \"Xbar qoo\" baz)"
+           "(foo \"bar qooX\" baz)")
+  (t/check p/forward-sexp
+           "(foo Xbar) baz"
+           "(foo barX) baz")
+  (t/check p/forward-sexp
+           "(foo barX) baz"
+           "(foo barX) baz")
+  (t/check p/forward-sexp
+           "(foo X\"hi [1
+ 2
+ \\\"big blue\\\"
+ 3] world\" bar)"
+           "(foo \"hi [1
+ 2
+ \\\"big blue\\\"
+ 3] world\"X bar)")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/meta-doublequote
            ;; not to be confused with paredit-meta-double-quote-and-newline
            "(foo \"bar Xbaz\" quux)"
@@ -1025,35 +1057,6 @@ world\"")
   (t/check p/reindent-defun
            "  X  (let [i 1] i)"
            "  X  (let [i 1] i)")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (t/check p/forward-sexp
-           "  X  (let [i 1]
- (do (foo 1)
-     i)) (foo bar)"
-           "    (let [i 1]
- (do (foo 1)
-     i))X (foo bar)")
-  (t/check p/forward-sexp
-           "(let X[i 1] i)"
-           "(let [i 1]X i)")
-  (t/check p/forward-sexp
-           "(foo X\"bar\" baz)"
-           "(foo \"bar\"X baz)")
-  (t/check p/forward-sexp
-           "(foo Xbar) baz"
-           "(foo barX) baz")
-  (t/check p/forward-sexp
-           "(foo barX) baz"
-           "(foo barX) baz")
-  (t/check p/forward-sexp
-           "(foo X\"hi [1
- 2
- \\\"big blue\\\"
- 3] world\" bar)"
-           "(foo \"hi [1
- 2
- \\\"big blue\\\"
- 3] world\"X bar)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/backward-sexp
            "foo (let [i 1]

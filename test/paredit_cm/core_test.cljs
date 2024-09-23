@@ -365,7 +365,7 @@ X"
   (t/check p/kill
            "X(foo
 bar)   ; Useless form!"
-           "X")
+           "X   ; Useless form!")
 
   (t/check p/kill
            "X(foo

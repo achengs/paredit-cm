@@ -209,56 +209,52 @@
   "answers what is immediately to the left of a | style cursor"
   ([cm] (linfo cm (cursor cm)))
   ([cm cur]
-   (let [{:keys [type mode bof eof string ch start end]
-          :as   info}  (get-info cm cur)
-         j             (index cm)
-         i             (when(not bof)(dec j))
-         k             (when(not eof)(inc j))
-         jc            (cursor cm j)
-         ic            (when i(cursor cm i))
-         kc            (when k(cursor cm k))
-         {:keys [itype ibof ieof istring]
-          :as   iinfo} (set/rename-keys(when i(get-info cm ic))
-                                       {:type   :itype
-                                        :bof    :ibof
-                                        :eof    :ieof
-                                        :string :istring})
-         {:keys [ktype kbof keof kstring kch kend]
-          :as   kinfo} (set/rename-keys(when k(get-info cm kc))
-                                       {:type   :ktype
-                                        :bof    :kbof
-                                        :eof    :keof
-                                        :string :kstring})]
+   (let [{:keys [type bof string ch start end left-char right-char left-cur right-cur]
+          :as   info} (get-info cm cur)
+         itype        (if left-cur(.-type(token cm left-cur)):no-left-cur)
+         ktype        (if right-cur(.-type(token cm right-cur)):no-right-cur)]
      (println(with-out-str(pp/pprint(get-info cm cur))))
      (cond
-       bof                           :bof
-       (nil? type)                   :whitespace
+       bof                                    :bof
+       (and(= type "string")
+           (= ch end)
+           (not(str/ends-with? string "\""))) :string-guts
+       (and(= itype "string")
+           (= type nil)
+           (= ktype "string")
+           (= left-char "\n"))                :string-guts ;; end of intermediate lines in multi-line strings
+       (and(= itype nil)
+           (= type "string")
+           (= ktype "string")
+           (= left-char "\n"))                :string-guts ;; start of subsequent lines in multi-line strings
+       (nil? type)                            :whitespace
        (and (= type "bracket")
-            (opener? string))        :opener
-       (= type "bracket")            :closer
-       (word? type)                  :word
+            (opener? string))                 :opener
+       (= type "bracket")                     :closer
+       (word? type)                           :word
        (and (= type "string")
-            (= ch (inc start)))      :string-start
+            (str/starts-with? string "\"")
+            (= ch (inc start)))               :string-start
        (and (= type "string")
-            (= ch end))              :string-end
-       (= type "string")             :string-guts
+            (= ch end))                       :string-end
+       (= type "string")                      :string-guts
        (and (= type "string-2")
-            (= ch end))              :string-2-end
+            (= ch end))                       :string-2-end
        (and (= type "string-2")
-            (not= itype "string-2")) :string-2-start
+            (not= itype "string-2"))          :string-2-start
        (and (= type "string-2")
-            (not= ktype "string-2")) :string-2-end
-       (= type "string-2")           :string-2-guts
-       (= type "comment")            :comment
-       :default                      (do(println"unhandled:info"):uncategorized)))))
+            (not= ktype "string-2"))          :string-2-end
+       (= type "string-2")                    :string-2-guts
+       (= type "comment")                     :comment
+       :default                               (do(println"unhandled:info"):uncategorized)))))
 
 (defn ^:export rinfo
   "answers what is immediately to the right of a | style cursor"
   ([cm] (rinfo cm (cursor cm)))
   ([cm cur] (let [i (index cm cur)]
-            (if (eof? cm cur)
-              :eof
-              (linfo cm (cursor cm (inc i)))))))
+              (if (eof? cm cur)
+                :eof
+                (linfo cm (cursor cm (inc i)))))))
 
 (defn ^:export info
   [cm]
@@ -1771,41 +1767,8 @@
 (defn move-past-token [cm]
   (when-let [{:keys [right-cur]} (get-info cm)]
     (let [{:keys [ch end]} (get-info cm right-cur)
-          i (index cm)]
-         (.setCursor cm (cursor cm (+ i 1 (- end ch)))))))
-
-(comment
-  (defn ^:export forward
-   "paredit forward exposed for keymap.
-  Move forward an S-expression, or up an S-expression forward.
-  If there are no more S-expressions in this one before the closing
-  delimiter, move past that closing delimiter; otherwise, move forward
-  past the S-expression following the point."
-   [cm]
-   (loop [stack 0, empty true]
-     (let [r (rinfo cm)]
-       (cond
-         (= r :eof)               :done
-         (or(= r :comment)
-            (= r :whitespace))    (do(println"fwd:wh")(move-past-token cm)(when(not(zero? stack))(recur stack empty)))
-         (= r :word)              (do(println"fwd:word")(move-past-token cm)(when(not(zero? stack))(recur stack false)))
-         (or (= r :opener)
-             (= r :string-start)) (do(println"fwd:op")(move-past-token cm)(recur (inc stack) false))
-         (or(= r :closer)
-            (= r :string-end)
-            (zero?(dec stack)))   (do(println"fwd:FINISHPAIR IN FORWARD")(move-right cm))
-         (or(= r :closer)
-            (= r :string-end)
-            (zero? stack)
-            empty)                (do(println"fwd:move up out of parent")(move-right cm))
-         (or(= r :closer)
-            (= r :string-end))    (do(println"fwd:closer in sexp")(move-right cm)(recur (dec stack) empty))
-         :default                 (do(println"fwd:default")(move-past-token cm)(recur stack false))
-         )))
-
-   ;; (let [i (index cm)]
-   ;;   (trampoline fwd cm i (- (char-count cm) i)))
-   ))
+          i                (index cm)]
+      (.setCursor cm (cursor cm (+ i 1 (- end ch)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward
@@ -2341,6 +2304,14 @@
   (while (contains? #{:whitespace :comment}(rinfo cm))
     (move-past-token cm)))
 
+(defn move-past-string
+  "even for multi-line strings.
+  assumes rinfo returns :string-start, i.e. block cursor is on open double quote"
+  [cm]
+  (move-right cm)
+  (while (#{:string-guts :string-end} (rinfo cm))
+    (move-right cm)))
+
 (defn ^:export forward-sexp
   "forward-sexp exposed for keymap. seems part of emacs and not part
   of paredit itself. but including it here since this will be used in
@@ -2348,25 +2319,29 @@
   ([cm] (forward-sexp cm (cursor cm)))
   ([cm cur]
    (loop [stack 0]
-    (let [r (rinfo cm)]
-      (println stack)
-      (cond
-        (= r :eof) :done
-        (or(= r :comment)
-           (= r :whitespace)) (do(println"fwd:wh")(move-past-non-code cm)(recur stack))
-        (= r :word) (do(println"fwd:word")(move-past-token cm)(when(not(zero? stack))(recur stack)))
-        (= r :opener) (do(println"fwd:op")(move-right cm)(recur (inc stack)))
-        (= r :string-start)(do(println["fwd:os" stack (zero? stack)])(move-past-token cm)(when(not(zero? stack))(recur stack)))
-        (and(or(= r :closer)
-               (= r :string-end))
-            (= 1 stack)) (do(println"fwd:finishpair")(move-right cm))
-        (and(or(= r :closer)
-               (= r :string-end))
-            (zero? stack)) (println"fwd:done")
-        (or(= r :closer)
-           (= r :string-end)) (do(println"fwd:closer in sexp")(move-right cm)(recur (dec stack)))
-        (= r :string-guts) (do(move-past-token cm)(move-left cm))
-        :default (do(println"fwd:default")(move-past-token cm)(recur stack)))))))
+     (let [r (rinfo cm)]
+       (cond
+         ;; can't go any further than the end of file:
+         (= r :eof)            :done
+         ;; skip past comments and whitespace since we care about sexps:
+         (or(= r :comment)
+            (= r :whitespace)) (do(move-past-non-code cm)                      (recur stack))
+         ;; skip past a word, and if there's still a stack then recur:
+         (= r :word)           (do(move-past-token cm)(when(not(zero? stack))  (recur stack)))
+         ;; skip past a string just like a single word:
+         (= r :string-start)   (do(move-past-string cm)(when(not(zero? stack)) (recur stack)))
+         ;; enter a sexp and increase the stack:
+         (= r :opener)         (do(move-right cm)                              (recur (inc stack)))
+         ;; what we do at a closer depends on the stack:
+         (or(= r :closer)
+            (= r :string-end)) (cond
+                                 (= 0 stack) :done
+                                 (= 1 stack) (move-right cm)
+                                 :else       (do(move-right cm)                (recur (dec stack))))
+         ;; stop inside the end of a string if we start inside one:
+         (= r :string-guts)    (do(move-past-string cm)(move-left cm))
+         ;; none of the above, so just skip past it and check the stack:
+         :default              (do(move-past-token cm)                         (recur stack)))))))
 
 (defn ^:export forward
    "paredit forward exposed for keymap.

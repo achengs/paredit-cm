@@ -1,0 +1,22 @@
+^{:watch-dirs   ["test" "src"]
+  :css-dirs     ["resources/public/css"]
+  :auto-testing true
+  :auto-bundle  :webpack}
+{:main       paredit-cm.core
+ :asset-path "cljs-out/dev"}
+
+;; {:main example.core}
+
+;; {:source-paths ["src" "test"]
+;;  :figwheel     {:on-jsload "paredit-cm.test/run"
+;;                 :open-urls ["http://localhost:3449/index.html"]}
+
+;;  :compiler {:main                 paredit-cm.core
+;;             :asset-path           "compiled"
+;;             :output-to            "resources/public/compiled/paredit-cm.js"
+;;             :output-dir           "resources/public/compiled"
+;;             :source-map-timestamp true
+;;             :optimizations        :none
+;;             :preloads             [devtools.preload]}}
+
+;;https://github.com/bhauman/figwheel-main?tab=readme-ov-file

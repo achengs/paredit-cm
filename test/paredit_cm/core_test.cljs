@@ -1,4 +1,4 @@
-(ns ^:figwheel-always paredit-cm.test
+(ns ^:figwheel-always paredit-cm.core-test
   (:require-macros [paredit-cm.macros :as t])
   (:require [cljs.test :refer-macros [deftest is run-tests]]
             [clojure.string :as str]
@@ -129,8 +129,8 @@ d X       ) "
            "; Hello,)X world! ")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/close-round-and-newline
-           "(defun f (xX  ))"
-           "(defun f (x)
+           "(defn f [xX   ]         )"
+           "(defn f [x]
   X)")
 
   (t/check p/close-round-and-newline
@@ -455,6 +455,10 @@ baz) (keep me)  ; Useless form!"
            "(foo \"hello worldX\" bar)"
            "(foo \"hello world\"X bar)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (t/check p/backward
+           "\"a\"X"
+           "X\"afffffffffffffffffffffff\"")
+
   (t/check p/backward
            " (Xfoo bar)"
            " X(foo bar)")
@@ -1032,6 +1036,9 @@ world\"")
   (t/check p/forward-sexp
            "(let X[i 1] i)"
            "(let [i 1]X i)")
+  (t/check p/forward-sexp
+           "(foo X\"bar\" baz)"
+           "(foo \"bar\"X baz)")
   (t/check p/forward-sexp
            "(foo Xbar) baz"
            "(foo barX) baz")

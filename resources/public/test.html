@@ -1,21 +1,17 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="https://clojurescript.org/images/cljs-logo-icon-32.png">
-    <link rel=stylesheet href="./cm/doc/docs.css">
-    <link rel="stylesheet" href="./cm/lib/codemirror.css">
-    <script src="./cm/lib/codemirror.js"></script>
-    <script src="./cm/mode/clojure/clojure.js"></script>
-    <script src="./cm/keymap/emacs.js"></script>
-    <!-- KEEP THIS SCRIPT TAG : IT LOADS YOUR APPLICATION CODE -->
-    <script src="cljs-out/dev/main_bundle.js" type="text/javascript"></script>
-    <!-- <script src="./compiled/paredit-cm.js"></script> -->
-    <script src="./js/keymap-paredit-cm.js"></script>
-  </head>
-  <body>
-    <div id="app">
+<!doctype html>
+<title>paredit-cm demo</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="./cm/doc/docs.css">
+<link rel="stylesheet" href="./cm/lib/codemirror.css">
+<script src="./cm/lib/codemirror.js"></script>
+<script src="./cm/mode/clojure/clojure.js"></script>
+<script src="./cm/keymap/emacs.js"></script>
+<!-- <script src="./compiled/paredit-cm.js"></script> -->
+<script src="cljs-out/test/main_bundle.js" type="text/javascript"></script>
+<!-- <script src="./js/cm.js"></script> -->
+<script src="./js/keymap-paredit-cm.js"></script>
+<style>.CodeMirror {background: #f8f8f8;}</style>
+<article>
 <h2>paredit-cm demo</h2>
 <p>Note: Because the keymap falls through to
   CodeMirror's <code>emacs.js</code> keymap, the following
@@ -162,6 +158,5 @@ to <code>"paredit_cm"</code>.</p>
 </script>
 
 <p><strong>MIME types defined:</strong> <code>text/x-clojure</code>.</p>
-    </div> <!-- end of app div -->
-  </body>
-</html>
+
+</article>

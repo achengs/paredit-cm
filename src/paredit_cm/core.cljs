@@ -1,9 +1,34 @@
-(ns paredit-cm.core
+(ns ;; ^:figwheel-hooks
+    paredit-cm.core
   "paredit operations (exported)"
-  (:require [clojure.string :as str]
-            [cljsjs.codemirror]
-            [cljsjs.codemirror.mode.clojure]
-            [cljsjs.codemirror.keymap.emacs]))
+  (:require
+   ;; [goog.dom :as gdom]
+   [clojure.string :as str]
+   [clojure.set :as set]
+   [clojure.pprint :as pp]
+   [cljsjs.codemirror]
+   [cljsjs.codemirror.mode.clojure]
+   [cljsjs.codemirror.keymap.emacs]))
+
+;; (println "This text is printed from src/paredit_cm/core.cljs. Go ahead and edit it and see reloading in action.")
+
+(defn multiply [a b] (* a b))
+
+;; define your app data so that it doesn't get over-written on reload
+;; (defonce app-state (atom {:text "Hello world!"}))
+
+;; (defn get-app-element []
+;;   (gdom/getElement "app"))
+
+
+
+;; specify reload hook with ^:after-load metadata
+(defn ^:after-load on-reload []
+  ;; optionally touch your app-state to force rerendering depending on
+  ;; your application
+  ;; (swap! app-state update-in [:__figwheel_counter] inc)
+  )
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ** PROJECT CONVENTIONS **
@@ -139,39 +164,112 @@
 (defn last-cur
   "returns the last cursor of a line"
   ([cm] (last-cur cm (cursor cm)))
-  ([cm cur] (let [end (.-end (last-token cm cur))
+  ([cm cur] (let [end  (.-end (last-token cm cur))
                   diff (- end (.-ch cur))]
               (cursor cm (+ diff (index cm cur))))))
-
 (defn get-info
   "make info from CodeMirror more conveniently accessed by our code.
   we'll use destructuring and just name what we want. hypothesizing
   that performance hit won't be that bad."
   ([cm] (get-info cm (cursor cm)))
   ([cm cur]
-   (when cur (let [tok (token cm cur)
-                   eof (eof? cm cur)
-                   bof (bof? cm cur)
-                   i   (index cm cur)
+   (when cur (let [tok       (token cm cur)
+                   eof       (eof? cm cur)
+                   bof       (bof? cm cur)
+                   i         (index cm cur)
                    left-cur  (when-not bof (cursor cm (dec i)))
                    right-cur (when-not eof (cursor cm (inc i)))]
-               {:cur    cur
-                :line   (.-line cur)
-                :ch     (.-ch   cur)
-                :i      i
-                :tok    tok
-                :string (.-string tok)
-                :start  (.-start  tok)
-                :end    (.-end    tok)
-                :type   (.-type   tok)
-                :top    (-> tok .-state .-indentStack nil?) ;; true for toplevel
-                :eof    eof
-                :bof    bof
+               {:cur        cur
+                :line       (.-line cur)
+                :ch         (.-ch   cur)
+                :i          i
+                :tok        tok
+                :string     (.-string tok)
+                :start      (.-start  tok)
+                :end        (.-end    tok)
+                :type       (.-type   tok)
+                :top        (-> tok .-state .-indentStack nil?) ;; true for toplevel
+                :eof        eof
+                :bof        bof
                 :left-char  (when-not bof (.getRange cm left-cur cur))
                 :right-char (when-not eof (.getRange cm cur right-cur))
                 :left-cur   left-cur
                 :right-cur  right-cur
-                :mode   (.-mode (.-state tok))}))))
+                :mode       (.-mode (.-state tok))}))))
+
+(defn word? [type]
+  (or (= type "atom")
+      (= type "builtin")
+      (= type "number")
+      (= type "meta")
+      (= type "variable")
+      (= type "keyword")))
+
+(defn ^:export linfo
+  "answers what is immediately to the left of a | style cursor"
+  ([cm] (linfo cm (cursor cm)))
+  ([cm cur]
+   (let [{:keys [type mode bof eof string ch end]
+          :as   info}  (get-info cm cur)
+         j             (index cm)
+         i             (when(not bof)(dec j))
+         k             (when(not eof)(inc j))
+         jc            (cursor cm j)
+         ic            (when i(cursor cm i))
+         kc            (when k(cursor cm k))
+         {:keys [itype ibof ieof istring]
+          :as   iinfo} (set/rename-keys(when i(get-info cm ic))
+                                       {:type   :itype
+                                        :bof    :ibof
+                                        :eof    :ieof
+                                        :string :istring})
+         {:keys [ktype kbof keof kstring kch kend]
+          :as   kinfo} (set/rename-keys(when k(get-info cm kc))
+                                       {:type   :ktype
+                                        :bof    :kbof
+                                        :eof    :keof
+                                        :string :kstring})]
+     (println(with-out-str(pp/pprint(get-info cm cur))))
+     (cond
+       bof                           :bof
+       (nil? type)                   :whitespace
+       (and (= type "bracket")
+            (opener? string))        :opener
+       (= type "bracket")            :closer
+       (word? type)                  :word
+       (and (= type mode "string")
+            (= "\"" string))         :string-start
+       (and (= type "string")
+            (= ch end))              :string-end
+       (= type "string")             :string-guts
+       (and (= type "string-2")
+            (= ch end))              :string-2-end
+       (and (= type "string-2")
+            (not= itype "string-2")) :string-2-start
+       (and (= type "string-2")
+            (not= ktype "string-2")) :string-2-end
+       (= type "string-2")           :string-2-guts
+       (= type "comment")            :comment
+       :default                      (do(println"unhandled:info"):uncategorized)))))
+
+(defn ^:export rinfo
+  "answers what is immediately to the right of a | style cursor"
+  ([cm] (rinfo cm (cursor cm)))
+  ([cm cur] (let [i (index cm cur)]
+            (if (eof? cm cur)
+              :eof
+              (linfo cm (cursor cm (inc i)))))))
+
+(defn ^:export info
+  [cm]
+  (let [result [(linfo cm) (rinfo cm)]]
+    (println result)
+    result))
+
+;; type describes position to the left
+;; string is the whole token to the left, could be whole comment
+;;   except when inside a string or just to the right of it, string = everything except the opening "!
+;; top true if not inside () [] {} ... but tricked if only inside "" because cm thinks still top=true "X"
 
 (defn comment-or-string?
   "true if the type is comment or string. a lot of editing behavior (like
@@ -225,8 +323,13 @@
   supports brackets [] {} () but not double-quote"
   ([cm] (open-round cm "("))
   ([cm c]
-   (let [{:keys [type left-char right-char]} (get-info cm)]
+   (let [{:keys [type left-char right-char]} (get-info cm)
+         [L R] (info cm)]
      (cond
+       ;; don't insert if in an escaped char because it'd become a bracket:
+       (and (or (= L :string-2-start) (= L :string-2-guts))
+            (or (= R :string-2-guts)  (= R :string-2-end))) :no-op
+
        ;; escaping the next character:
        (= "\\" left-char) (insert cm c)
 
@@ -236,15 +339,13 @@
        ;; insert a pair, pad with a space to the left and/or right if necessary,
        ;; and move the cursor into the pair before returning:
        :else
-       (let [need-left-padding (and (not= " " left-char)
-                                    (not (opener? left-char)))
-             need-right-padding (and (not= " " right-char)
-                                     (not (closer? right-char)))]
+       (let [pad-L (and (not= " " left-char) (not (opener? left-char)))
+             pad-R (and (not= " " right-char)(not (closer? right-char)))]
          (insert cm
-                 (str (when need-left-padding " ")
+                 (str (when pad-L " ")
                       c (pair c)
-                      (when need-right-padding " "))
-                 (if need-right-padding -2 -1)))))))
+                      (when pad-R " "))
+                 (if pad-R -2 -1)))))))
 
 (defn ^:export open-brace
   "open curly brace with matching close brace"
@@ -318,7 +419,7 @@
   [cm cur sp state n]
   (if (>= n 0)
     (let [{:keys [left-cur i]} (get-info cm cur)
-          result (sp cm cur state)]
+          result               (sp cm cur state)]
       (case result
         :eof               nil
         :stop              nil
@@ -336,7 +437,7 @@
   [cm cur sp state n]
   (if (>= n 0)
     (let [{:keys [left-cur right-cur i start ch]} (get-info cm cur)
-          result (sp cm cur state)]
+          result                                  (sp cm cur state)]
       (case result
         :bof               nil
         :stop              nil
@@ -344,11 +445,11 @@
         :right             right-cur
         :end-of-this-token (token-end cm cur)
         :start-of-this-tok (token-start cm cur)
+        :before-this-tok   (cursor cm (dec(index cm (token-start cm cur))))
         (let [next-cur (if (= ch start)
                          (cursor cm (dec i))
                          (cursor cm (- i (- ch start))))]
-          (fn [] ;; for trampoline
-            (skip-trampoline-helper-left cm next-cur sp result (dec n))))))
+          #(skip-trampoline-helper-left cm next-cur sp result (dec n)))))
     (guard)))
 
 (defn skip
@@ -374,8 +475,8 @@
   ([cm cur] (delete-whitespace cm cur true))
   ([cm cur indent-after]
    (let [{:keys [start end line ch i type]} (get-info cm cur)
-         c1 (cursor cm (+ i (- start ch)))
-         c2 (cursor cm (+ i (- end   ch)))]
+         c1                                 (cursor cm (+ i (- start ch)))
+         c2                                 (cursor cm (+ i (- end   ch)))]
      (when (nil? type)
        (.replaceRange cm "" c1 c2)
        (if indent-after (.indentLine cm line))))))
@@ -385,8 +486,8 @@
   ([cm cur] (just-one-space cm cur true))
   ([cm cur indent-after]
    (let [{:keys [start end line ch i type]} (get-info cm cur)
-         c1 (cursor cm (+ i (- start ch)))
-         c2 (cursor cm (+ i (- end   ch)))]
+         c1                                 (cursor cm (+ i (- start ch)))
+         c2                                 (cursor cm (+ i (- end   ch)))]
      (when (nil? type)
        (.replaceRange cm " " c1 c2)
        (if indent-after (.indentLine cm line))))))
@@ -447,7 +548,6 @@
      (insert cm s)
      (when (close-round cm s)
        (.execCommand cm "newlineAndIndent")))))
-;; question: is there a better way than .execCommand?
 
 (defn ^:export  open-square [cm]  (open-round cm "["))
 (defn ^:export close-square [cm] (close-round cm "]"))
@@ -490,13 +590,6 @@
 ;; paredit-meta-doublequote M-"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn word? [type]
-  (or (= type "atom")
-      (= type "builtin")
-      (= type "number")
-      (= type "variable")
-      (= type "keyword")))
-
 (defn at-a-word?
   "returns true if at a word of code"
   [cm cur]
@@ -513,21 +606,24 @@
 (defn start-of-a-string?
   "returns true if at the start of a string."
   [cm cur]
-  (let [{:keys [string type start end mode]} (get-info cm cur)]
-    (and (= type "string")
-         (= 1 (- end start))
-         (= string "\"")
-         (= mode "string"))))
+  (let [{:keys [right-char type right-cur eof]} (get-info cm cur)
+        left-type                               type
+        {:keys [type]}                          (get-info cm right-cur)]
+    (and (false? eof)
+         (not= "string" left-type)
+         (= "string" type)
+         (= "\"" right-char))))
 
 (defn end-of-a-string?
   "returns true if just to the right of a closing doublequote of a string."
   [cm cur]
-  (let [{:keys [type ch end string mode]} (get-info cm cur)]
+  (let [{:keys [left-char type ch end string]} (get-info cm cur)]
     (and (= type "string")
          (= ch end)
          (= \" (last string))
          (not= \\ (last (drop-last string)))
-         (= mode false))))
+         ;; (= mode false)
+         )))
 
 (defn end-of-next-sibling-sp ;; -sp see 'skipping predicate'
   "returns the cursor at the end of the sibling to the right or nil if
@@ -539,19 +635,16 @@
   word). assuming the cm has matched brackets for now."
   [cm cur stack]
   (let [{:keys [string type eof ch end]} (get-info cm cur)
-        stack-empty (zero? stack)
-        one-left    (= 1 stack)
-        string-extends (or (not= \" (last string))
-                           (= \\ (last (drop-last string))))] ;; for multi-line
+        stack-empty                      (zero? stack)
+        one-left                         (= 1 stack)
+        string-extends                   (or (not= \" (last string))
+                                             (= \\ (last (drop-last string))))] ;; for multi-line
     (cond ;; we return a keyword when we know where to stop, stack otherwise.
-      (and (end-of-a-string? cm cur) one-left), :yes
-      (and (escaped-char-to-left? cm cur) stack-empty), :yes
-      (and (word? type) stack-empty (= ch end)), :yes
-      (and (is-bracket-type? type) (closer? string) one-left), :yes
-      eof, :eof
-
-      ;; skip whitespace
-      (nil? type), stack
+      (and (end-of-a-string? cm cur) one-left)                :yes
+      (and (escaped-char-to-left? cm cur) stack-empty)        :yes
+      (and (word? type) stack-empty (= ch end))               :yes
+      (and (is-bracket-type? type) (closer? string) one-left) :yes
+      eof                                                     :eof
 
       ;; skip comments
       (= type "comment"), stack
@@ -560,6 +653,9 @@
 
       ;; entering a string, push " onto stack
       (start-of-a-string? cm cur), (inc stack)
+
+      ;; skip whitespace - this used to be checked before start-of-a-string? but that'd be a bug
+      (nil? type), stack
 
       ;; at end of string and stack already empty, we must have started in the
       ;; middle of the string
@@ -643,74 +739,78 @@
   word). assuming the cm has matched brackets for now."
   [cm cur stack]
   (let [{:keys [string type bof ch start]} (get-info cm cur)
-        stack-empty (zero? stack)
-        one-left    (= 1 stack)
-        string-extends (not= "\"" (first string))];; for multiline strings
+        stack-empty                        (zero? stack)
+        one-left                           (= 1 stack)
+        string-extends                     (not= "\"" (first string))];; for multiline strings
+    (println (get-info cm cur))
     (cond ;; we return a keyword when we know where to stop, stack otherwise.
 
       ;; check these before checking for bof:
 
       ;; in a multi-line string, keep searching for the first line of it:
-      (and (start-of-a-string? cm cur) one-left string-extends), stack
+      (and (start-of-a-string? cm cur) one-left string-extends), (do(println"in mult line str")stack)
 
       ;; at the first line of a string and we want its opening doublequote:
-      (and (start-of-a-string? cm cur) one-left), :yes
+      (and (start-of-a-string? cm cur) one-left), (do(println"in str"):yes)
 
       ;; at the start of an escaped char:
-      (and (escaped-char-to-right? cm cur) stack-empty), :yes
+      (and (escaped-char-to-right? cm cur) stack-empty), (do(println"esc"):yes)
 
       ;; at the start of a word:
-      (and (word? type) stack-empty (= ch start)), :yes
+      (and (word? type) stack-empty (= ch start)), (do(println"wor"):yes)
 
       ;; at the opener we were looking for:
-      (and (is-bracket-type? type) (opener? string) one-left), :yes
+      (and (is-bracket-type? type) (opener? string) one-left), (do(println"op"):yes)
 
-      bof, :bof; reached beginning of file
-
-      ;; skip whitespace
-      (nil? type), stack
+      bof, (do(println"bof"):bof); reached beginning of file
 
       ;; skip comments
-      (= type "comment"), stack
+      (= type "comment"), (do(println"com")stack)
 
       ;; strings ...............................................................
 
-      ;; entering a string from the right; push " onto stack
-      (end-of-a-string? cm cur), (inc stack)
+      ;; entering a string from the right; push " onto stack ;;;;;;;;wantedthisxxx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      ;; actually we skip past the string and might still have a stack!
+      (end-of-a-string? cm cur), (do(println"going to skip string to our left")(inc stack))
+      ;; using stack above skips 1 sexp too far - we need to skip just the string and stop
+      ;; but using start of this tok doesn't skip far enough - falls short just inside start of string
+
+      ;; skip whitespace -- this used to be before the check for end-of-a-string? but that's a bug
+      (nil? type), (do(println"ws")stack)
 
       ;; at start of string and stack already empty, we must have started in the
       ;; middle of the string. if it's a multi-line string, advance up:
-      (and (start-of-a-string? cm cur) stack-empty string-extends), stack
+      (and (start-of-a-string? cm cur) stack-empty string-extends), (do(println"start str ml emp stack")stack)
 
       ;; we're at the first line of the string, stop:
-      (and (start-of-a-string? cm cur) stack-empty), :stop
+      (and (start-of-a-string? cm cur) stack-empty), (do(println"start of string, stack emp"):stop)
 
       ;; at start of string and stack about to be empty, we've found the end of
       ;; the string -- handled before check for bof above
 
       ;; in string, the start of it is our goal. it's on a higher line:
-      (and (= type "string") one-left string-extends), stack
+      (and (= type "string") one-left string-extends), (do(println"ml string")stack)
 
       ;; it's on this line:
-      (and (= type "string") one-left), :start-of-this-tok
+      (and (= type "string") one-left), (do(println"start of str on this line"):start-of-this-tok)
 
       ;; in string, need to get out of this form, pop stack
-      (and (= type "string") string-extends), stack
-      (= type "string"), (dec stack)
+      (and (= type "string") string-extends), (do(println"in str need to get out")stack)
+      (= type "string"),                      (do(println"type string")(dec stack))
 
       ;; escaped chars .........................................................
 
       ;; inside an escaped char and the start of it is what we want
-      (and (in-escaped-char? cm cur) stack-empty), :start-of-this-tok
+      (and (in-escaped-char? cm cur) stack-empty), (do(println"need start of esc char"):start-of-this-tok)
 
       ;; in an escaped char inside the prev sibling
-      (in-escaped-char? cm cur), stack
+      (in-escaped-char? cm cur), (do(println"in esc char inside prev sibling")stack)
 
       ;; at start of an escaped char which was the prev sibling -- handled
       ;; before check for bof above
 
       ;; at start of an escaped char inside the prev sibling
-      (escaped-char-to-right? cm cur), stack
+      (escaped-char-to-right? cm cur), (do(println"at start of esc char inside prev sib")stack)
 
       ;; words .................................................................
 
@@ -718,25 +818,25 @@
       ;; before check for bof above
 
       ;; in a word that is the prev sibling, the start of it is what we want
-      (and (word? type) stack-empty), :start-of-this-tok
+      (and (word? type) stack-empty), (do(println"prev sib is word"):start-of-this-tok)
 
       ;; in a word that is inside the prev sibling
-      (word? type), stack
+      (word? type), (do(println"in word inside prev sib")stack)
 
       ;; brackets ..............................................................
 
       ;; push closer on stack
-      (and (is-bracket-type? type) (closer? string)), (inc stack)
+      (and (is-bracket-type? type) (closer? string)), (do(println"closer")(inc stack))
 
       ;; we've reached the start of a form -- handled before check for bof above
 
       ;; there was no prev sibling, avoid exiting the form
-      (and (is-bracket-type? type) (opener? string) stack-empty), :stop
+      (and (is-bracket-type? type) (opener? string) stack-empty), (do(println"no prev sib"):stop)
 
       ;; passing through the guts of a sibling form (.. X(guts)..)
-      (and (is-bracket-type? type) (opener? string)), (dec stack)
+      (and (is-bracket-type? type) (opener? string)), (do(println"passing through")(dec stack))
 
-      :default :stop)))
+      :default (do(println"default"):stop))))
 
 (defn start-of-prev-sibling
   "return the cursor at the start of the sibling to the left."
@@ -826,13 +926,13 @@
   numbers. nil if nothing selected."
   [cm]
   (when (.somethingSelected cm)
-    (let [first-sel (-> cm .listSelections first)
-          text      (-> cm  .getSelections first)
-          anchor (.-anchor first-sel)
-          head   (.-head   first-sel)
+    (let [first-sel     (-> cm .listSelections first)
+          text          (-> cm  .getSelections first)
+          anchor        (.-anchor first-sel)
+          head          (.-head   first-sel)
           left-of-start (left cm anchor head)
-          start-cur (cursor cm (inc (index cm left-of-start)))
-          end-cur (right cm anchor head)]
+          start-cur     (cursor cm (inc (index cm left-of-start)))
+          end-cur       (right cm anchor head)]
       [left-of-start start-cur end-cur text
        (.-line start-cur) (.-line end-cur)])))
 
@@ -842,7 +942,7 @@
   [cm c1 c2]
   (loop [types [], cur c1]
     (let [{:keys [type right-cur]} (get-info cm cur)
-          types' (conj types type)]
+          types'                   (conj types type)]
       (if (= cur c2)
         types'
         (recur types' right-cur)))))
@@ -904,11 +1004,11 @@
 (defn get-text-to-end-of-line
   [cm cur]
   (let [toks (.getLineTokens cm (.-line cur))
-        ch (.-ch cur)]
+        ch   (.-ch cur)]
     (reduce (partial append ch) "" toks)))
 
 (defn comment-selection [cm]
-  (let [[_ c1 c2 text l1 l2] (selection-info cm)
+  (let [[_ c1 c2 text l1 l2]   (selection-info cm)
         text-after-selection   (get-text-to-end-of-line cm c2)
         code-follows-selection (not= text-after-selection "")
         end-of-line            (last-cur cm)
@@ -928,11 +1028,11 @@
 (defn go-to-comment
   "moves cursor to ;;X"
   [cm]
-  (let [cur (cursor cm)
-        ch  (.-ch cur)
-        i   (index cm cur)
-        c-tok (last-token cm cur)
-        start (.-start c-tok)
+  (let [cur    (cursor cm)
+        ch     (.-ch cur)
+        i      (index cm cur)
+        c-tok  (last-token cm cur)
+        start  (.-start c-tok)
         offset (count (take-while #(= ";" %) (.-string c-tok)))]
     (.setCursor cm (cursor cm (+ i (- start ch) offset)))))
 
@@ -948,9 +1048,9 @@
   starts on column 40 or greater. assumes last token is a comment"
   [cm]
   (indent-current-line cm)
-  (let [cur (cursor cm)
-        ch  (.-ch cur)
-        i   (index cm cur)
+  (let [cur           (cursor cm)
+        ch            (.-ch cur)
+        i             (index cm cur)
         comment-start (.-start (last-token cm cur))]
     (.setCursor cm (cursor cm (+ i (- comment-start ch))))
     (insert-spaces-to-col-40 cm)
@@ -974,11 +1074,11 @@
   returns a vector of new index, new ch, and new cursor."
   ([cm] (move-to-end-of-line cm (cursor cm)))
   ([cm cur]
-   (let [end (->> cur .-line (.getLineTokens cm) (remove #(nil? (.-type %)))
+   (let [end  (->> cur .-line (.getLineTokens cm) (remove #(nil? (.-type %)))
                   last .-end)
-         ch  (.-ch cur)
-         i   (index cm cur)
-         i'  (+ i (- end ch))
+         ch   (.-ch cur)
+         i    (index cm cur)
+         i'   (+ i (- end ch))
          cur' (cursor cm i')]
      (.setCursor cm cur')
      [i' (.-ch cur') cur'])))
@@ -1053,9 +1153,9 @@
   "returns true if there's any code to the left of cursor. assumes you've
   already ruled out comments so only looks for non nil tokens"
   [cm]
-  (let [cur   (cursor cm)
-        toks  (.getLineTokens cm (.-line cur))
-        ch    (.-ch cur)
+  (let [cur  (cursor cm)
+        toks (.getLineTokens cm (.-line cur))
+        ch   (.-ch cur)
         code (map #(and (not (nil? (.-type %)))
                         (or (<= (.-end %) ch)
                             (and (< (.-start %) ch)
@@ -1092,8 +1192,8 @@
   "delete 1 or n char to left"
   ([cm] (backspace cm 1))
   ([cm n]
-   (let [-n #(- % n)
-         cur (cursor cm)
+   (let [-n   #(- % n)
+         cur  (cursor cm)
          cur0 (->> cur (index cm) -n (cursor cm))]
      (.replaceRange cm "" cur0 cur))))
 
@@ -1101,8 +1201,8 @@
   "true if this position would be whitespace if we pressed the spacebar."
   [cm cur right-cur]
   (let [original-cur (cursor cm)
-        _ (insert cm " " 0 cur)
-        answer (nil? (get-type cm right-cur))]
+        _            (insert cm " " 0 cur)
+        answer       (nil? (get-type cm right-cur))]
     (backspace cm)
     (.setCursor cm original-cur)
     answer))
@@ -1136,7 +1236,7 @@
   "returns true if cur is just to the right of a closing doublequote"
   [cm cur]
   (let [{:keys [type left-char right-cur]} (get-info cm cur)
-        right-type (get-type cm right-cur)]
+        right-type                         (get-type cm right-cur)]
     (and (= type "string")
          (= "\"" left-char)
          (not= right-type "string"))))
@@ -1168,8 +1268,8 @@
 (defn delete
   "delete 1 or n char to right"
   ([cm] (delete cm 1))
-  ([cm n] (let [+n #(+ % n)
-                cur (cursor cm)
+  ([cm n] (let [+n   #(+ % n)
+                cur  (cursor cm)
                 cur2 (->> cur (index cm) +n (cursor cm))]
             (.replaceRange cm "" cur cur2))))
 
@@ -1295,14 +1395,14 @@
 
 (defn rest-of-siblings
   [cm]
-  (let [c1 (cursor cm)
+  (let [c1            (cursor cm)
         parent-closer (skip cm parent-closer-sp)
-        c2 (when parent-closer (cursor cm (dec (index cm parent-closer))))]
+        c2            (when parent-closer (cursor cm (dec (index cm parent-closer))))]
     [c1 c2]))
 
 (defn select-rest-of-siblings
   [cm]
-  (let [[c1 c2] (rest-of-siblings cm)c1 (cursor cm)]
+  (let [[c1 c2] (rest-of-siblings cm) c1 (cursor cm)]
     (when c2 (.setSelection cm c1 c2))))
 
 (defn kill-from-to [cm i j]
@@ -1312,8 +1412,8 @@
 
 (defn kill-region [cm]
   (let [first-sel (-> cm .listSelections first)
-        anchor (.-anchor first-sel)
-        head   (.-head   first-sel)]
+        anchor    (.-anchor first-sel)
+        head      (.-head   first-sel)]
     (CodeMirror.emacs.kill cm anchor head)))
 
 (defn kill-pair
@@ -1338,8 +1438,8 @@
   "kills the next sibling to the right of the cursor"
   [cm]
   (let [from (cursor cm)
-        mid (end-of-next-sibling cm from)
-        to (if (betw-code-and-comment? cm mid) (last-cur cm mid) mid)]
+        mid  (end-of-next-sibling cm from)
+        to   (if (betw-code-and-comment? cm mid) (last-cur cm mid) mid)]
     (when to
       (.setSelection cm from to)
       (kill-region cm))))
@@ -1347,23 +1447,70 @@
 (defn in-string-and-backslash-to-the-left?
   ([cm] (in-string-and-backslash-to-the-left? cm (cursor cm)))
   ([cm cur]
-   (and (in-regular-string? cm cur)
-        (= "\\" (-> cm get-info :left-char)))))
+   (let [{:keys [type left-char]} (get-info cm cur)]
+     (and (= "string" type)
+          (= "\\" left-char)))))
+
+(defn infos-to-end-of-this-line [cm]
+  (let [line-end-cur (last-cur cm)
+        e            (index cm line-end-cur)
+        i            (index cm)]
+    (->> (range i e)
+         (map #(cursor cm %))
+         (map #(rinfo cm %)))))
+;; set mark - remember original line
+;; stack starts at 0
+;; if at eof return i
+;; move right,
+;; if on original line, stop to left of parent closing  " or  bracket
+;; stop at eol if stack at 0
+;; if past eol, stop when stack at 0
+
+(defn cur-of-end-of-kill [cm]
+  (let [starting-line (:line(get-info cm))
+        cur-eol      (last-cur cm)]
+    (loop [stack 0]
+      (let [r    (rinfo cm)
+            {:keys [line left-cur cur right-cur i]} (get-info cm)]
+        (cond
+          (= r :eof)                  cur
+          (= r :opener)               (do(move-right cm)(recur (inc stack)))
+          (= r :string-start)         (do(move-right cm)(recur (inc stack)))
+          ;; reached parent closer on the same line
+          (and (= line starting-line)
+               (zero? stack)
+               (or(= r :closer)
+                  (= r :string-end))) cur
+          ;; reached end of line on the same line:
+          (and (= line starting-line)
+               (zero? stack)
+               (= cur-eol right-cur))       left-cur
+          ;; got to a new line and reached end of a sexp
+          (and (not= line starting-line)
+               (zero? stack))         cur
+          (and(or(= r :closer)
+                 (= r :string-end)))  (do(move-right cm)(recur (dec stack)))
+          :default                    (do(move-right cm)(recur stack)))))))
 
 (defn ^:export kill
-  "paredit kill exposed for keymap."
+  "paredit kill exposed for keymap.
+  kill the rest of the sexps that start on the current line
+  but stop at an enclosing (parent) doublequote or bracket.
+  avoid accidentally escaping a closing double quote of a string.
+  we may have to kill a multi-line sexp."
   [cm]
+  (println"in kill")
+  (while (contains? #{:string-2-start
+                      :string-2-guts
+                      :string-2-end} (linfo cm))
+    (move-left cm))
   (while (in-string-and-backslash-to-the-left? cm)
     (move-left cm))
-  (let [cur (cursor cm)]
-    (cond
-      ;;(.somethingSelected cm)         (kill-region cm) ;; bad selection if killed leads to invalid code
-      (in-regular-string? cm cur)     (kill-rest-of-string cm)
-      (betw-code-and-comment? cm cur) (kill-rest-of-line cm)
-      (code-to-left? cm)              (kill-rest-of-siblings cm)
-      :default                        (kill-rest-of-siblings cm)
-      ;; :default                        (kill-next-sibling cm)
-      )))
+  (let [start-cur (cursor cm)
+        end-cur (cur-of-end-of-kill cm)]
+    (when end-cur
+      (.setSelection cm start-cur end-cur)
+      (kill-region cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-kill-word M-d
@@ -1376,7 +1523,7 @@
   "true if block cursor is on the first ; of a line comment"
   [cm cur]
   (let [{:keys [type right-cur]} (get-info cm cur)
-        right-type (get-type cm right-cur)]
+        right-type               (get-type cm right-cur)]
     (and (not= "comment" type)
          (= "comment" right-type))))
 
@@ -1405,10 +1552,10 @@
   the next word (going to the right) in this comment/string"
   [cm i]
   (let [{:keys [ch start string]} (get-info cm (cursor cm i))
-        tail (subs string (- ch start))
-        word (re-find #"^\s*[\S]*" tail)
-        length (count word)
-        quote (if (str/ends-with? word "\"") -1 0)]
+        tail                      (subs string (- ch start))
+        word                      (re-find #"^\s*[\S]*" tail)
+        length                    (count word)
+        quote                     (if (str/ends-with? word "\"") -1 0)]
     (+ i length quote)))
 
 (defn start-of-prev-word
@@ -1416,10 +1563,10 @@
   the prev word (going to the left) in this comment/string"
   [cm i]
   (let [{:keys [ch start string]} (get-info cm (cursor cm i))
-        head (subs string 0 (- ch start))
-        last-word (re-find #"[\S]*\s*$" head)
-        length (count last-word)
-        quote (if (str/ends-with? last-word "\"") 1 0)]
+        head                      (subs string 0 (- ch start))
+        last-word                 (re-find #"[\S]*\s*$" head)
+        length                    (count last-word)
+        quote                     (if (str/ends-with? last-word "\"") 1 0)]
     (- i length quote)))
 
 (defn kill-next-word
@@ -1494,11 +1641,11 @@
   word in this comment"
   [cm i]
   (let [{:keys [ch start string]} (get-info cm (cursor cm i))
-        cur-offset-in-string (- ch start)
-        head (subs string 0 cur-offset-in-string)
-        tail (subs string cur-offset-in-string)
-        word (re-find #"\S*\s*$" head)
-        length (count word)]
+        cur-offset-in-string      (- ch start)
+        head                      (subs string 0 cur-offset-in-string)
+        tail                      (subs string cur-offset-in-string)
+        word                      (re-find #"\S*\s*$" head)
+        length                    (count word)]
     (kill-from-to cm (- i length) i)
     (.setCursor cm (cursor cm (- i length)))))
 
@@ -1587,6 +1734,7 @@
   can pass in char count."
   [cm i n]
   (let [j (inc i), m (dec n), cur (cursor cm i), right-cur (cursor cm j)]
+    (println (str [i (get-type cm cur) j (get-type cm right-cur)]))
     (cond
       (neg? n)
       (guard)
@@ -1620,12 +1768,43 @@
           (println (get-type cm cur))
           #(fwd cm j m)))))
 
+(defn move-past-right-token [cm]
+  (when-let [{:keys [right-cur]} (get-info cm)]
+    (let [{:keys [ch end]} (get-info cm right-cur)
+          i (index cm)]
+         (.setCursor cm (cursor cm (+ i 1 (- end ch)))))))
+
 (defn ^:export forward
-  "paredit forward exposed for keymap. find the first thing that isn't
-  whitespace or comment. if it is a closing bracket, step past it. otherwise
-  skip over the thing."
+  "paredit forward exposed for keymap.
+  Move forward an S-expression, or up an S-expression forward.
+  If there are no more S-expressions in this one before the closing
+  delimiter, move past that closing delimiter; otherwise, move forward
+  past the S-expression following the point."
   [cm]
-  (trampoline fwd cm (index cm) (char-count cm)))
+  (loop [stack 0, empty true]
+    (let [r (rinfo cm)]
+      (cond
+        (= r :eof) :done
+        (or(= r :comment)
+           (= r :whitespace)) (do(println"fwd:wh")(move-past-right-token cm)(when(not(zero? stack))(recur stack empty)))
+        (= r :word) (do(println"fwd:word")(move-past-right-token cm)(when(not(zero? stack))(recur stack false)))
+        (or (= r :opener)
+            (= r :string-start)) (do(println"fwd:op")(move-past-right-token cm)(recur (inc stack) false))
+        (or(= r :closer)
+           (= r :string-end)
+           (zero?(dec stack))) (do(println"fwd:FINISHPAIR IN FORWARD")(move-right cm))
+        (or(= r :closer)
+           (= r :string-end)
+           (zero? stack)
+           empty) (do(println"fwd:move up out of parent")(move-right cm))
+        (or(= r :closer)
+           (= r :string-end)) (do(println"fwd:closer in sexp")(move-right cm)(recur (dec stack) empty))
+        :default (do(println"fwd:default")(move-past-right-token cm)(recur stack false))
+        )))
+
+  ;; (let [i (index cm)]
+  ;;   (trampoline fwd cm i (- (char-count cm) i)))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward
@@ -1638,37 +1817,37 @@
   (let [h (dec i), m (dec n), cur (cursor cm i)]
     (cond
       (neg? n)
-      (guard)
+      (do(println"neg")(guard))
 
       (nil? cur)
-      :do-nothing
+      (do(println"nil"):do-nothing)
 
       (bof? cm cur)
-      (.setCursor cm (cursor cm h))
+      (do(println"bof")(.setCursor cm (cursor cm h)))
 
       (whitespace? cm cur)
-      #(bkwd cm h m)
+      (do(println"whi")#(bkwd cm h m))
 
       (opening-delim? cm cur)
-      (.setCursor cm (cursor cm h))
+      (do(println"op")(.setCursor cm (cursor cm h)))
 
       (closing-delim? cm cur)
-      (.setCursor cm (start-of-prev-sibling cm cur))
+      (do(println"cl")(.setCursor cm (start-of-prev-sibling cm cur)))
 
       (at-a-word? cm cur)
-      (.setCursor cm (start-of-prev-sibling cm cur))
+      (do(println"wo")(.setCursor cm (start-of-prev-sibling cm cur)))
 
       (comment? cm cur)
-      (let [a (index-of-next-non cm h non-word-in-comment dec)]
-        (if (not(comment? cm (cursor cm a)))
-          #(bkwd cm a a)
-          (->> (index-of-next cm a non-word-in-comment dec)
-               inc
-               (cursor cm)
-               (.setCursor cm))))
+      (do(println"com")(let [a (index-of-next-non cm h non-word-in-comment dec)]
+                         (if (not(comment? cm (cursor cm a)))
+                           #(bkwd cm a a)
+                           (->> (index-of-next cm a non-word-in-comment dec)
+                                inc
+                                (cursor cm)
+                                (.setCursor cm)))))
 
       (in-string? cm cur)
-      (.setCursor cm (cursor cm (start-of-prev-word cm h)))
+      (do(println"ins")(.setCursor cm (cursor cm (start-of-prev-word cm h))))
 
       :else
       (do (println "unhandled situation, please let me know (bkwd)")
@@ -1737,10 +1916,10 @@
   ([cm] (wrap-round cm (cursor cm)))
   ([cm cur]
    (let [cur-close (end-of-this cm cur)
-         cur-open (start-of-prev-sibling cm cur-close)
-         i (inc (index cm cur-open))
-         text (.getRange cm cur-open cur-close)
-         text' (str "(" text ")")]
+         cur-open  (start-of-prev-sibling cm cur-close)
+         i         (inc (index cm cur-open))
+         text      (.getRange cm cur-open cur-close)
+         text'     (str "(" text ")")]
      (.replaceRange cm text' cur-open cur-close)
      (.setCursor cm (cursor cm i)))))
 
@@ -1753,10 +1932,10 @@
   splice a string by dropping its double-quotes."
   ([cm] (splice-sexp cm (cursor cm)))
   ([cm cur]
-   (let [i (dec (index cm))
+   (let [i         (dec (index cm))
          cur-close (skip cm parent-closer-sp)
-         cur-open (start-of-prev-sibling cm cur-close)
-         text' (when cur-open
+         cur-open  (start-of-prev-sibling cm cur-close)
+         text'     (when cur-open
                  (.getRange cm
                             (cursor cm (inc (index cm cur-open)))
                             (cursor cm (dec (index cm cur-close)))))]
@@ -1775,10 +1954,10 @@
   ([cm] (splice-sexp-killing-backward cm (cursor cm)))
   ([cm cur]
    (if (in-string? cm cur) (backward-up cm cur))
-   (let [cur' (cursor cm)
+   (let [cur'      (cursor cm)
          cur-close (skip cm parent-closer-sp)
-         cur-open (start-of-prev-sibling cm cur-close)
-         text' (when cur-close
+         cur-open  (start-of-prev-sibling cm cur-close)
+         text'     (when cur-close
                  (.getRange cm cur' (cursor cm (dec (index cm cur-close)))))]
      (when text'
        (.replaceRange cm text' cur-open cur-close)
@@ -1795,13 +1974,13 @@
   ([cm] (splice-sexp-killing-forward cm (cursor cm)))
   ([cm cur]
    (if (in-string? cm cur) (forward-up cm cur))
-   (let [cur' (cursor cm)
+   (let [cur'      (cursor cm)
          final-cur (cursor cm (dec (index cm cur')))
          cur-close (skip cm parent-closer-sp)
-         cur-open (start-of-prev-sibling cm cur-close)
+         cur-open  (start-of-prev-sibling cm cur-close)
          keep-from (when cur-open (cursor cm (inc (index cm cur-open))) )
-         text (when keep-from (.getRange cm cur-open cur-close))
-         text' (when keep-from (.getRange cm keep-from cur'))]
+         text      (when keep-from (.getRange cm cur-open cur-close))
+         text'     (when keep-from (.getRange cm keep-from cur'))]
      (when text'
        (.replaceRange cm text' cur-open cur-close)
        (.setCursor cm final-cur)))))
@@ -1820,7 +1999,7 @@
          c2        (end-of-next-sibling cm c1)
          text      (when c2 (.getRange cm c1 c2))
          cur-close (when text (skip cm parent-closer-sp))
-         cur-open (when cur-close (start-of-prev-sibling cm cur-close))]
+         cur-open  (when cur-close (start-of-prev-sibling cm cur-close))]
      (when cur-open
        (.replaceRange cm text cur-open cur-close)
        (.setCursor cm cur-open)))))
@@ -1837,7 +2016,7 @@
   that can slurp."
   [cm cur n]
   (when (>= n 0)
-    (let [parent (skip cm parent-closer-sp cur)
+    (let [parent  (skip cm parent-closer-sp cur)
           sibling (end-of-next-sibling cm parent)]
       (if sibling
         [parent sibling (get-string cm parent)]
@@ -1930,9 +2109,9 @@
   that can slurp."
   [cm cur n]
   (when (>= n 0)
-    (let [ending (skip cm parent-closer-sp cur)
-          parent (start-of-prev-sibling cm ending)
-          sibling (start-of-prev-sibling cm parent)
+    (let [ending      (skip cm parent-closer-sp cur)
+          parent      (start-of-prev-sibling cm ending)
+          sibling     (start-of-prev-sibling cm parent)
           bracket-cur (forward-down-cur cm parent)]
       (if (and (not (nil? sibling)) (not (nil? bracket-cur)))
         [parent sibling (get-string cm bracket-cur)]
@@ -1963,38 +2142,38 @@
   no such anscestor that can barf"
   [cm cur n]
   (when (>= n 0)
-    (let [parent (skip cm parent-closer-sp cur)
-          inside (cursor cm (dec (index cm parent)))
-          sibling (start-of-prev-sibling cm inside)
+    (let [parent      (skip cm parent-closer-sp cur)
+          inside      (cursor cm (dec (index cm parent)))
+          sibling     (start-of-prev-sibling cm inside)
           ;; prevsib: end of prev sibling if there is one:
-          prevsib (end-of-next-sibling cm (start-of-prev-sibling cm sibling))
+          prevsib     (end-of-next-sibling cm (start-of-prev-sibling cm sibling))
           ;; bracket-cur: where the new bracket should go:
           bracket-cur (or prevsib
-                        (forward-down-cur cm (backward-up-cur cm sibling)))
+                          (forward-down-cur cm (backward-up-cur cm sibling)))
           ;; whether the cursor needs to change:
-          moved (and bracket-cur (< (index cm bracket-cur) (index cm cur)))
+          moved       (and bracket-cur (< (index cm bracket-cur) (index cm cur)))
           ;; text of the bracket, e.g. ")"
-          bracket (when parent
+          bracket     (when parent
                     (if moved
                       (str (get-string cm parent) " ")
                       (get-string cm parent)))]
       (cond
-        (nil? parent) nil
+        (nil? parent)      nil
         (nil? bracket-cur) (fn [] (fwd-barf cm parent (dec n)))
-        :default [parent inside bracket-cur bracket moved]))))
+        :default           [parent inside bracket-cur bracket moved]))))
 
 (defn ^:export forward-barf-sexp
   "paredit forward-barf-sexp exposed for keymap."
   ([cm] (forward-barf-sexp cm (cursor cm)))
   ([cm cur]
    (if-let [[parent inside sibling bracket moved]
-              (trampoline fwd-barf cm cur (char-count cm))]
-       (do (.replaceRange cm "" inside parent)
-           (insert cm bracket 0 sibling)
-           (if moved
-             (.setCursor cm (cursor cm (+ (index cm cur) (count bracket))))
-             (.setCursor cm cur)))
-       (.setCursor cm cur))))
+            (trampoline fwd-barf cm cur (char-count cm))]
+     (do (.replaceRange cm "" inside parent)
+         (insert cm bracket 0 sibling)
+         (if moved
+           (.setCursor cm (cursor cm (+ (index cm cur) (count bracket))))
+           (.setCursor cm cur)))
+     (.setCursor cm cur))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backard-barf-sexp C-{, C-M-<right>, Esc C-<right>
@@ -2042,23 +2221,23 @@
 (defn split-form
   "split sexp for (forms like this)"
   [cm cur]
-  (let [close-cur (skip cm parent-closer-sp cur)
+  (let [close-cur     (skip cm parent-closer-sp cur)
         close-bracket (get-string cm close-cur)
-        open-cur (start-of-prev-sibling cm close-cur)
-        open-bracket (get-string cm (cursor cm (inc (index cm open-cur))))]
+        open-cur      (start-of-prev-sibling cm close-cur)
+        open-bracket  (get-string cm (cursor cm (inc (index cm open-cur))))]
     (when (and (not (nil? open-bracket)) (not (nil? close-bracket)))
       (.setCursor cm cur)
 
-      (let [offset (if (in-whitespace? cm)
+      (let [offset         (if (in-whitespace? cm)
                      1
                      (do (insert cm " ")
                          (just-one-space cm (cursor cm) false)
                          0))
-            cur' (cursor cm)
-            i' (+ (index cm cur') offset)
-            prev-sib (start-of-prev-sibling cm cur')
-            prev-sib-end (end-of-next-sibling cm prev-sib)
-            next-sib (end-of-next-sibling cm cur)
+            cur'           (cursor cm)
+            i'             (+ (index cm cur') offset)
+            prev-sib       (start-of-prev-sibling cm cur')
+            prev-sib-end   (end-of-next-sibling cm prev-sib)
+            next-sib       (end-of-next-sibling cm cur)
             next-sib-start (start-of-prev-sibling cm next-sib)]
         (if (nil? next-sib-start)
           (insert cm open-bracket)
@@ -2094,13 +2273,13 @@
   "paredit join-sexps exposed for keymap."
   ([cm] (join-sexps cm (cursor cm)))
   ([cm cur]
-   (let [left-sib (start-of-prev-sibling cm cur)
-         close (end-of-next-sibling cm left-sib)
-         right-sib (end-of-next-sibling cm cur)
-         open (start-of-prev-sibling cm right-sib)
+   (let [left-sib   (start-of-prev-sibling cm cur)
+         close      (end-of-next-sibling cm left-sib)
+         right-sib  (end-of-next-sibling cm cur)
+         open       (start-of-prev-sibling cm right-sib)
          open-right (when open (cursor cm (inc (index cm open))))
          close-char (get-string cm close)
-         open-char (get-string cm open-right)]
+         open-char  (get-string cm open-right)]
      (if (and (not (nil? open))
               (not (nil? close))
               (pair? open-char close-char))
@@ -2137,26 +2316,29 @@
   "paredit reindent-defun exposed for keymap."
   ([cm] (reindent-defun cm (cursor cm)))
   ([cm cur]
-   (let [open (trampoline top-most-opener cm cur)
-         close (end-of-next-sibling cm open)
-         open-line (when open (.-line open))
+   (let [open        (trampoline top-most-opener cm cur)
+         close       (end-of-next-sibling cm open)
+         open-line   (when open (.-line open))
          line-offset (when open (- (.-line cur) open-line))
-         line-len (count (.getLine cm (.-line cur)))
-         ch (.-ch cur)]
+         line-len    (count (.getLine cm (.-line cur)))
+         ch          (.-ch cur)]
      (when (and (not (nil? open)) (not (nil? close)))
        (indent-lines cm (.-line open) (.-line close))
        (repeatedly line-offset (.execCommand cm "goLineDown"))
        (.execCommand cm "goLineStart")
        (.setCursor
-        cm
-        (cursor cm (+ (index cm)
-                      ch
-                      (- (count (.getLine cm (.-line (cursor cm))))
-                         line-len))))))))
+         cm
+         (cursor cm (+ (index cm)
+                       ch
+                       (- (count (.getLine cm (.-line (cursor cm))))
+                          line-len))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-sexp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defn move-past-non-code [cm]
+  (while (contains? #{:whitespace :comment}(rinfo cm))
+    (move-past-right-token cm)))
 
 (defn ^:export forward-sexp
   "forward-sexp exposed for keymap. seems part of emacs and not part
@@ -2164,8 +2346,25 @@
   things other than emacs itself."
   ([cm] (forward-sexp cm (cursor cm)))
   ([cm cur]
-   (when-let [cur' (end-of-next-sibling cm cur)]
-     (.setCursor cm cur'))))
+   (loop [stack 0]
+    (let [r (rinfo cm)]
+      (println stack)
+      (cond
+        (= r :eof) :done
+        (or(= r :comment)
+           (= r :whitespace)) (do(println"fwd:wh")(move-past-non-code cm)(recur stack))
+        (= r :word) (do(println"fwd:word")(move-past-right-token cm)(when(not(zero? stack))(recur stack)))
+        (= r :opener) (do(println"fwd:op")(move-right cm)(recur (inc stack)))
+        (= r :string-start)(do(println"fwd:os")(move-past-right-token cm)(move-past-right-token cm)(when(not(zero? stack))(recur stack)))
+        (and(or(= r :closer)
+               (= r :string-end))
+            (= 1 stack)) (do(println"fwd:finishpair")(move-right cm))
+        (and(or(= r :closer)
+               (= r :string-end))
+            (zero? stack)) (println"fwd:done")
+        (or(= r :closer)
+           (= r :string-end)) (do(println"fwd:closer in sexp")(move-right cm)(recur (dec stack)))
+        :default (do(println"fwd:default")(move-past-right-token cm)(recur stack)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-sexp

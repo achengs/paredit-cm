@@ -2,6 +2,7 @@
   // Modifiers in this order: Shift-, Cmd-, Ctrl-, and Alt-
   // Alt- does not behave properly a modifier on linux...
   CodeMirror.keyMap.paredit_cm = {
+      "Ctrl-1"       : paredit_cm.core.info,
       "Shift-9"       : paredit_cm.core.open_round,
       "Shift-0"       : paredit_cm.core.close_round,
       "Shift-Alt-0"   : paredit_cm.core.close_round_and_newline,
@@ -14,7 +15,7 @@
       "Shift-Alt-;"   : paredit_cm.core.comment_dwim,
       "Delete"        : paredit_cm.core.forward_delete,
       "Backspace"     : paredit_cm.core.backward_delete,
-      "Ctrl-1"        : paredit_cm.core.backward,
+      //"Ctrl-1"        : paredit_cm.core.backward,
       "Ctrl-2"        : paredit_cm.core.forward,
       "Ctrl-3"        : paredit_cm.core.backward_sexp,
       "Ctrl-4"        : paredit_cm.core.forward_sexp,

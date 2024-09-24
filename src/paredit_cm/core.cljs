@@ -213,7 +213,7 @@
           :as   info} (get-info cm cur)
          itype        (if left-cur(.-type(token cm left-cur)):no-left-cur)
          ktype        (if right-cur(.-type(token cm right-cur)):no-right-cur)]
-     (println(with-out-str(pp/pprint(get-info cm cur))))
+     ;;(println(with-out-str(pp/pprint(get-info cm cur))))
      (cond
        bof                                    :bof
        (and(= type "string")
@@ -251,7 +251,7 @@
 (defn ^:export rinfo
   "answers what is immediately to the right of a | style cursor"
   ([cm] (rinfo cm (cursor cm)))
-  ([cm cur] (let [i (index cm cur)]
+ ([cm cur] (let [i (index cm cur)]
               (if (eof? cm cur)
                 :eof
                 (linfo cm (cursor cm (inc i)))))))
@@ -1539,9 +1539,9 @@
 (def non-word-chars (set "(){}[]|&; \n"))
 
 (def semicolons #{";"})
-(def comment-whitespace #{" " (str \tab)})
-(def non-word-in-comment #{";" " " (str \tab)})
-(def non-word-in-string #{" " (str \tab) (str \")})
+(def comment-whitespace #{" " "\t"})
+(def non-word-in-comment #{";" " " "\t"})
+(def non-word-in-string #{" " "\t" (str \")})
 
 (defn end-of-next-word
   "assumes i is in a comment or a string. returns the i at the end of
@@ -1565,63 +1565,75 @@
         quote                     (if (str/ends-with? last-word "\"") 1 0)]
     (- i length quote)))
 
-(defn kill-next-word
-  "assumes i is in a comment or a string. kills text from i to the end
-  of the next word in this comment/string"
-  [cm i]
-  (kill-from-to cm i (end-of-next-word cm (inc i)))
-  (.setCursor cm (cursor cm i)))
+(defn move-past-token [cm]
+  (when-let [{:keys [right-cur]} (get-info cm)]
+    (let [{:keys [ch end]} (get-info cm right-cur)
+          i                (index cm)]
+      (.setCursor cm (cursor cm (+ i 1 (- end ch)))))))
 
-(defn fwd-kill-word
-  "trampoline helper for forward-kill-word. 'mark' is the index to start killing
-  from. 'i' is the index we're inspecting. 'n' is how many calls remaining that
-  we'll support before stopping because of a suspected infinite loop. first call
-  can put the count of characters in this cm instance."
-  [cm mark i n]
-  (let [m (dec n), j (inc i), cur (cursor cm i), right-cur (cursor cm j)]
-    (cond
-      (neg? n)
-      (guard)
+(def delimiters (set/union openers closers #{"\"" ";"}))
 
-      (eof? cm right-cur)
-      :do-nothing
+(defn move-to-start-of-word
+  "move to the start of the next word and return the index
+  that we should start deleting from for forward-kill-word,
+  nil if no word to delete (and move back)."
+  [cm]
+  (let [start-cur (cursor cm)]
+    (loop [mark (index cm), r (rinfo cm), right-char (:right-char(get-info cm))]
+      (cond
+        ;; if we did not find a word before end of file, move back and return nil:
+        (= r :eof)
+        (do (.setCursor cm start-cur)nil)
+        ;; if we need to enter something to find a word, reset the mark:
+        (and(not= r :string-guts)(delimiters right-char))
+        (do(move-right cm)
+           (recur (index cm)(rinfo cm)(:right-char(get-info cm))))
+        ;; if in a comment and it's a space, move forward and preserve mark:
+        (and (= r :comment) (#{" " "\t"} right-char))
+        (do(move-right cm)(recur mark (rinfo cm)(:right-char(get-info cm))))
+        ;; strings are just like comments, move past whitespace, keep mark:
+        (and (= r :string-guts) (#{" " "\t" "\n"} right-char))
+        (do(move-right cm)(recur mark (rinfo cm)(:right-char(get-info cm))))
+        ;; stop at a word in a string, a regular word, or string-2:
+        (or (= r :string-2-start)
+            (= r :string-guts)
+            (= r :comment)
+            (= r :word))
+        mark
+        ;; otherwise move forward and preserve the mark:
+        :else (do(move-right cm)(recur mark (rinfo cm)(:right-char(get-info cm))))))))
 
-      (whitespace? cm right-cur)
-      #(fwd-kill-word cm mark (token-end-index cm j) m)
-
-      (start-of-a-string? cm right-cur)
-      #(fwd-kill-word cm j j m)
-
-      (in-string? cm right-cur)
-      (kill-next-word cm mark)
-
-      (opening-delim? cm right-cur)
-      #(fwd-kill-word cm j j m)
-
-      (closing-delim? cm right-cur)
-      #(fwd-kill-word cm j j m)
-
-      (at-a-word? cm right-cur)
-      (kill-from-to cm mark (token-end-index cm j))
-
-      (start-of-comment? cm cur)
-      (let [j (index-of-next-non cm i semicolons inc)]
-        #(fwd-kill-word cm j j m))
-
-      (comment? cm right-cur)
-      (kill-next-word cm mark)
-
-      :else
-      (do (println "unhandled situation, please let me know (fwd-kill-word)")
-          (println (get-type cm cur))
-          #(fwd-kill-word cm j j m)))))
+(defn move-to-end-of-word
+  "move to the end of the word and return index's for a kill"
+  [mark cm]
+  (when (some? mark)
+    (loop [r (rinfo cm), right-char (:right-char(get-info cm))]
+      (cond
+        ;; end of a comment:
+        (or(= r :whitespace)
+           (= r :string-end))
+        (do(println"end of comment")[mark (index cm)])
+        ;; keep moving to next whitespace in comment or string:
+        (and (or(= r :comment)
+                (= r :string-guts))
+             (not(#{" " "\t" "\n"} right-char)))
+        (do(println"moving within com/string")(move-right cm)(recur(rinfo cm)(:right-char(get-info cm))))
+        ;; arrived at whitespace in string or comment, stop:
+        (or(= r :comment)
+           (= r :string-guts))
+        (do(println"arrived at whitespace in string/comment")[mark(index cm)])
+        ;; move past word of code:
+        :else
+        (do(println"move past word of code")(move-past-token cm)[mark(index cm)])))))
 
 (defn ^:export forward-kill-word
-  ;; todo does not kill \c characters...
-  "paredit forward-kill-word exposed for keymap."
+  "paredit forward-kill-word exposed for keymap.
+  Kill a word forward, skipping over intervening delimiters."
   [cm]
-  (let [i (index cm)]
-    (trampoline fwd-kill-word cm i i (char-count cm))))
+  (let [mark      (move-to-start-of-word cm)
+        [from to] (move-to-end-of-word mark cm)]
+    (if (and (some? from) (some? to))
+      (kill-from-to cm from to))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-kill-word
@@ -1764,11 +1776,6 @@
           (println (get-type cm cur))
           #(fwd cm j m)))))
 
-(defn move-past-token [cm]
-  (when-let [{:keys [right-cur]} (get-info cm)]
-    (let [{:keys [ch end]} (get-info cm right-cur)
-          i                (index cm)]
-      (.setCursor cm (cursor cm (+ i 1 (- end ch)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward
@@ -2300,6 +2307,41 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-sexp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmulti move-past-char (fn[forward? pred cm] forward?))
+
+(defmethod move-past-char true [forward? pred cm]
+  (loop [c (:right-char(get-info cm))]
+    (when (and (some? c) (pred c))
+      (move-right cm)
+      (recur (:right-char(get-info cm))))))
+
+(defmethod move-past-char false [forward? pred cm]
+  (loop [c (:left-char(get-info cm))]
+    (when (and (some? c) (pred c))
+      (move-left cm)
+      (recur (:left-char(get-info cm))))))
+
+(defmethod move-past-char :default [forward? pred cm]
+  (println "move-past-char: first arg should be true/false"))
+
+(defmulti move-past-info (fn[forward? pred cm] forward?))
+
+(defmethod move-past-info true [forward? pred cm]
+  (loop [i (rinfo cm)]
+    (when (and (not= :eof i) (pred i))
+      (move-right cm)
+      (recur (rinfo cm)))))
+
+(defmethod move-past-info false [forward? pred cm]
+  (loop [i (linfo cm)]
+    (when (and (not= :bof i) (pred i))
+      (move-left cm)
+      (recur (linfo cm)))))
+
+(defmethod move-past-info :default [forward? pred cm]
+  (println "move-past-info: first arg should be true/false"))
+
 (defn move-past-non-code [cm]
   (while (contains? #{:whitespace :comment}(rinfo cm))
     (move-past-token cm)))
@@ -2343,20 +2385,32 @@
          ;; none of the above, so just skip past it and check the stack:
          :default              (do(move-past-token cm)                         (recur stack)))))))
 
-(defn ^:export forward
-   "paredit forward exposed for keymap.
+(defmulti forward-m (fn [cm] (rinfo cm)))
+
+(defmethod forward-m :string-guts [cm]
+  (-> cm
+      move-to-start-of-word
+      (move-to-end-of-word cm)))
+
+(defmethod forward-m :string-end [cm]
+  (move-right cm))
+
+(defmethod forward-m :default [cm]
+  "paredit forward exposed for keymap.
   Move forward an S-expression, or up an S-expression forward.
   If there are no more S-expressions in this one before the closing
   delimiter, move past that closing delimiter; otherwise, move forward
   past the S-expression following the point."
-   [cm]
+  [cm]
   (let [cur-0 (cursor cm)
-        r (rinfo cm)
+        r     (rinfo cm)
         cur-1 (do(forward-sexp cm)(cursor cm))]
     (if (and (= cur-0 cur-1)
              (or (= r :closer)
                  (= r :string-end)))
       (move-right cm))))
+
+(defn ^:export forward [cm] (forward-m cm))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-sexp

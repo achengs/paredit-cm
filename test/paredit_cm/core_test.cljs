@@ -489,7 +489,7 @@ baz) (keep me)  ; Useless form!"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/backward
            "\"a\"X"
-           "X\"afffffffffffffffffffffff\"")
+           "X\"a\"")
 
   (t/check p/backward
            " (Xfoo bar)"

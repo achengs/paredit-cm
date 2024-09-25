@@ -8,6 +8,8 @@
   `(let [[exp-line#
           exp-ch#
           exp-text#]  (paredit-cm.core-test/decode ~after)
+         fname#       (-> ~f var meta :name str)
+         _            (println ["testing ...." fname#])
          ;;[ b4-line#  b4-ch#  b4-text#] (paredit-cm.core-test/decode ~before)
          cm#          (paredit-cm.core-test/get-cm ~before)
          ;; _ (.setValue ~cm b4-text#)
@@ -15,7 +17,6 @@
          _#           (~f cm#)
          cur#         (paredit-cm.core-test/get-cursor cm#)
          index#       (paredit-cm.core-test/index-from-pos cm# cur#)
-         fname#       (-> ~f var meta :name str)
          result-line# (paredit-cm.core-test/line cur#)
          result-ch#   (paredit-cm.core-test/ch   cur#)
          result-text# (paredit-cm.core-test/text cm#)

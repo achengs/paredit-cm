@@ -2049,7 +2049,7 @@
     (token-end cm cur)
     (end-of-next-sibling cm cur)))
 
-(defmulti move-to-start
+(defmulti move-to-start "move to the start for wrap-round"
   (fn [cm]
     (let [[L R] (info cm)]
       (cond
@@ -2063,7 +2063,13 @@
         :in-word
 
         (or (= :comment R)(= :whitespace R))
-        :start-is-to-right))))
+        :start-is-to-right
+
+        (= :closer R)
+        :want-parent))))
+
+(defmethod move-to-start :want-parent [cm]
+  (backward-up cm))
 
 (defn move-to-start-of-string [cm]
   (while (#{:string-start :string-guts}(linfo cm))
@@ -2093,24 +2099,20 @@
   "paredit wrap-round exposed for keymap. if in a word or string, get out of it
   first and then wrap the whole thing"
   [cm]
-  (println "wrap-round")
-  (let [cur-orig (cursor cm)
-        _        (move-to-start cm)
-        cur-open (cursor cm)
-        i-start  (index cm)
-        _ (forward-sexp cm)
-        cur-close (cursor cm)
-        i-end (index cm)]
-    (if (not= i-start i-end)
-      (let [i      (inc i-start)
-            text   (.getRange cm cur-open cur-close)
-            text'  (str "(" text ")")]
-        (println"wrapping")
-        (.replaceRange cm text' cur-open cur-close)
-        (.setCursor cm (cursor cm i)))
-      (do(.setCursor cm cur-orig)
-         (println"moving back")))))
-;; todo what should (asdf qwer X) do? make it wrap the ()
+  (let [cur-orig  (cursor        cm)
+        _         (move-to-start cm)
+        cur-open  (cursor        cm)
+        i-start   (index         cm)
+        _         (forward-sexp  cm)
+        cur-close (cursor        cm)
+        i-end     (index         cm)]
+    (if (= i-start i-end) ;; then nothing to wrap, go back:
+      (.setCursor cm cur-orig)
+      (let [text (str "("
+                      (.getRange cm cur-open cur-close)
+                      ")")]
+        (.replaceRange cm text cur-open cur-close)
+        (.setCursor cm (cursor cm (inc i-start)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-splice-sexp M-s

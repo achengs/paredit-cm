@@ -648,6 +648,10 @@ world\") baz)")
   (t/check p/wrap-round
            "(foo X   bar baz)"
            "(foo    (Xbar) baz)")
+
+  (t/check p/wrap-round
+           "(foo bar bazX)"
+           "(X(foo bar baz))")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/splice-sexp
            "(foo Xbaz)"

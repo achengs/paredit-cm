@@ -26,7 +26,7 @@
       "Ctrl-9"        : paredit_cm.core.backward_kill_word,
       "Ctrl-0"        : paredit_cm.core.kill,
       "Ctrl--"        : paredit_cm.core.forward_kill_word,
-      "Shift-Alt-9"   : paredit_cm.core.wrap_round,
+      "Shift-Ctrl-7"  : paredit_cm.core.wrap_round,
       "Shift-Ctrl-1"  : paredit_cm.core.splice_sexp_killing_backward,
       "Shift-Ctrl-2"  : paredit_cm.core.splice_sexp,
       "Shift-Ctrl-3"  : paredit_cm.core.splice_sexp_killing_forward,

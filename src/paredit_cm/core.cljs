@@ -2049,17 +2049,68 @@
     (token-end cm cur)
     (end-of-next-sibling cm cur)))
 
+(defmulti move-to-start
+  (fn [cm]
+    (let [[L R] (info cm)]
+      (cond
+        (and (#{:string-start :string-guts} L) (#{:string-guts :string-end} R))
+        :in-string
+
+        (and (#{:string-2-start :string-2-guts} L) (#{:string-2-guts :string-2-end} R))
+        :in-string-2
+
+        (and (= :word L) (= :word R))
+        :in-word
+
+        (or (= :comment R)(= :whitespace R))
+        :start-is-to-right))))
+
+(defn move-to-start-of-string [cm]
+  (while (#{:string-start :string-guts}(linfo cm))
+    (move-left cm)))
+
+(defmethod move-to-start :in-string [cm]
+  (move-to-start-of-string cm))
+
+(defmethod move-to-start :in-string-2 [cm]
+  (while (#{:string-2-start :string-2-guts}(linfo cm))
+    (move-left cm))
+  (move-to-start-of-string cm))
+
+(defmethod move-to-start :in-word [cm]
+  (while (= :word (linfo cm))
+    (move-left cm)))
+
+(defmethod move-to-start :start-is-to-right [cm]
+  (loop [R (rinfo cm)]
+    (when (and (not= :eof R)(#{:whitespace :comment} R))
+      (move-right cm)
+      (recur (rinfo cm)))))
+
+(defmethod move-to-start :default [cm] :no-op)
+
 (defn ^:export wrap-round
-  "paredit wrap-round exposed for keymap."
-  ([cm] (wrap-round cm (cursor cm)))
-  ([cm cur]
-   (let [cur-close (end-of-this cm cur)
-         cur-open  (start-of-prev-sibling cm cur-close)
-         i         (inc (index cm cur-open))
-         text      (.getRange cm cur-open cur-close)
-         text'     (str "(" text ")")]
-     (.replaceRange cm text' cur-open cur-close)
-     (.setCursor cm (cursor cm i)))))
+  "paredit wrap-round exposed for keymap. if in a word or string, get out of it
+  first and then wrap the whole thing"
+  [cm]
+  (println "wrap-round")
+  (let [cur-orig (cursor cm)
+        _        (move-to-start cm)
+        cur-open (cursor cm)
+        i-start  (index cm)
+        _ (forward-sexp cm)
+        cur-close (cursor cm)
+        i-end (index cm)]
+    (if (not= i-start i-end)
+      (let [i      (inc i-start)
+            text   (.getRange cm cur-open cur-close)
+            text'  (str "(" text ")")]
+        (println"wrapping")
+        (.replaceRange cm text' cur-open cur-close)
+        (.setCursor cm (cursor cm i)))
+      (do(.setCursor cm cur-orig)
+         (println"moving back")))))
+;; todo what should (asdf qwer X) do? make it wrap the ()
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-splice-sexp M-s

@@ -2132,7 +2132,7 @@
         _     (forward-sexp cm)
         i2    (index cm) ;; end of sexp to splice
         cur-R (cursor cm)
-        iR    (dec(index cm))]
+        iR    (dec i2)]
     (if (or (= i0 i1)(= i1 i2)) ;; then nothing to splice, so go back:
       (.setCursor cm (cursor cm i0))
       (do (.replaceRange cm
@@ -2149,19 +2149,31 @@
 
 (defn ^:export splice-sexp-killing-backward
   "paredit splice-sexp-killing-backward exposed for keymap. like emacs' version,
-  this doesn't actually kill to the clipboard. it just deletes. but unlink
+  this doesn't actually kill to the clipboard. it just deletes. but unlike
   emacs, this does not splice a string by dropping its double-quotes."
-  ([cm] (splice-sexp-killing-backward cm (cursor cm)))
-  ([cm cur]
-   (if (in-string? cm cur) (backward-up cm cur))
-   (let [cur'      (cursor cm)
-         cur-close (skip cm parent-closer-sp)
-         cur-open  (start-of-prev-sibling cm cur-close)
-         text'     (when cur-close
-                 (.getRange cm cur' (cursor cm (dec (index cm cur-close)))))]
-     (when text'
-       (.replaceRange cm text' cur-open cur-close)
-       (.setCursor cm cur-open)))))
+  [cm]
+  (let [i0    (index cm) ;; starting i, might kill up to here
+        _     (backward-up cm)
+        i00   (when(= :string-start(rinfo cm))
+                (let [i (index cm)]
+                  (backward-up cm)
+                  i)) ;; or kill up to here because we exited a string
+        i1    (index cm) ;; start of sexp to splice
+        cur-L (cursor cm)
+        iL    (or i00 i0) ;; keep text starting from here
+        _     (forward-sexp cm)
+        i2    (index cm) ;; end of sexp to splice
+        cur-R (cursor cm)
+        iR    (dec i2)] ;; keep text up to here
+    (if (or (= i0 i1)(= i1 i2)) ;; then nothing to splice, so go back:
+      (.setCursor cm (cursor cm i0))
+      (do (.replaceRange cm
+                         (.getRange cm
+                                    (cursor cm iL)
+                                    (cursor cm iR))
+                         cur-L
+                         cur-R)
+          (.setCursor cm (cursor cm i1))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-splice-sexp-killing-forward M-<down>

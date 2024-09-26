@@ -2119,20 +2119,29 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn ^:export splice-sexp
-  "paredit splice-sexp exposed for keymap. unlike emacs' version, this does not
-  splice a string by dropping its double-quotes."
-  ([cm] (splice-sexp cm (cursor cm)))
-  ([cm cur]
-   (let [i         (dec (index cm))
-         cur-close (skip cm parent-closer-sp)
-         cur-open  (start-of-prev-sibling cm cur-close)
-         text'     (when cur-open
-                 (.getRange cm
-                            (cursor cm (inc (index cm cur-open)))
-                            (cursor cm (dec (index cm cur-close)))))]
-     (when text'
-       (.replaceRange cm text' cur-open cur-close)
-       (.setCursor cm (cursor cm i))))))
+  "paredit splice-sexp exposed for keymap. Splice the list that the point is on
+  by removing its delimiters. unlike emacs' version, this does not splice a
+  string by dropping its double-quotes."
+  [cm]
+  (let [i0    (index cm) ;; starting i
+        _     (backward-up cm)
+        _     (when(= :string-start(rinfo cm))(backward-up cm))
+        i1    (index cm) ;; start of sexp to splice
+        cur-L (cursor cm)
+        iL    (inc i1)
+        _     (forward-sexp cm)
+        i2    (index cm) ;; end of sexp to splice
+        cur-R (cursor cm)
+        iR    (dec(index cm))]
+    (if (or (= i0 i1)(= i1 i2)) ;; then nothing to splice, so go back:
+      (.setCursor cm (cursor cm i0))
+      (do (.replaceRange cm
+                         (.getRange cm
+                                    (cursor cm iL)
+                                    (cursor cm iR))
+                         cur-L
+                         cur-R)
+          (.setCursor cm (cursor cm (dec i0)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-splice-sexp-killing-backward M-<up>

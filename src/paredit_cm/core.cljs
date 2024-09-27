@@ -1773,33 +1773,45 @@
 (defn ^:export forward-sexp
   "forward-sexp exposed for keymap. seems part of emacs and not part
   of paredit itself. but including it here since this will be used in
-  things other than emacs itself."
-  ([cm] (forward-sexp cm (cursor cm)))
-  ([cm cur]
-   (loop [stack 0]
-     (let [R (rinfo cm)]
-       (cond
-         ;; can't go any further than the end of file:
-         (= R :eof)            :done
-         ;; skip past comments and whitespace since we care about sexps:
-         (or(= R :comment)
-            (= R :whitespace)) (do(move-past-non-code cm)                      (recur stack))
-         ;; skip past a word, and if there's still a stack then recur:
-         (= R :word)           (do(move-past-token cm)(when(not(zero? stack))  (recur stack)))
-         ;; skip past a string just like a single word:
-         (= R :string-start)   (do(move-past-string cm)(when(not(zero? stack)) (recur stack)))
-         ;; enter a sexp and increase the stack:
-         (= R :opener)         (do(move-right cm)                              (recur (inc stack)))
-         ;; what we do at a closer depends on the stack:
-         (or(= R :closer)
-            (= R :string-end)) (cond
-                                 (= 0 stack) :done
-                                 (= 1 stack) (move-right cm)
-                                 :else       (do(move-right cm)                (recur (dec stack))))
-         ;; stop inside the end of a string if we start inside one:
-         (= R :string-guts)    (do(move-past-string cm)(move-left cm))
-         ;; none of the above, so just skip past it and check the stack:
-         :default              (do(move-past-token cm)                         (when(not(zero? stack))(recur stack))))))))
+  things other than emacs itself. return true if we moved."
+  [cm]
+  (let [i0 (index cm)]
+    (loop [stack 0]
+      (let [R (rinfo cm)]
+        (cond
+          ;; can't go any further than the end of file:
+          (= R :eof)            (not= i0 (index cm))
+          ;; skip past comments and whitespace since we care about sexps:
+          (or(= R :comment)
+             (= R :whitespace)) (do(move-past-non-code cm)
+                                   (recur stack))
+          ;; skip past a word, and if there's still a stack then recur:
+          (= R :word)           (do(move-past-token cm)
+                                   (if(not(zero? stack))
+                                     (recur stack)
+                                     (not= i0 (index cm))))
+          ;; skip past a string just like a single word:
+          (= R :string-start)   (do(move-past-string cm)
+                                   (if(not(zero? stack))
+                                     (recur stack)
+                                     (not= i0 (index cm))))
+          ;; enter a sexp and increase the stack:
+          (= R :opener)         (do(move-right cm)
+                                   (recur (inc stack)))
+          ;; what we do at a closer depends on the stack:
+          (or(= R :closer)
+             (= R :string-end)) (cond
+                                  (= 0 stack) (not= i0 (index cm))
+                                  (= 1 stack) (do(move-right cm)(not= i0 (index cm)))
+                                  :else       (do(move-right cm)
+                                                 (recur (dec stack))))
+          ;; stop inside the end of a string if we start inside one:
+          (= R :string-guts)    (do(move-past-string cm)(move-left cm)(not= i0 (index cm)))
+          ;; none of the above, so just skip past it and check the stack:
+          :default              (do(move-past-token cm)
+                                   (if(not(zero? stack))
+                                     (recur stack)
+                                     (not= i0 (index cm)))))))))
 
 (defmulti forward-m (fn [cm] (rinfo cm)))
 
@@ -1835,35 +1847,48 @@
 (defn ^:export backward-sexp
   "backward-sexp exposed for keymap. seems part of emacs and not part
   of paredit itself. but including it here since this will be used in
-  things other than emacs itself."
-  ([cm] (backward-sexp cm (cursor cm)))
-  ([cm cur]
-   (loop [rem (index cm), stack 0]
-     (let [L (linfo cm)
-           {:keys [i left-char right-char]} (get-info cm)]
+  things other than emacs itself. return true if we moved."
+  [cm]
+  (let [i0 (index cm)]
+    (loop [rem i0, stack 0]
+      (let [L (linfo cm)]
        (cond
-         (neg? rem)            (do(println[rem stack i left-char right-char L "avoiding infinite loop"]):done)
+         ;; avoid infinite loop:
+         (neg? rem)              (not= i0 (index cm))
          ;; can't go any further than the beginning of file:
-         (= L :bof)            (do(println[rem stack i left-char right-char L "bof"]):done)
+         (= L :bof)              (not= i0 (index cm))
          ;; skip before comments and whitespace since we care about sexps:
          (or(= L :comment)
-            (= L :whitespace)) (do(println[rem stack i left-char right-char L "whi/com"])(move-before-non-code cm)                      (recur(dec rem)stack))
+            (= L :whitespace))   (do(move-before-non-code cm)
+                                    (recur(dec rem)stack))
          ;; skip before a word, and if there's still a stack then recur:
-         (= L :word)           (do(println[rem stack i left-char right-char L "skip word"])(move-before-word cm)(when(not(zero? stack))  (recur(dec rem)stack)))
+         (= L :word)             (do(move-before-word cm)
+                                    (if(not(zero? stack))
+                                      (recur(dec rem)stack)
+                                      (not= i0 (index cm))))
          ;; skip before a string just like a single word:
-         (= L :string-end)     (do(println[rem stack i left-char right-char L "skip str"])(move-before-string cm)(when(not(zero? stack)) (recur(dec rem)stack)))
+         (= L :string-end)       (do(move-before-string cm)
+                                    (if(not(zero? stack))
+                                      (recur(dec rem)stack)
+                                      (not= i0 (index cm))))
          ;; enter a sexp and increase the stack:
-         (= L :closer)         (do(println[rem stack i left-char right-char L "enter and inc stack"])(move-left cm)                                 (recur(dec rem)(inc stack)))
+         (= L :closer)           (do(move-left cm)
+                                    (recur(dec rem)(inc stack)))
          ;; what we do at an opener depends on the stack:
          (or(= L :opener)
             (= L :string-start)) (cond
-                                   (= 0 stack) (do(println[rem stack i left-char right-char L "stop inside op"]):done)
-                                   (= 1 stack) (do(println[rem stack i left-char right-char L "exit op and done"])(move-left cm))
-                                   :else       (do(println[rem stack i left-char right-char L "exit opener...."])(move-left cm)                   (recur(dec rem)(dec stack))))
+                                   (= 0 stack) (not= i0 (index cm))
+                                   (= 1 stack) (do(move-left cm)(not= i0 (index cm)))
+                                   :else       (do(move-left cm)
+                                                  (recur(dec rem)(dec stack))))
          ;; stop inside the end of a string if we start inside one:
-         (= L :string-guts)    (do(println[rem stack i left-char right-char L "inside start of str"])(move-before-string cm)(move-right cm))
+         (= L :string-guts)      (do(move-before-string cm)
+                                    (move-right cm)(not= i0 (index cm)))
          ;; none of the above, so just skip before it and check the stack:
-         :default              (do(println[rem stack i left-char right-char L "default"])(move-before-token cm)                         (when(not(zero? stack))(recur(dec rem)stack))))))))
+         :default                (do(move-before-token cm)
+                                    (if(not(zero? stack))
+                                      (recur(dec rem)stack)
+                                      (not= i0 (index cm)))))))))
 
 (defn move-back-to-end-of-word
   "move back to the end of the prev word and return the index
@@ -1952,17 +1977,12 @@
   ([cm] (backward-up cm (cursor cm)))
   ([cm cur]
    (let[original-i (index cm cur)]
-     (loop [prev-i original-i]
-       (backward-sexp cm)
-       (let [new-i (index cm)]
-         (if (and (not= prev-i new-i)
-                  (not= :bof (linfo cm)))
-           (recur new-i))))
-     (let [L (linfo cm)]
-       (if (or(= L :opener)
-              (= L :string-start))
-         (move-left cm)
-         (.setCursor cm (cursor cm original-i)))))))
+     ;; keep moving backward-sexp until we stop:
+     (loop [] (when (backward-sexp cm) (recur)))
+     ;; if we're at an opener, move before it:
+     (if (#{:opener :string-start}(linfo cm))
+       (move-left cm)
+       (.setCursor cm (cursor cm original-i))))))
 
 (defn fwd
   "trampoline helper for forward. 'i' is the index we're inspecting. 'n' is how
@@ -2024,8 +2044,15 @@
   "paredit forward-up exposed for keymap."
   ([cm] (forward-up cm (cursor cm)))
   ([cm cur]
-   (when-let [cur' (forward-up-cur cm cur)]
-     (.setCursor cm cur'))))
+   (let[original-i (index cm cur)]
+     ;; keep moving forward-sexp until we stop:
+     (loop [] (when (forward-sexp cm) (recur)))
+     (println "forward-up: done moving forward, let's see....")
+     (info cm)
+     ;; if we're at a closer, move past it:
+     (if (#{:closer :string-end}(rinfo cm))
+       (move-right cm)
+       (.setCursor cm (cursor cm original-i))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-up
@@ -2036,7 +2063,6 @@
   ([cm] (backward-up-cur cm (cursor cm)))
   ([cm cur]
    (start-of-prev-sibling cm (forward-up-cur cm cur))))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-wrap-round
@@ -2183,19 +2209,29 @@
   "paredit splice-sexp-killing-forward exposed for keymap. like emacs' version,
   this doesn't actually kill to the clipboard. it just deletes. but unlink
   emacs, this does not splice a string by dropping its double-quotes."
-  ([cm] (splice-sexp-killing-forward cm (cursor cm)))
-  ([cm cur]
-   (if (in-string? cm cur) (forward-up cm cur))
-   (let [cur'      (cursor cm)
-         final-cur (cursor cm (dec (index cm cur')))
-         cur-close (skip cm parent-closer-sp)
-         cur-open  (start-of-prev-sibling cm cur-close)
-         keep-from (when cur-open (cursor cm (inc (index cm cur-open))) )
-         text      (when keep-from (.getRange cm cur-open cur-close))
-         text'     (when keep-from (.getRange cm keep-from cur'))]
-     (when text'
-       (.replaceRange cm text' cur-open cur-close)
-       (.setCursor cm final-cur)))))
+  [cm]
+  (let [i0    (index cm) ;; starting i, might kill from here
+        _     (forward-up cm)
+        i00   (when(= :string-end(linfo cm))
+                (let [i (index cm)]
+                  (forward-up cm)
+                  i)) ;; or kill from here because we exited a string
+        i2    (index cm) ;; end of sexp to splice
+        cur-R (cursor cm)
+        iR    (or i00 i0) ;; keep text ending here
+        _     (backward-sexp cm)
+        i1    (index cm) ;; beginning of sexp to splice
+        cur-L (cursor cm)
+        iL    (inc i1)] ;; keep text starting here
+    (if (or (= i0 i2)(= i1 i2)) ;; then nothing to splice, so go back:
+      (.setCursor cm (cursor cm i0))
+      (do (.replaceRange cm
+                         (.getRange cm
+                                    (cursor cm iL)
+                                    (cursor cm iR))
+                         cur-L
+                         cur-R)
+          (.setCursor cm (cursor cm (dec iR)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-raise-sexp M-r

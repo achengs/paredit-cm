@@ -2041,18 +2041,17 @@
      :default, (skip cm parent-closer-sp))))
 
 (defn ^:export forward-up
-  "paredit forward-up exposed for keymap."
-  ([cm] (forward-up cm (cursor cm)))
-  ([cm cur]
-   (let[original-i (index cm cur)]
-     ;; keep moving forward-sexp until we stop:
-     (loop [] (when (forward-sexp cm) (recur)))
-     (println "forward-up: done moving forward, let's see....")
-     (info cm)
-     ;; if we're at a closer, move past it:
-     (if (#{:closer :string-end}(rinfo cm))
-       (move-right cm)
-       (.setCursor cm (cursor cm original-i))))))
+  "paredit forward-up exposed for keymap.
+  return true if we moved."
+  [cm]
+  (let[original-i (index cm)]
+    ;; keep moving forward-sexp until we stop:
+    (loop [] (when (forward-sexp cm) (recur)))
+    ;; if we're at a closer, move past it:
+    (if (#{:closer :string-end}(rinfo cm))
+      (move-right cm)
+      (.setCursor cm (cursor cm original-i)))
+    (not= original-i (index cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-up
@@ -2411,17 +2410,28 @@
         :default           [parent inside bracket-cur bracket moved]))))
 
 (defn ^:export forward-barf-sexp
-  "paredit forward-barf-sexp exposed for keymap."
-  ([cm] (forward-barf-sexp cm (cursor cm)))
-  ([cm cur]
-   (if-let [[parent inside sibling bracket moved]
-            (trampoline fwd-barf cm cur (char-count cm))]
-     (do (.replaceRange cm "" inside parent)
-         (insert cm bracket 0 sibling)
-         (if moved
-           (.setCursor cm (cursor cm (+ (index cm cur) (count bracket))))
-           (.setCursor cm cur)))
-     (.setCursor cm cur))))
+  "paredit forward-barf-sexp exposed for keymap.
+  Remove the last S-expression in the current list from that list
+  by moving the closing delimiter."
+  ([cm] (forward-barf-sexp cm nil))
+  ([cm starting-i]
+   (let [original-i (or starting-i (index cm))]
+     (if (not(forward-up cm)) ;; if we are not inside a sexp,
+       (.setCursor cm (cursor cm original-i)) ;; then there's nothing to barf.
+       (if(= :string-end(linfo cm)) ;; if we merely exited a string,
+         (forward-barf-sexp cm original-i) ;; then start over but with original-i.
+         (let [{:keys [left-cur cur left-char]} (get-info cm)] ;; get the closer to move
+           (move-left cm) ;; move back inside
+           (if (not(backward-sexp cm)) ;; if there's no sexp to barf,
+             (.setCursor cm (cursor cm original-i)) ;; then abort.
+             (do (when(backward-sexp cm) ;; if there's a left sibling,
+                   (forward-sexp cm)) ;; then get to the end of it
+                 (.replaceRange cm "" left-cur cur) ;; delete the old closer
+                 (insert cm left-char 0) ;; and put the same closer in the new spot
+                 (if (= :whitespace (rinfo cm)) ;; if there's whitespace to the right,
+                   (.setCursor cm (cursor cm original-i)) ;; then we're done
+                   (do(insert cm " " 0) ;; otherwise add a space to pad
+                      (.setCursor cm (cursor cm (+ 2 original-i)))))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backard-barf-sexp C-{, C-M-<right>, Esc C-<right>

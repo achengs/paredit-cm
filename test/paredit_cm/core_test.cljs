@@ -904,16 +904,12 @@ world (!)\" zoXt)")
            "(\"bar baz hi worXld\" quux zot)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/forward-barf-sexp
-           "(foo (baXr baz quux zot))"
-           "(foo (baXr baz quux) zot)")
+           "(foo [baXr baz quux zot])"
+           "(foo [baXr baz quux] zot)")
 
   (t/check p/forward-barf-sexp
-           "(foo (baXr baz quux) zot)"
-           "(foo (baXr baz) quux zot)")
-
-  (t/check p/forward-barf-sexp
-           "(foo (baXr baz) quux zot)"
-           "(foo (baXr) baz quux zot)")
+           "(foo {baXr baz quux} zot)"
+           "(foo {baXr baz} quux zot)")
 
   (t/check p/forward-barf-sexp
            "(foo (baXr baz) quux zot)"
@@ -934,6 +930,10 @@ world (!)\" zoXt)")
   (t/check p/forward-barf-sexp
            "(foo (baXr ([hey] hi ho) \"hi world\") zoo)"
            "(foo (baXr ([hey] hi ho)) \"hi world\" zoo)")
+
+  (t/check p/forward-barf-sexp
+           "foo \"hi Xworld\" bar"
+           "foo \"hi Xworld\" bar")
 
   (t/check p/forward-barf-sexp
            "(foo (baXr \"hi world\" ([hey]

@@ -1495,7 +1495,6 @@
   avoid accidentally escaping a closing double quote of a string.
   we may have to kill a multi-line sexp."
   [cm]
-  (println"in kill")
   (while (contains? #{:string-2-start
                       :string-2-guts
                       :string-2-end} (linfo cm))
@@ -1973,16 +1972,17 @@
 (defn ^:export backward-up
   "paredit backward-up exposed for keymap.
   Move backward up out of the enclosing list.
-  If in a string initially, that counts as one level."
-  ([cm] (backward-up cm (cursor cm)))
-  ([cm cur]
-   (let[original-i (index cm cur)]
-     ;; keep moving backward-sexp until we stop:
-     (loop [] (when (backward-sexp cm) (recur)))
-     ;; if we're at an opener, move before it:
-     (if (#{:opener :string-start}(linfo cm))
-       (move-left cm)
-       (.setCursor cm (cursor cm original-i))))))
+  If in a string initially, that counts as one level.
+  return true if we moved."
+  [cm]
+  (let[original-i (index cm)]
+    ;; keep moving backward-sexp until we stop:
+    (loop [] (when (backward-sexp cm) (recur)))
+    ;; if we're at an opener, move before it:
+    (if (#{:opener :string-start}(linfo cm))
+      (move-left cm)
+      (.setCursor cm (cursor cm original-i)))
+    (not= original-i (index cm))))
 
 (defn fwd
   "trampoline helper for forward. 'i' is the index we're inspecting. 'n' is how
@@ -2235,21 +2235,30 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-raise-sexp M-r
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defn ^:export raise-sexp
   "paredit raise-sexp exposed for keymap."
-  ([cm] (raise-sexp cm (cursor cm)))
-  ([cm cur]
-   (when (in-string? cm cur) (backward-up cm cur))
-   (when (in-a-word? cm) (.setCursor cm (start-of-prev-sibling cm)))
-   (let [c1        (cursor cm)
-         c2        (end-of-next-sibling cm c1)
-         text      (when c2 (.getRange cm c1 c2))
-         cur-close (when text (skip cm parent-closer-sp))
-         cur-open  (when cur-close (start-of-prev-sibling cm cur-close))]
-     (when cur-open
-       (.replaceRange cm text cur-open cur-close)
-       (.setCursor cm cur-open)))))
+  [cm]
+  (let [original-cur (cursor cm)
+        [L R] (info cm)
+        _ (cond ;; if in a string, string-2, or word then go to its start:
+            (#{:string-start :string-guts} L)     (backward-up cm)
+            (#{:string-2-start :string-2-guts} L) (backward    cm)
+            (and(= :word L)(not= :word R))        (backward    cm))
+        sexp-start-cur   (cursor       cm)
+        sexp-to-raise?   (forward-sexp cm)
+        sexp-end-cur     (cursor       cm)
+        inside-sexp?     (backward-up  cm)
+        parent-start-cur (cursor       cm)
+        parent-to-kill?  (forward-sexp cm)
+        parent-end-cur   (cursor       cm)]
+    (if (or (not sexp-to-raise?)
+            (not parent-to-kill?))
+      (.setCursor cm original-cur)
+      (do (.replaceRange cm
+                      (.getRange cm sexp-start-cur sexp-end-cur)
+                      parent-start-cur
+                      parent-end-cur)
+          (backward-sexp cm)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-slurp-sexp C-), C-<right>
@@ -2366,15 +2375,19 @@
 
 (defn ^:export backward-slurp-sexp
   "paredit backward-slurp-sexp exposed for keymap."
-  ([cm] (backward-slurp-sexp cm (cursor cm)))
-  ([cm cur]
-   (let [i (index cm cur)] ;; line,ch may change but index will not.
-     (when-let [[parent sibling bracket]
-                (trampoline bkwd-slurp cm cur (char-count cm))]
-       (.replaceRange cm "" parent
-                      (cursor cm (+ (index cm parent) (count bracket))))
-       (insert cm bracket 0 sibling))
-     (.setCursor cm (cursor cm i)))))
+  ([cm] (backward-slurp-sexp cm nil))
+  ([cm starting-i]
+   (let [original-i (or starting-i (index cm))]
+     (if(not(backward-up cm)) ;; if we are not inside a sexp,
+       (.setCursor cm (cursor cm original-i)) ;; then there's nothing to slurp into.
+       (if(= :string-start(rinfo cm)) ;; if we merely exited a string,
+         (backward-slurp-sexp cm original-i) ;; then start over but with original-i
+         (let [{:keys [cur right-cur right-char]} (get-info cm)] ;; get the opener
+           (if(not(backward-sexp cm)) ;; if there's no sexp to slurp,
+             (.setCursor cm (cursor cm original-i)) ;; then abort.
+             (do (.replaceRange cm "" cur right-cur) ;; delete the old opener
+                 (insert cm right-char 0) ;; and put the same opener in the new spot
+                 (.setCursor cm (cursor cm original-i))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-barf-sexp C-\} C-<left>
@@ -2420,7 +2433,7 @@
        (.setCursor cm (cursor cm original-i)) ;; then there's nothing to barf.
        (if(= :string-end(linfo cm)) ;; if we merely exited a string,
          (forward-barf-sexp cm original-i) ;; then start over but with original-i.
-         (let [{:keys [left-cur cur left-char]} (get-info cm)] ;; get the closer to move
+         (let [{:keys [left-cur cur left-char]} (get-info cm)] ;; get the closer
            (move-left cm) ;; move back inside
            (if (not(backward-sexp cm)) ;; if there's no sexp to barf,
              (.setCursor cm (cursor cm original-i)) ;; then abort.
@@ -2461,16 +2474,25 @@
 
 (defn ^:export backward-barf-sexp
   "paredit backward-barf-sexp exposed for keymap."
-  ([cm] (backward-barf-sexp cm (cursor cm)))
-  ([cm cur]
-   (if-let [[outside inside bracket-cur bracket-text moved word]
-            (trampoline bkwd-barf cm cur (index cm cur))]
-     (do (insert cm bracket-text 0 bracket-cur)
-         (.replaceRange cm (if word " " "") outside inside)
-         (if moved
-           (.setCursor cm (cursor cm (- (index cm cur) (count bracket-text))))
-           (.setCursor cm cur)))
-     (.setCursor cm cur))))
+  [cm]
+  (let[original-cur        (cursor        cm)
+       original-i          (index         cm)
+       inside-a-sexp?      (backward-up   cm)
+       {:keys[right-char]} (get-info      cm)
+       outside-cur         (cursor        cm)
+       inside-cur          (move-right    cm)
+       sexp-to-barf?       (forward-sexp  cm)
+       _                   (forward-sexp  cm)
+       _                   (backward-sexp cm)
+       destination-cur     (cursor        cm)
+       destination-i       (index         cm)
+       edit? (and inside-a-sexp? sexp-to-barf?)]
+    (when edit?
+      (insert cm right-char 0 destination-cur)
+      (.replaceRange cm "" outside-cur inside-cur))
+    (.setCursor cm original-cur)
+    (when (and edit? (< original-i destination-i))
+      (move-left cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-split-sexp M-S

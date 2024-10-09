@@ -236,6 +236,9 @@
             (str/starts-with? string "\"")
             (= ch (inc start)))               :string-start
        (and (= type "string")
+            (= ch end)
+            (str/ends-with? string "\\\""))   :string-guts
+       (and (= type "string")
             (= ch end))                       :string-end
        (= type "string")                      :string-guts
        (and (= type "string-2")

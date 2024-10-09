@@ -1002,7 +1002,7 @@ X
            "(hello wo)X (rld)")
   (t/check p/split-sexp
            "\"helloX world\""
-           "\"hello\"X \"world\"")
+           "\"hello\"X \" world\"")
   (t/check p/split-sexp
            "\"hello woXrld\""
            "\"hello wo\"X \"rld\"")

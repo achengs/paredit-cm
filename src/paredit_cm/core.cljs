@@ -2235,22 +2235,28 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-raise-sexp M-r
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defn move-for-sexp-editing
+  "make initial move for editing sexps and return true if moved.
+  we don't want to start editing sexps from within a string or string-2 or word"
+  [cm]
+  (let [[L R] (info cm)]
+    (cond ;; if in a string, string-2, or word then go to its start:
+      (#{:string-start :string-guts} L)     (backward-up cm)
+      (#{:string-2-start :string-2-guts} L) (backward    cm)
+      (and(= :word L)(not= :word R))        (backward    cm))))
+
 (defn ^:export raise-sexp
   "paredit raise-sexp exposed for keymap."
   [cm]
-  (let [original-cur (cursor cm)
-        [L R] (info cm)
-        _ (cond ;; if in a string, string-2, or word then go to its start:
-            (#{:string-start :string-guts} L)     (backward-up cm)
-            (#{:string-2-start :string-2-guts} L) (backward    cm)
-            (and(= :word L)(not= :word R))        (backward    cm))
-        sexp-start-cur   (cursor       cm)
-        sexp-to-raise?   (forward-sexp cm)
-        sexp-end-cur     (cursor       cm)
-        inside-sexp?     (backward-up  cm)
-        parent-start-cur (cursor       cm)
-        parent-to-kill?  (forward-sexp cm)
-        parent-end-cur   (cursor       cm)]
+  (let [original-cur     (cursor                cm)
+        _                (move-for-sexp-editing cm)
+        sexp-start-cur   (cursor                cm)
+        sexp-to-raise?   (forward-sexp          cm)
+        sexp-end-cur     (cursor                cm)
+        inside-sexp?     (backward-up           cm)
+        parent-start-cur (cursor                cm)
+        parent-to-kill?  (forward-sexp          cm)
+        parent-end-cur   (cursor                cm)]
     (if (or (not sexp-to-raise?)
             (not parent-to-kill?))
       (.setCursor cm original-cur)
@@ -2537,13 +2543,82 @@
     (move-left cm)
     (move-left cm)))
 
+(defmulti split-sexp-m
+  (fn [cm]
+    (let [[L R] (info cm)]
+      (cond
+        (#{:string-start :string-guts} L) :split-string
+        :default                          :default))))
+
+(defmethod split-sexp-m :split-string [cm]
+  (insert cm "\" \"")
+  (move-left cm)
+  (move-left cm))
+
+(defn cur-next-non
+  "Keep moving in direction `dir` :L for left, :R for right
+  until the next position has info not= `x`.
+  Return nil if we reach the end of the document, otherwise
+  return the cursor."
+  [cm dir x]
+  (let [start-cur (cursor cm)
+        info-fn (if (= :L dir) linfo rinfo)
+        move-fn (if (= :L dir) move-left move-right)]
+    (loop [y (info-fn cm),remaining (char-count cm)]
+      (cond
+        (neg? remaining) (do (.setCursor cm start-cur)
+                             nil)
+        (= x y)          (do(move-fn cm)
+                            (recur(info-fn cm)
+                                  (dec remaining)))
+        :else            (let [cur (cursor cm)]
+                           (.setCursor cm start-cur)
+                           cur)))))
+
+(defmethod split-sexp-m :default [cm]
+  (let [original-cur    (cursor cm)
+        inside-a-sexp?  (backward-up cm)
+        opening-bracket (:right-char(get-info cm))
+        closing-bracket (get pair opening-bracket)
+        _               (.setCursor cm original-cur)
+        dest-L-cur      (cur-next-non cm :L :whitespace)
+        dest-L-info     (get-info cm dest-L-cur)
+        dest-L-cur-b    (:right-cur dest-L-info)
+        dest-L-line     (:line dest-L-info)
+        dest-L-i        (index cm dest-L-cur)
+        dest-R-cur      (cur-next-non cm :R :whitespace)
+        dest-R-info     (get-info cm dest-R-cur)
+        dest-R-cur-a    (:left-cur dest-R-info)
+        dest-R-line     (:line dest-R-info)
+        dest-R-i        (index cm dest-R-cur)]
+    (.setCursor cm original-cur)
+    (when inside-a-sexp?
+      ;; -----------------------------------------------------------------------------
+      (.setCursor cm dest-R-cur)         ;; put the opener in for the right half:
+      (if (>= 1 (- dest-R-i dest-L-i))   ;; if new brackets would touch,
+        (do(insert cm " ")               ;; then add a padding space
+           (insert cm opening-bracket))
+        (if (= dest-R-line dest-L-line)  ;; if brackets are on the same line,
+          (.replaceRange cm              ;; replace the last whitespace
+                         opening-bracket ;; with the new bracket
+                         dest-R-cur-a
+                         dest-R-cur)
+          (insert cm opening-bracket)))  ;; insert avoids replacing a \n
+      ;; -----------------------------------------------------------------------------
+      (.setCursor cm dest-L-cur)         ;; put the closer for the left half:
+      (if (= dest-L-i dest-R-i)          ;; if new brackets are close,
+        (insert cm closing-bracket)      ;; then just insert
+        (if (= dest-R-line dest-L-line)  ;; else if new brackets are on the same line,
+          (.replaceRange cm              ;; replace the first whitespace with
+                         closing-bracket ;; the new bracket
+                         dest-L-cur
+                         dest-L-cur-b)
+          (do(insert cm closing-bracket) ;; else insert to avoid consuming a \n
+             (move-right cm)))))))       ;; and adjust the position
+
 (defn ^:export split-sexp
   "paredit split-sexp exposed for keymap."
-  ([cm] (split-sexp cm (cursor cm)))
-  ([cm cur]
-   (if (in-string? cm cur)
-     (split-string cm cur)
-     (split-form cm cur))))
+  [cm] (split-sexp-m cm))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-join-sexps M-J

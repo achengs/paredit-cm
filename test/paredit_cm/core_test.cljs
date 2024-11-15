@@ -945,6 +945,11 @@ hoo)) zoo)"
  ho
 hoo) zoo)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  (t/check p/backward-barf-sexp
+           "(foXo)"
+           "foo (X)")
+
   (t/check p/backward-barf-sexp
            "(foo (bar
     ;; comment
@@ -981,7 +986,13 @@ bazX quux zot))")
            "(foo \"hi world[]\" (([hey {hi}]) foXo))")
   (t/check p/backward-barf-sexp
            "foo (  X  )"
-           "foo (  X  )")
+           "foo      (X)")
+  (t/check p/backward-barf-sexp
+           "foo \"hi Xworld\" bar"
+           "foo \"hi Xworld\" bar")
+  (t/check p/backward-barf-sexp
+           "()foo \"hi Xworld\" bar"
+           "()foo \"hi Xworld\" bar")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/split-sexp
            "(helloX world)"

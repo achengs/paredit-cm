@@ -1,8 +1,6 @@
-(ns ;; ^:figwheel-hooks
-    paredit-cm.core
+(ns paredit-cm.core
   "paredit operations (exported)"
   (:require
-   ;; [goog.dom :as gdom]
    [clojure.string :as str]
    [clojure.set :as set]
    [clojure.pprint :as pp]
@@ -10,25 +8,12 @@
    [cljsjs.codemirror.mode.clojure]
    [cljsjs.codemirror.keymap.emacs]))
 
-;; (println "This text is printed from src/paredit_cm/core.cljs. Go ahead and edit it and see reloading in action.")
-
-(defn multiply [a b] (* a b))
-
-;; define your app data so that it doesn't get over-written on reload
-;; (defonce app-state (atom {:text "Hello world!"}))
-
-;; (defn get-app-element []
-;;   (gdom/getElement "app"))
-
-
-
 ;; specify reload hook with ^:after-load metadata
 (defn ^:after-load on-reload []
   ;; optionally touch your app-state to force rerendering depending on
   ;; your application
   ;; (swap! app-state update-in [:__figwheel_counter] inc)
   )
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ** PROJECT CONVENTIONS **
@@ -557,8 +542,8 @@
   (->> cm index (+ offset) (cursor cm) (.setCursor cm))
   (cursor cm))
 
-(defn move-right [cm] (move cm  1))
-(defn move-left  [cm] (move cm -1))
+(defn ^:export move-right [cm] (move cm  1))
+(defn ^:export move-left  [cm] (move cm -1))
 
 (defn ^:export doublequote [cm]
   (let [{:keys [type left-char right-char ch cur]} (get-info cm)]
@@ -2459,104 +2444,39 @@
 ;; paredit-backard-barf-sexp C-{, C-M-<right>, Esc C-<right>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn bkwd-barf
-  "trampoline-able that looks for an ancestor opening bracket (parent,
-  grandparent, etc) that has a sibling to barf. returns... . nil if
-  there is no such anscestor that can barf"
-  [cm cur n]
-  (when (>= n 0)
-    (let [outside              (backward-up-cur cm cur)
-          inside               (forward-down-cur cm outside)
-          end-of-barfed-sexp   (end-of-next-sibling cm inside)
-          end-of-new-first-sib (end-of-next-sibling cm end-of-barfed-sexp)
-          bracket-cur          (start-of-prev-sibling cm end-of-new-first-sib)
-          bracket-text         (get-string cm inside)
-          moved                (and bracket-cur (< (index cm cur) (index cm bracket-cur)))
-          bracket-cur'         end-of-barfed-sexp
-          moved'               true
-          word                 (at-a-word? cm outside)]
-      (cond
-        (nil? outside)               nil
-        (nil? end-of-barfed-sexp)    #(bkwd-barf cm outside (min (dec n)(index cm outside)))
-        (some? end-of-new-first-sib) [outside inside bracket-cur  bracket-text moved  word]
-        :default                     [outside inside bracket-cur' bracket-text moved' word]))))
-
 (defn ^:export backward-barf-sexp
   "paredit backward-barf-sexp exposed for keymap."
   [cm]
-  (let[original-cur        (cursor        cm)
-       original-i          (index         cm)
-       inside-a-sexp?      (backward-up   cm)
-       {:keys[right-char]} (get-info      cm)
-       outside-cur         (cursor        cm)
-       inside-cur          (move-right    cm)
-       sexp-to-barf?       (forward-sexp  cm)
-       _                   (forward-sexp  cm)
-       _                   (backward-sexp cm)
-       destination-cur     (cursor        cm)
-       destination-i       (index         cm)
-       edit? (and inside-a-sexp? sexp-to-barf?)]
+  (let[original-cur         (cursor        cm)
+       original-i           (index         cm)
+       _                    (move-for-sexp-editing cm)
+       inside-a-sexp?       (backward-up   cm)
+       {:keys [right-char]} (get-info      cm)
+       outside-cur          (cursor        cm)
+       inside-cur           (move-right    cm)
+       sexp-to-barf?        (forward-sexp  cm)
+       on-barfed?           (< original-i (index cm))
+       dest-if-alone        (cursor        cm)
+       sibling?             (forward-sexp  cm)
+       _                    (backward-sexp cm)
+       dest-if-sibling      (cursor        cm)
+       destination-cur      (if sibling? dest-if-sibling dest-if-alone)
+       _                    (forward-up    cm)
+       end-cur              (cursor        cm)
+       edit?                (and inside-a-sexp? sexp-to-barf?)]
     (when edit?
-      (insert cm right-char 0 destination-cur)
+      (insert cm (if sibling?
+                   right-char
+                   (str " " right-char)) 0 destination-cur)
       (.replaceRange cm "" outside-cur inside-cur))
     (.setCursor cm original-cur)
-    (when (and edit? (< original-i destination-i))
-      (move-left cm))))
+    (cond
+      (and edit? (not sibling?))      (.setCursor cm end-cur)
+      (and edit? on-barfed? sibling?) (move-left cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-split-sexp M-S
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn split-form
-  "split sexp for (forms like this)"
-  [cm cur]
-  (let [close-cur     (skip cm parent-closer-sp cur)
-        close-bracket (get-string cm close-cur)
-        open-cur      (start-of-prev-sibling cm close-cur)
-        open-bracket  (get-string cm (cursor cm (inc (index cm open-cur))))]
-    (when (and (not (nil? open-bracket)) (not (nil? close-bracket)))
-      (.setCursor cm cur)
-
-      (let [offset         (if (in-whitespace? cm)
-                     1
-                     (do (insert cm " ")
-                         (just-one-space cm (cursor cm) false)
-                         0))
-            cur'           (cursor cm)
-            i'             (+ (index cm cur') offset)
-            prev-sib       (start-of-prev-sibling cm cur')
-            prev-sib-end   (end-of-next-sibling cm prev-sib)
-            next-sib       (end-of-next-sibling cm cur)
-            next-sib-start (start-of-prev-sibling cm next-sib)]
-        (if (nil? next-sib-start)
-          (insert cm open-bracket)
-          (insert cm open-bracket 0 next-sib-start))
-        (if (nil? prev-sib-end)
-          (do (move-left cm)
-              (insert cm close-bracket))
-          (insert cm close-bracket 0 prev-sib-end))
-        (.setCursor cm (cursor cm i'))))))
-
-
-(defn split-string
-  "split sexp for \"strings like this\""
-  [cm cur]
-  (let [open-quote-i (index-of-next-non cm (index cm cur) " " inc)]
-    (.replaceRange cm "\" \"" cur (cursor cm open-quote-i))
-    (move-left cm)
-    (move-left cm)))
-
-(defmulti split-sexp-m
-  (fn [cm]
-    (let [[L R] (info cm)]
-      (cond
-        (#{:string-start :string-guts} L) :split-string
-        :default                          :default))))
-
-(defmethod split-sexp-m :split-string [cm]
-  (insert cm "\" \"")
-  (move-left cm)
-  (move-left cm))
 
 (defn cur-next-non
   "Keep moving in direction `dir` :L for left, :R for right
@@ -2565,9 +2485,9 @@
   return the cursor."
   [cm dir x]
   (let [start-cur (cursor cm)
-        info-fn (if (= :L dir) linfo rinfo)
-        move-fn (if (= :L dir) move-left move-right)]
-    (loop [y (info-fn cm),remaining (char-count cm)]
+        info-fn   (if (= :L dir) linfo rinfo)
+        move-fn   (if (= :L dir) move-left move-right)]
+    (loop [y (info-fn cm), remaining (char-count cm)]
       (cond
         (neg? remaining) (do (.setCursor cm start-cur)
                              nil)
@@ -2577,6 +2497,17 @@
         :else            (let [cur (cursor cm)]
                            (.setCursor cm start-cur)
                            cur)))))
+
+(defmulti split-sexp-m
+  (fn [cm]
+    (cond
+      (#{:string-start :string-guts} (linfo cm)) :split-string
+      :default                                   :default)))
+
+(defmethod split-sexp-m :split-string [cm]
+  (insert cm "\" \"")
+  (move-left cm)
+  (move-left cm))
 
 (defmethod split-sexp-m :default [cm]
   (let [original-cur    (cursor cm)
@@ -2691,40 +2622,4 @@
                        (- (count (.getLine cm (.-line (cursor cm))))
                           line-len))))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; paredit-forward-sexp
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (defmulti move-past-char (fn[forward? pred cm] forward?))
-
-;; (defmethod move-past-char true [forward? pred cm]
-;;   (loop [c (:right-char(get-info cm))]
-;;     (when (and (some? c) (pred c))
-;;       (move-right cm)
-;;       (recur (:right-char(get-info cm))))))
-
-;; (defmethod move-past-char false [forward? pred cm]
-;;   (loop [c (:left-char(get-info cm))]
-;;     (when (and (some? c) (pred c))
-;;       (move-left cm)
-;;       (recur (:left-char(get-info cm))))))
-
-;; (defmethod move-past-char :default [forward? pred cm]
-;;   (println "move-past-char: first arg should be true/false"))
-
-;; (defmulti move-past-info (fn[forward? pred cm] forward?))
-
-;; (defmethod move-past-info true [forward? pred cm]
-;;   (loop [i (rinfo cm)]
-;;     (when (and (not= :eof i) (pred i))
-;;       (move-right cm)
-;;       (recur (rinfo cm)))))
-
-;; (defmethod move-past-info false [forward? pred cm]
-;;   (loop [i (linfo cm)]
-;;     (when (and (not= :bof i) (pred i))
-;;       (move-left cm)
-;;       (recur (linfo cm)))))
-
-;; (defmethod move-past-info :default [forward? pred cm]
-;;   (println "move-past-info: first arg should be true/false"))

@@ -921,11 +921,11 @@ world (!)\" zoXt)")
 
   (t/check p/forward-barf-sexp
            "(foo (baXr) baz quux zot)"
-           "(foo () baXr baz quux zot)")
+           "(foo (X) bar baz quux zot)")
 
   (t/check p/forward-barf-sexp
            "(foo ()baXr) baz quux zot"
-           "(foo ()) baXr baz quux zot")
+           "(foo ()X)bar baz quux zot")
 
   (t/check p/forward-barf-sexp
            "(foo ())baXr baz quux zot"
@@ -992,7 +992,7 @@ bazX quux zot))")
            "(foo \"hi world[]\" (([hey {hi}]) foXo))")
   (t/check p/backward-barf-sexp
            "foo (  X  )"
-           "foo      (X)")
+           "foo (X)")
   (t/check p/backward-barf-sexp
            "foo \"hi Xworld\" bar"
            "foo \"hi Xworld\" bar")

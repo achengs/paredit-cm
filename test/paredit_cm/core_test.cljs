@@ -904,6 +904,10 @@ world (!)\" zoXt)")
            "(\"bar baz hi worXld\" quux zot)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/forward-barf-sexp
+           "(fXoo)"
+           "(X) foo")
+
+  (t/check p/forward-barf-sexp
            "(foo [baXr baz quux zot])"
            "(foo [baXr baz quux] zot)")
 
@@ -949,7 +953,9 @@ hoo) zoo)")
   (t/check p/backward-barf-sexp
            "(foXo)"
            "foo (X)")
-
+  (t/check p/backward-barf-sexp
+           "(foo X)"
+           "foo (X)")
   (t/check p/backward-barf-sexp
            "(foo (bar
     ;; comment

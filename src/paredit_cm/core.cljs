@@ -2249,11 +2249,44 @@
             (not parent-to-kill?))
       (.setCursor cm original-cur)
       (do (.replaceRange cm
-                      (.getRange cm sexp-start-cur sexp-end-cur)
-                      parent-start-cur
-                      parent-end-cur)
+                         (.getRange cm sexp-start-cur sexp-end-cur)
+                         parent-start-cur
+                         parent-end-cur)
           (backward-sexp cm)))))
 
+(defn ^:export trim-beginning [cm]
+  (let [original-cur (cursor cm)]
+    (if (not(backward-up cm))
+      (.setCursor cm original-cur)
+      (do
+        (move-right cm)
+        (let [a (cursor cm)
+              _ (loop[r (rinfo cm)]
+                  (when(= :whitespace r)
+                    (move-right cm)
+                    (recur (rinfo cm))))
+              b (cursor cm)]
+          (.setCursor cm original-cur)
+          (.replaceRange cm "" a b))))))
+
+(defn ^:export trim-ending [cm]
+  (let [original-cur (cursor cm)]
+    (if (not(forward-up cm))
+      (.setCursor cm original-cur)
+      (do
+        (move-left cm)
+        (let [a (cursor cm)
+              _ (loop[l (linfo cm)]
+                  (when(= :whitespace l)
+                    (move-left cm)
+                    (recur (linfo cm))))
+              b (cursor cm)]
+          (.setCursor cm original-cur)
+          (.replaceRange cm "" b a))))))
+
+(defn ^:export trim-sexp [cm]
+  (trim-beginning cm)
+  (trim-ending cm))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-slurp-sexp C-), C-<right>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2281,7 +2314,8 @@
      (insert cm bracket 0 sibling);; put bracket in new spot
      (.replaceRange cm "" (cursor cm (- (index cm parent) (count bracket)))
                     parent));; remove bracket from old spot
-   (.setCursor cm cur)))
+   (.setCursor cm cur)
+   (trim-sexp cm)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-down C-M-d
@@ -2381,7 +2415,8 @@
              (.setCursor cm (cursor cm original-i)) ;; then abort.
              (do (.replaceRange cm "" cur right-cur) ;; delete the old opener
                  (insert cm right-char 0) ;; and put the same opener in the new spot
-                 (.setCursor cm (cursor cm original-i))))))))))
+                 (.setCursor cm (cursor cm original-i))))))))
+   (trim-sexp cm)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-barf-sexp C-\} C-<left>
@@ -2422,6 +2457,7 @@
   by moving the closing delimiter."
   ([cm] (forward-barf-sexp cm nil))
   ([cm starting-i]
+   (trim-sexp cm)
    (let [original-i (or starting-i (index cm))]
      (if (not(forward-up cm)) ;; if we are not inside a sexp,
        (.setCursor cm (cursor cm original-i)) ;; then there's nothing to barf.
@@ -2447,6 +2483,7 @@
 (defn ^:export backward-barf-sexp
   "paredit backward-barf-sexp exposed for keymap."
   [cm]
+  (trim-sexp cm)
   (let[original-cur         (cursor        cm)
        original-i           (index         cm)
        _                    (move-for-sexp-editing cm)
@@ -2471,7 +2508,8 @@
       (.replaceRange cm "" outside-cur inside-cur))
     (.setCursor cm original-cur)
     (cond
-      (and edit? (not sibling?))      (.setCursor cm end-cur)
+      (and edit? (not sibling?))      (do(.setCursor cm end-cur)
+                                         (trim-sexp cm))
       (and edit? on-barfed? sibling?) (move-left cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

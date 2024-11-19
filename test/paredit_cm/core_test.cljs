@@ -451,7 +451,7 @@ baz) (keep me)  ; Useless form!"
 
   (t/check p/backward-kill-word
            "(X)"
-           "(X)")
+           "X()")
 
   (t/check p/backward-kill-word
            "X "
@@ -1111,6 +1111,15 @@ world\"")
   (t/check p/reindent-defun
            "  X  (let [i 1] i)"
            "  X  (let [i 1] i)")
+  (t/check p/reindent-defun
+           "(defn three
+\"returns 3\"
+     [X]
+ 	 3)"
+           "(defn three
+  \"returns 3\"
+  [X]
+  3)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/backward-sexp
            "foo (let [i 1]

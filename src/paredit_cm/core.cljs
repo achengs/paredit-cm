@@ -247,7 +247,7 @@
 (defn ^:export info
   [cm]
   (let [result [(linfo cm) (rinfo cm)]]
-    (println result)
+    ;;(println result)
     result))
 
 ;; type describes position to the left
@@ -726,75 +726,75 @@
         stack-empty                        (zero? stack)
         one-left                           (= 1 stack)
         string-extends                     (not= "\"" (first string))];; for multiline strings
-    (println (get-info cm cur))
+    ;;(println (get-info cm cur))
     (cond ;; we return a keyword when we know where to stop, stack otherwise.
 
       ;; check these before checking for bof:
 
       ;; in a multi-line string, keep searching for the first line of it:
-      (and (start-of-a-string? cm cur) one-left string-extends), (do(println"in mult line str")stack)
+      (and (start-of-a-string? cm cur) one-left string-extends), stack
 
       ;; at the first line of a string and we want its opening doublequote:
-      (and (start-of-a-string? cm cur) one-left), (do(println"in str"):yes)
+      (and (start-of-a-string? cm cur) one-left), :yes
 
       ;; at the start of an escaped char:
-      (and (escaped-char-to-right? cm cur) stack-empty), (do(println"esc"):yes)
+      (and (escaped-char-to-right? cm cur) stack-empty), :yes
 
       ;; at the start of a word:
-      (and (word? type) stack-empty (= ch start)), (do(println"wor"):yes)
+      (and (word? type) stack-empty (= ch start)), :yes
 
       ;; at the opener we were looking for:
-      (and (is-bracket-type? type) (opener? string) one-left), (do(println"op"):yes)
+      (and (is-bracket-type? type) (opener? string) one-left), :yes
 
-      bof, (do(println"bof"):bof); reached beginning of file
+      bof, :bof; reached beginning of file
 
       ;; skip comments
-      (= type "comment"), (do(println"com")stack)
+      (= type "comment"), stack
 
       ;; strings ...............................................................
 
       ;; entering a string from the right; push " onto stack ;;;;;;;;wantedthisxxx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
       ;; actually we skip past the string and might still have a stack!
-      (end-of-a-string? cm cur), (do(println"going to skip string to our left")(inc stack))
+      (end-of-a-string? cm cur), (inc stack)
       ;; using stack above skips 1 sexp too far - we need to skip just the string and stop
       ;; but using start of this tok doesn't skip far enough - falls short just inside start of string
 
       ;; skip whitespace -- this used to be before the check for end-of-a-string? but that's a bug
-      (nil? type), (do(println"ws")stack)
+      (nil? type), stack
 
       ;; at start of string and stack already empty, we must have started in the
       ;; middle of the string. if it's a multi-line string, advance up:
-      (and (start-of-a-string? cm cur) stack-empty string-extends), (do(println"start str ml emp stack")stack)
+      (and (start-of-a-string? cm cur) stack-empty string-extends), stack
 
       ;; we're at the first line of the string, stop:
-      (and (start-of-a-string? cm cur) stack-empty), (do(println"start of string, stack emp"):stop)
+      (and (start-of-a-string? cm cur) stack-empty), :stop
 
       ;; at start of string and stack about to be empty, we've found the end of
       ;; the string -- handled before check for bof above
 
       ;; in string, the start of it is our goal. it's on a higher line:
-      (and (= type "string") one-left string-extends), (do(println"ml string")stack)
+      (and (= type "string") one-left string-extends), stack
 
       ;; it's on this line:
-      (and (= type "string") one-left), (do(println"start of str on this line"):start-of-this-tok)
+      (and (= type "string") one-left), :start-of-this-tok
 
       ;; in string, need to get out of this form, pop stack
-      (and (= type "string") string-extends), (do(println"in str need to get out")stack)
-      (= type "string"),                      (do(println"type string")(dec stack))
+      (and (= type "string") string-extends), stack
+      (= type "string"),                      (dec stack)
 
       ;; escaped chars .........................................................
 
       ;; inside an escaped char and the start of it is what we want
-      (and (in-escaped-char? cm cur) stack-empty), (do(println"need start of esc char"):start-of-this-tok)
+      (and (in-escaped-char? cm cur) stack-empty), :start-of-this-tok
 
       ;; in an escaped char inside the prev sibling
-      (in-escaped-char? cm cur), (do(println"in esc char inside prev sibling")stack)
+      (in-escaped-char? cm cur), stack
 
       ;; at start of an escaped char which was the prev sibling -- handled
       ;; before check for bof above
 
       ;; at start of an escaped char inside the prev sibling
-      (escaped-char-to-right? cm cur), (do(println"at start of esc char inside prev sib")stack)
+      (escaped-char-to-right? cm cur), stack
 
       ;; words .................................................................
 
@@ -802,25 +802,25 @@
       ;; before check for bof above
 
       ;; in a word that is the prev sibling, the start of it is what we want
-      (and (word? type) stack-empty), (do(println"prev sib is word"):start-of-this-tok)
+      (and (word? type) stack-empty), :start-of-this-tok
 
       ;; in a word that is inside the prev sibling
-      (word? type), (do(println"in word inside prev sib")stack)
+      (word? type), stack
 
       ;; brackets ..............................................................
 
       ;; push closer on stack
-      (and (is-bracket-type? type) (closer? string)), (do(println"closer")(inc stack))
+      (and (is-bracket-type? type) (closer? string)), (inc stack)
 
       ;; we've reached the start of a form -- handled before check for bof above
 
       ;; there was no prev sibling, avoid exiting the form
-      (and (is-bracket-type? type) (opener? string) stack-empty), (do(println"no prev sib"):stop)
+      (and (is-bracket-type? type) (opener? string) stack-empty), :stop
 
       ;; passing through the guts of a sibling form (.. X(guts)..)
-      (and (is-bracket-type? type) (opener? string)), (do(println"passing through")(dec stack))
+      (and (is-bracket-type? type) (opener? string)), (dec stack)
 
-      :default (do(println"default"):stop))))
+      :default :stop)))
 
 (defn start-of-prev-sibling
   "return the cursor at the start of the sibling to the left."
@@ -1683,16 +1683,19 @@
 (defn backward-skip-delimiters
   [cm]
   (loop [l (get-info cm)]
-    (when ((set/union openers closers #{" " "\t" "\n" ";" "\""})
-           (:left-char l))
+    (when (and ((set/union openers closers #{" " "\t" "\n" ";" "\""})
+                (:left-char l))
+               (not= :string-2-end (linfo cm)))
       (move-left cm)
       (recur (get-info cm)))))
 
 (defn backward-delete-word
   [cm]
   (loop [l (get-info cm)]
-    (when (not((set/union openers closers #{" " "\t" "\n" ";" "\""})
-               (:left-char l)))
+    (when (and (not (:bof l))
+               (or (not((set/union openers closers #{" " "\t" "\n" ";" "\""})
+                        (:left-char l)))
+                   (= :string-2-end (linfo cm))))
       (do (.replaceRange cm "" (:left-cur l) (:cur l))
           (recur (get-info cm))))))
 
@@ -2172,7 +2175,9 @@
                                     (cursor cm iR))
                          cur-L
                          cur-R)
-          (.setCursor cm (cursor cm i1))))))
+          (.setCursor cm (cursor cm i1))
+          ;;(reindent-defun cm)
+          ))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-splice-sexp-killing-forward M-<down>
@@ -2617,41 +2622,21 @@
 ;; paredit-reindent-defun M-q
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn top-most-opener-candidate
-  "trampoline-able that looks for the top-most opening bracket for the specified
-  location. returns the current cursor if there is no such anscestor"
-  [cm cur n]
-  (when (>= n 0)
-    (if-let [parent (backward-up-cur cm cur)]
-      (fn [] (top-most-opener-candidate cm parent (dec n)))
-      cur)))
-
 (defn top-most-opener
-  "get the top most opening bracket for the specified location. nil if
+  "get the top most opening bracket's cursor for the specified location. nil if
   there is no such bracket."
-  ([cm] (top-most-opener cm (cursor cm)))
-  ([cm cur] (let [candidate (top-most-opener-candidate cm cur (char-count cm))]
-              (when (not= candidate cur) candidate))))
+  [cm]
+  (loop [candidate nil]
+    (if (backward-up cm)
+      (recur (cursor cm))
+      candidate)))
 
 (defn ^:export reindent-defun
   "paredit reindent-defun exposed for keymap."
-  ([cm] (reindent-defun cm (cursor cm)))
-  ([cm cur]
-   (let [open        (trampoline top-most-opener cm cur)
-         close       (end-of-next-sibling cm open)
-         open-line   (when open (.-line open))
-         line-offset (when open (- (.-line cur) open-line))
-         line-len    (count (.getLine cm (.-line cur)))
-         ch          (.-ch cur)]
-     (when (and (not (nil? open)) (not (nil? close)))
-       (indent-lines cm (.-line open) (.-line close))
-       (repeatedly line-offset (.execCommand cm "goLineDown"))
-       (.execCommand cm "goLineStart")
-       (.setCursor
-         cm
-         (cursor cm (+ (index cm)
-                       ch
-                       (- (count (.getLine cm (.-line (cursor cm))))
-                          line-len))))))))
-
-
+  [cm]
+  (let [cur   (cursor cm)
+        open  (top-most-opener cm)
+        close (when open (forward-sexp cm) (cursor cm))]
+    (.setCursor cm cur)
+    (when (and open close)
+      (indent-lines cm (.-line open) (.-line close)))))

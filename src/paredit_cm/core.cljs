@@ -286,7 +286,7 @@
   [cm cur] (in-escaped-char? cm cur 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; paredit-open-round (
+;; paredit-open-round
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn insert
@@ -323,7 +323,7 @@
        ;; insert a pair, pad with a space to the left and/or right if necessary,
        ;; and move the cursor into the pair before returning:
        :else
-       (let [pad-L (and (not= " " left-char) (not (opener? left-char)))
+       (let [pad-L (and (not= " " left-char)(not= "\n" left-char) (not (opener? left-char)))
              pad-R (and (not= " " right-char)(not (closer? right-char)))]
          (insert cm
                  (str (when pad-L " ")

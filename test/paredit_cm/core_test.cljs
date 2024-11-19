@@ -85,6 +85,10 @@
   ;; cursor would be 'on' the closing paren in this example "(X)"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/open-round
+           "X"
+           "(X)")
+
+  (t/check p/open-round
            "(a bX c d) "
            "(a b (X) c d) ")
 

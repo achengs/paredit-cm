@@ -429,7 +429,7 @@ baz) (keep me)  ; Useless form!"
            "(foo bar)   ; baz
 (quux)  X"
            "(foo bar)   ; baz
-(X)  ")
+(X)")
 
   (t/check p/backward-kill-word
            "(foo bar)   ; baz
@@ -438,7 +438,7 @@ baz) (keep me)  ; Useless form!"
 ()  ")
 
   (t/check p/backward-kill-word
-           "(foo bar)   ;X
+           "(foo bar)   ; X
 ()  "
            "(foo X)   ;
 ()  ")
@@ -456,6 +456,14 @@ baz) (keep me)  ; Useless form!"
   (t/check p/backward-kill-word
            "X "
            "X ")
+
+  (t/check p/backward-kill-word
+           "\"fooX\""
+           "\"X\"")
+
+  (t/check p/backward-kill-word
+           "a \\\" X"
+           "a X")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/forward
            " X"

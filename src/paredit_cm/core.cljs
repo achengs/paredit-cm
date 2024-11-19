@@ -1668,66 +1668,41 @@
          (= "comment" type)
          (re-matches #"\s|;" left-char))))
 
-(defn bkwd-kill-word
-  "trampoline helper for backward-kill-word. 'mark' is the index to start
-  killing from. 'i' is the index we're inspecting. 'n' is how many more calls
-  we'll entertain before stopping because we suspect an infinite loop. first
-  call can use char count for 'n'."
-  [cm mark i n]
-  (let [h (dec i), m (dec n), cur (cursor cm i)]
-    (cond
-      (neg? n)
-      (guard)
+(defn backward-delete-initial-non-word
+  [cm]
+  (let [L (linfo cm)]
+    (when (#{:comment :string-guts :whitespace} L)
+      (loop [l (get-info cm)]
+        (cond
+          (#{" " "\t"} (:left-char l)) (do (.replaceRange cm "" (:left-cur l) (:cur l))
+                                           (recur (get-info cm)))
+          (= "\n"(:left-char l))       (do (move-left cm)
+                                           (recur (get-info cm)))
+          :otherwise                   :done)))))
 
-      (bof? cm cur)
-      :do-nothing
+(defn backward-skip-delimiters
+  [cm]
+  (loop [l (get-info cm)]
+    (when ((set/union openers closers #{" " "\t" "\n" ";" "\""})
+           (:left-char l))
+      (move-left cm)
+      (recur (get-info cm)))))
 
-      (beginning-of-line? cm cur)
-      #(bkwd-kill-word cm h h m)
-
-      (whitespace? cm cur)
-      #(bkwd-kill-word cm mark (start-of-token-at cm i) m)
-
-      (opening-delim? cm cur)
-      #(bkwd-kill-word cm h h m)
-
-      (closing-delim? cm cur)
-      #(bkwd-kill-word cm h h m)
-
-      (at-a-word? cm cur)
-      (kill-from-to cm (start-of-token-at cm i) mark)
-
-      (start-of-comment? cm cur)
-      (let [j (index-of-next-non cm i semicolons dec)]
-        #(bkwd-kill-word cm j j m))
-
-      (bkwd-kill-skippable-comment-char? cm cur)
-      #(bkwd-kill-word cm mark h m)
-
-      (comment? cm cur)
-      (kill-prev-word-in-comment cm mark)
-
-      (start-of-a-string? cm cur)
-      #(bkwd-kill-word cm h h m)
-
-      (in-string? cm cur)
-      (let [;; kill whitespace up to the word or string start in front of it:
-            j (index-of-next-non cm i non-word-in-string dec)
-            k (index-of-next cm j non-word-in-string dec)
-            l (if (start-of-a-string? cm (cursor cm (inc k)))
-                (inc k) k)]
-        (kill-from-to cm l mark))
-
-      :else
-      (do (println "unhandled situation, please let me know (bkwd-kill-word)")
-          (println (get-type cm cur))
-          #(bkwd-kill-word cm h h m)))))
+(defn backward-delete-word
+  [cm]
+  (loop [l (get-info cm)]
+    (when (not((set/union openers closers #{" " "\t" "\n" ";" "\""})
+               (:left-char l)))
+      (do (.replaceRange cm "" (:left-cur l) (:cur l))
+          (recur (get-info cm))))))
 
 (defn ^:export backward-kill-word
-  "paredit backward-kill-word exposed for keymap."
+  "paredit backward-kill-word exposed for keymap.
+  Kill a word backward, skipping over any intervening delimiters."
   [cm]
-  (let [i (index cm)]
-    (trampoline bkwd-kill-word cm i i (inc i))))
+  (backward-delete-initial-non-word cm)
+  (backward-skip-delimiters cm)
+  (backward-delete-word cm))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward

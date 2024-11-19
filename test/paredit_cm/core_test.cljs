@@ -790,6 +790,18 @@ siblings) out)"
            "(foo (bar bXaz \"hi world\") zot)")
 
   (t/check p/forward-slurp-sexp
+           "(fooX)
+;; comment
+(defn bar
+  \"docstring\"
+  (code))"
+           "(fooX
+;; comment
+(defn bar
+  \"docstring\"
+  (code)))")
+
+  (t/check p/forward-slurp-sexp
            "(foo \"hXi\" world quux)
    [some (complicated \"multi
 line

@@ -1762,43 +1762,54 @@
   of paredit itself. but including it here since this will be used in
   things other than emacs itself. return true if we moved."
   [cm]
-  (let [i0 (index cm)]
-    (loop [stack 0]
-      (let [R (rinfo cm)]
-        (cond
-          ;; can't go any further than the end of file:
-          (= R :eof)            (not= i0 (index cm))
-          ;; skip past comments and whitespace since we care about sexps:
-          (or(= R :comment)
-             (= R :whitespace)) (do(move-past-non-code cm)
-                                   (recur stack))
-          ;; skip past a word, and if there's still a stack then recur:
-          (= R :word)           (do(move-past-token cm)
-                                   (if(not(zero? stack))
-                                     (recur stack)
-                                     (not= i0 (index cm))))
-          ;; skip past a string just like a single word:
-          (= R :string-start)   (do(move-past-string cm)
-                                   (if(not(zero? stack))
-                                     (recur stack)
-                                     (not= i0 (index cm))))
-          ;; enter a sexp and increase the stack:
-          (= R :opener)         (do(move-right cm)
-                                   (recur (inc stack)))
-          ;; what we do at a closer depends on the stack:
-          (or(= R :closer)
-             (= R :string-end)) (cond
-                                  (= 0 stack) (not= i0 (index cm))
-                                  (= 1 stack) (do(move-right cm)(not= i0 (index cm)))
-                                  :else       (do(move-right cm)
-                                                 (recur (dec stack))))
-          ;; stop inside the end of a string if we start inside one:
-          (= R :string-guts)    (do(move-past-string cm)(move-left cm)(not= i0 (index cm)))
-          ;; none of the above, so just skip past it and check the stack:
-          :default              (do(move-past-token cm)
-                                   (if(not(zero? stack))
-                                     (recur stack)
-                                     (not= i0 (index cm)))))))))
+  (let [i0           (index cm)
+        original-cur (cursor cm)
+        sexp?        (atom false)
+        moved?
+        (loop [stack 0]
+          (let [R (rinfo cm)]
+            (cond
+              ;; can't go any further than the end of file:
+              (= R :eof)            (not= i0 (index cm))
+              ;; skip past comments and whitespace since we care about sexps:
+              (or(= R :comment)
+                 (= R :whitespace)) (do(move-past-non-code cm)
+                                       (recur stack))
+              ;; skip past a word, and if there's still a stack then recur:
+              (= R :word)           (do(reset! sexp? true)
+                                       (move-past-token cm)
+                                       (if(not(zero? stack))
+                                         (recur stack)
+                                         (not= i0 (index cm))))
+              ;; skip past a string just like a single word:
+              (= R :string-start)   (do(reset! sexp? true)
+                                       (move-past-string cm)
+                                       (if(not(zero? stack))
+                                         (recur stack)
+                                         (not= i0 (index cm))))
+              ;; enter a sexp and increase the stack:
+              (= R :opener)         (do(reset! sexp? true)
+                                       (move-right cm)
+                                       (recur (inc stack)))
+              ;; what we do at a closer depends on the stack:
+              (or(= R :closer)
+                 (= R :string-end)) (cond
+                                      (= 0 stack) (not= i0 (index cm))
+                                      (= 1 stack) (do(reset! sexp? true)(move-right cm)(not= i0 (index cm)))
+                                      :else       (do(reset! sexp? true)
+                                                     (move-right cm)
+                                                     (recur (dec stack))))
+              ;; stop inside the end of a string if we start inside one:
+              (= R :string-guts)    (do(reset! sexp? true)(move-past-string cm)(move-left cm)(not= i0 (index cm)))
+              ;; none of the above, so just skip past it and check the stack:
+              :default              (do(move-past-token cm)
+                                       (if(not(zero? stack))
+                                         (recur stack)
+                                         (not= i0 (index cm)))))))]
+    (if @sexp?
+      moved?
+      (do (.setCursor cm original-cur)
+          false))))
 
 (defmulti forward-m (fn [cm] (rinfo cm)))
 
@@ -2288,34 +2299,34 @@
   (trim-beginning cm)
   (trim-ending cm))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; paredit-forward-slurp-sexp C-), C-<right>
+;; paredit-forward-slurp-sexp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn fwd-slurp
-  "trampoline-able that looks for an ancestor closing bracket (parent,
-  grandparent, etc) that has a sibling to slurp. returns a vector of the cur to
-  the right of such a bracket, the cur to the right of the sibling that will be
-  slurped, the string of the bracket to move. nil if there is no such anscestor
-  that can slurp."
-  [cm cur n]
-  (when (>= n 0)
-    (let [parent  (skip cm parent-closer-sp cur)
-          sibling (end-of-next-sibling cm parent)]
-      (if sibling
-        [parent sibling (get-string cm parent)]
-        (fn [] (fwd-slurp cm parent (dec n)))))))
+(defn fwd-slurp-helper
+  "returns details for a forward slurp or nil if not possible"
+  [cm]
+  (let [in-sexp?    (forward-up cm)
+        outside-cur (cursor cm)
+        closer      (:left-char(get-info cm))
+        inside-cur  (move-left cm)
+        _           (move-right cm)
+        slurpable?  (forward-sexp cm)
+        dest-cur    (cursor cm)]
+    (cond
+      (and in-sexp? slurpable?) [inside-cur outside-cur dest-cur closer]
+      in-sexp?                  (fwd-slurp-helper cm)
+      :else                     nil)))
 
 (defn ^:export forward-slurp-sexp
   "paredit forward-slurp-sexp exposed for keymap."
-  ([cm] (forward-slurp-sexp cm (cursor cm)))
-  ([cm cur]
-   (when-let [[parent sibling bracket]
-              (trampoline fwd-slurp cm cur (char-count cm))]
-     (insert cm bracket 0 sibling);; put bracket in new spot
-     (.replaceRange cm "" (cursor cm (- (index cm parent) (count bracket)))
-                    parent));; remove bracket from old spot
-   (.setCursor cm cur)
-   (trim-sexp cm)))
+  [cm]
+  (let [original-cur                             (cursor cm)
+        _                                        (move-for-sexp-editing cm)
+        [inside-cur outside-cur dest-cur closer] (fwd-slurp-helper cm)]
+    (when inside-cur
+      (insert cm closer 0 dest-cur)
+      (.replaceRange cm "" inside-cur outside-cur))
+    (.setCursor cm original-cur)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-down C-M-d

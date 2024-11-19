@@ -323,8 +323,8 @@
        ;; insert a pair, pad with a space to the left and/or right if necessary,
        ;; and move the cursor into the pair before returning:
        :else
-       (let [pad-L (and (not= " " left-char)(not= "\n" left-char) (not (opener? left-char)))
-             pad-R (and (not= " " right-char)(not (closer? right-char)))]
+       (let [pad-L (#{:string-end :string-2-end :word :closer} L)
+             pad-R (#{:string-start :string-2-start :word :opener} R)]
          (insert cm
                  (str (when pad-L " ")
                       c (pair c)
@@ -2521,16 +2521,15 @@
        _                    (forward-up    cm)
        end-cur              (cursor        cm)
        edit?                (and inside-a-sexp? sexp-to-barf?)]
-    (when edit?
-      (insert cm (if sibling?
-                   right-char
-                   (str " " right-char)) 0 destination-cur)
-      (.replaceRange cm "" outside-cur inside-cur))
     (.setCursor cm original-cur)
-    (cond
-      (and edit? (not sibling?))      (do(.setCursor cm end-cur)
-                                         (trim-sexp cm))
-      (and edit? on-barfed? sibling?) (move-left cm))))
+    (when edit?
+      (.replaceRange cm (if sibling?
+                          right-char
+                          (str " " right-char)) destination-cur)
+      (.replaceRange cm "" outside-cur inside-cur))
+    (when (and edit? on-barfed? (not sibling?))
+      (.setCursor cm destination-cur)
+      (move-right cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-split-sexp M-S

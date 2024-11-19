@@ -977,6 +977,11 @@ hoo) zoo)")
            "(foo X)"
            "foo (X)")
   (t/check p/backward-barf-sexp
+           "((foo
+bar) baXz)"
+           "(foo
+bar) (baXz)")
+  (t/check p/backward-barf-sexp
            "(foo (bar
     ;; comment
   bazzy

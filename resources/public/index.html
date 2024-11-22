@@ -13,6 +13,36 @@
     <script src="cljs-out/dev/main_bundle.js" type="text/javascript"></script>
     <!-- <script src="./compiled/paredit-cm.js"></script> -->
     <script src="./js/keymap-paredit-cm.js"></script>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #ddd;
+      text-decoration: none;
+    }
+   th:nth-child(odd) {
+     text-align: right;
+   }
+   tr:nth-child(odd) {
+     background-color: white;
+   }
+   tr:nth-child(even) {
+     background-color: #f5f5f5;
+   }
+   td:nth-child(even) {
+     font-family: monospace;
+     text-align: left;
+     border-right: 2px solid #333;
+   }
+   td:nth-child(odd) {
+     text-align: right;
+     border-left: 2px solid #333;
+    }
+  </style>
   </head>
   <body>
     <div id="app">
@@ -34,8 +64,7 @@ your tab or open a new window.</blockquote>
 ;; Laurent Petit https://gist.github.com/1200343
 ;; Christophe Grand http://clj-me.cgrand.net/2011/08/19/conways-game-of-life
 
-(ns ^{:doc "Conway's Game of Life."}
- game-of-life)
+(ns game-of-life)
 
 ;; Core game of life's algorithm functions
 
@@ -70,9 +99,7 @@ your tab or open a new window.</blockquote>
 
 ;; Launches an example board
 
-(def
-  ^{:doc "board represents the initial set of living cells"}
-   board #{[2 1] [2 2] [2 3]})
+(def board #{[2 1] [2 2] [2 3]})
 
 (display-grids (take 3 (iterate step board)) 5 5)
 
@@ -94,6 +121,102 @@ including <code><a href="./js/keymap-paredit-cm.js">js/keymap-paredit-cm.js</a><
 and setting the <code>keyMap</code> option
 to <code>"paredit_cm"</code>.</p>
 
+<table border="0">
+  <tr>
+    <th style="background-color: black; color: white;">Command</th>
+    <th style="background-color: black; color: white;">Shortcut</th>
+    <th style="background-color: black; color: white;">Command</th>
+    <th style="background-color: black; color: white;">Shortcut</th>
+  </tr>
+  <tr>
+    <td>Backward</td>
+    <td>Ctrl 1</td>
+    <td>Forward</td>
+    <td>Ctrl 2</td>
+  </tr>
+  <tr>
+    <td>Backward sexp</td>
+    <td>Ctrl 3</td>
+    <td>Forward sexp</td>
+    <td>Ctrl 4</td>
+  </tr>
+  <tr>
+    <td>Backward Up</td>
+    <td>Ctrl 5</td>
+    <td>Forward Up</td>
+    <td>Ctrl 6</td>
+  </tr>
+  <tr>
+    <td>Backward Down</td>
+    <td>Ctrl 7</td>
+    <td>Forward Down</td>
+    <td>Ctrl 8</td>
+  </tr>
+  <tr>
+    <td>Backward Barf</td>
+    <td>Shift Ctrl [</td>
+    <td>Forward Barf</td>
+    <td>Shift Ctrl ]</td>
+  </tr>
+  <tr>
+    <td>Backward Slurp</td>
+    <td>Shift Ctrl 9</td>
+    <td>Forward Slurp</td>
+    <td>Shift Ctrl 0</td>
+  </tr>
+</table>
+
+<table border="0">
+  <tr>
+    <th style="background-color: black; color: white;">Command</th>
+    <th style="background-color: black; color: white;">Shortcut</th>
+    <th style="background-color: black; color: white;">Command</th>
+    <th style="background-color: black; color: white;">Shortcut</th>
+    <th style="background-color: black; color: white;">Command</th>
+    <th style="background-color: black; color: white;">Shortcut</th>
+  </tr>
+  <tr>
+    <td>Splice Killing Backward</td>
+    <td>Shift Ctrl 1</td>
+    <td>Splice</td>
+    <td>Shift Ctrl 2</td>
+    <td>Splice Killing Forward</td>
+    <td>Shift Ctrl 3</td>
+  </tr>
+  <tr>
+    <td>Raise sexp</td>
+    <td>Shift Ctrl 4</td>
+    <td>Split sexp</td>
+    <td>Shift Ctrl 5</td>
+    <td>Join sexps</td>
+    <td>Shift Ctrl 6</td>
+  </tr>
+  <tr>
+    <td>Backward Kill Word</td>
+    <td>Ctrl 9</td>
+    <td>Kill</td>
+    <td>Ctrl 0</td>
+    <td>Forward Kill Word</td>
+    <td>Ctrl -</td>
+  </tr>
+  <tr>
+    <td>Indent Defun</td>
+    <td>Shift Ctrl \</td>
+    <td>Meta Double Quote</td>
+    <td>Shift Alt "</td>
+    <td>Comment DWIM</td>
+    <td>Shift Alt ;</td>
+  </tr>
+  <tr>
+    <td>Wrap round</td>
+    <td>Shift Alt 9</td>
+    <td>Close round and newline</td>
+    <td>Shift Alt 0</td>
+    <td>Trim Sexp</td>
+    <td>Ctrl \</td>
+  </tr>
+</table>
+
 <ul>
   <li>Delimiters
     <ul>
@@ -102,51 +225,6 @@ to <code>"paredit_cm"</code>.</p>
       <li>Typing a closing delimiter moves past it after deleting any whitespace at the end of the current list.</li>
       <li>Typing a closing double quote at the end of a string exits it to the right.</li>
       <li>Close round and newline: Shift-Alt-0</li>
-    </ul>
-  </li>
-  <li>Movement
-    <ul>
-      <li>Backward:      Ctrl-1</li>
-      <li>Forward:       Ctrl-2</li>
-      <li>Backward sexp: Ctrl-3</li>
-      <li>Forward sexp:  Ctrl-4</li>
-      <li>Backward Up:   Ctrl-5</li>
-      <li>Forward Down:  Ctrl-6</li>
-      <li>Backward Down: Ctrl-7</li>
-      <li>Forward Up:    Ctrl-8</li>
-    </ul>
-  </li>
-  <li>Barf / Slurp
-    <ul>
-      <li>Backward Barf:  Shift-Ctrl-[</li>
-      <li>Forward Barf:   Shift-Ctrl-]</li>
-      <li>Backward Slurp: Shift-Ctrl-9</li>
-      <li>Forward Slurp:  Shift-Ctrl-0</li>
-    </ul>
-  </li>
-  <li>Splicing, etc
-    <ul>
-      <li>Splice Killing Backward: Shift-Ctrl-1</li>
-      <li>Splice:                  Shift-Ctrl-2</li>
-      <li>Splice Killing Forward:  Shift-Ctrl-3</li>
-      <li>Wrap round:              Shift-Alt-9</li>
-      <li>Raise sexp:              Shift-Ctrl-4</li>
-      <li>Split sexp:              Shift-Ctrl-5</li>
-      <li>Join sexps:              Shift-Ctrl-6</li>
-    </ul>
-  </li>
-  <li>Indentation
-    <ul>
-      <li>Indent Defun: Shift-Ctrl-\</li>
-    </ul>
-  </li>
-  <li>Others
-    <ul>
-      <li>Backward Kill Word: Ctrl-9</li>
-      <li>Kill:               Ctrl-0</li>
-      <li>Forward Kill Word:  Ctrl--</li>
-      <li>Meta Double Quote:  Shift-Alt-"</li>
-      <li>Comment DWIM:       Shift-Alt-;</li>
     </ul>
   </li>
 </ul>

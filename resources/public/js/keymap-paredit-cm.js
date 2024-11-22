@@ -2,7 +2,9 @@
   // Modifiers in this order: Shift-, Cmd-, Ctrl-, and Alt-
   // Alt- does not behave properly a modifier on linux...
   CodeMirror.keyMap.paredit_cm = {
-      //"Ctrl-2"       : paredit_cm.core.info,
+      //"Ctrl-1"       : paredit_cm.core.trim_sexp,
+      //"Ctrl-2"       : paredit_cm.core.move_left,
+      //"Ctrl-3"       : paredit_cm.core.move_right,
       "Shift-9"       : paredit_cm.core.open_round,
       "Shift-0"       : paredit_cm.core.close_round,
       "Shift-Alt-0"   : paredit_cm.core.close_round_and_newline,
@@ -20,9 +22,9 @@
       "Ctrl-3"        : paredit_cm.core.backward_sexp,
       "Ctrl-4"        : paredit_cm.core.forward_sexp,
       "Ctrl-5"        : paredit_cm.core.backward_up,
-      "Ctrl-6"        : paredit_cm.core.forward_down,
+      "Ctrl-6"        : paredit_cm.core.forward_up,
       "Ctrl-7"        : paredit_cm.core.backward_down,
-      "Ctrl-8"        : paredit_cm.core.forward_up,
+      "Ctrl-8"        : paredit_cm.core.forward_down,
       "Ctrl-9"        : paredit_cm.core.backward_kill_word,
       "Ctrl-0"        : paredit_cm.core.kill,
       "Ctrl--"        : paredit_cm.core.forward_kill_word,
@@ -38,6 +40,7 @@
       "Shift-Ctrl-5"  : paredit_cm.core.split_sexp,
       "Shift-Ctrl-6"  : paredit_cm.core.join_sexps,
       "Shift-Ctrl-\\" : paredit_cm.core.reindent_defun,
+      "Ctrl-\\"       : paredit_cm.core.trim_sexp,
       fallthrough: ["basic", "emacs"]
 
       // paredit-newline naturally part of CodeMirror.

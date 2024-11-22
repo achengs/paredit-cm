@@ -572,6 +572,10 @@ X"
 ")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/forward-up
+           "(X )"
+           "( )X")
+
+  (t/check p/forward-up
            "   (foo \"hello Xworld\" bar)"
            "   (foo \"hello world\"X bar)")
 

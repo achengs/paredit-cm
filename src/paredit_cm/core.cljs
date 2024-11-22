@@ -2021,14 +2021,9 @@
   "paredit forward-up exposed for keymap.
   return true if we moved."
   [cm]
-  (let[original-i (index cm)]
-    ;; keep moving forward-sexp until we stop:
-    (loop [] (when (forward-sexp cm) (recur)))
-    ;; if we're at a closer, move past it:
-    (if (#{:closer :string-end}(rinfo cm))
-      (move-right cm)
-      (.setCursor cm (cursor cm original-i)))
-    (not= original-i (index cm))))
+  (println "in forward-up")
+  (when (backward-up cm)
+    (forward-sexp cm)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-up

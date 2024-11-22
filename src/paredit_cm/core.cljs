@@ -1961,61 +1961,9 @@
       (.setCursor cm (cursor cm original-i)))
     (not= original-i (index cm))))
 
-(defn fwd
-  "trampoline helper for forward. 'i' is the index we're inspecting. 'n' is how
-  many more calls we'll entertain before suspecting an infinite loop. first call
-  can pass in char count."
-  [cm i n]
-  (let [j (inc i), m (dec n), cur (cursor cm i), right-cur (cursor cm j)]
-    (println (str [i (get-type cm cur) j (get-type cm right-cur)]))
-    (cond
-      (neg? n)
-      (guard)
-
-      (nil? right-cur)
-      :do-nothing
-
-      (eof? cm right-cur)
-      :do-nothing
-
-      (whitespace? cm right-cur)
-      #(fwd cm j m)
-
-      (opening-delim? cm right-cur)
-      (.setCursor cm (end-of-next-sibling cm cur))
-
-      (closing-delim? cm right-cur)
-      (.setCursor cm right-cur)
-
-      (at-a-word? cm right-cur)
-      (.setCursor cm (cursor cm (token-end-index cm j)))
-
-      (comment? cm right-cur)
-      #(fwd cm (token-end-index cm j) m)
-
-      (in-string? cm right-cur)
-      (.setCursor cm (cursor cm (end-of-next-word cm j)))
-
-      :else
-      (do (println "unhandled situation, please let me know (fwd)")
-          (println (get-type cm cur))
-          #(fwd cm j m)))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-up
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn forward-up-cur
-  "get cursor corresponding to paredit forward up"
-  ([cm] (forward-up-cur cm (cursor cm)))
-  ([cm cur]
-   (cond
-     (nil? cur), nil
-
-     (and (in-string? cm cur) (not (end-of-a-string? cm cur)))
-     (token-end cm cur)
-
-     :default, (skip cm parent-closer-sp))))
 
 (defn ^:export forward-up
   "paredit forward-up exposed for keymap.
@@ -2024,16 +1972,6 @@
   (println "in forward-up")
   (when (backward-up cm)
     (forward-sexp cm)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; paredit-backward-up
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn backward-up-cur
-  "get cursor corresponding to paredit backward up"
-  ([cm] (backward-up-cur cm (cursor cm)))
-  ([cm cur]
-   (start-of-prev-sibling cm (forward-up-cur cm cur))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-wrap-round
@@ -2407,35 +2345,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-barf-sexp C-\} C-<left>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn fwd-barf
-  "trampoline-able that looks for an ancestor closing bracket (parent,
-  grandparent, etc) that has a sibling to barf. returns a vector of
-  the cur to the right of such a bracket, the cur at the bracket, the
-  cur where the bracket should go, the text of the bracket, and
-  whether the operation causes the cursor to be moved. nil if there is
-  no such anscestor that can barf"
-  [cm cur n]
-  (when (>= n 0)
-    (let [parent      (skip cm parent-closer-sp cur)
-          inside      (cursor cm (dec (index cm parent)))
-          sibling     (start-of-prev-sibling cm inside)
-          ;; prevsib: end of prev sibling if there is one:
-          prevsib     (end-of-next-sibling cm (start-of-prev-sibling cm sibling))
-          ;; bracket-cur: where the new bracket should go:
-          bracket-cur (or prevsib
-                          (forward-down-cur cm (backward-up-cur cm sibling)))
-          ;; whether the cursor needs to change:
-          moved       (and bracket-cur (< (index cm bracket-cur) (index cm cur)))
-          ;; text of the bracket, e.g. ")"
-          bracket     (when parent
-                        (if moved
-                          (str (get-string cm parent) " ")
-                          (get-string cm parent)))]
-      (cond
-        (nil? parent)      nil
-        (nil? bracket-cur) (fn [] (fwd-barf cm parent (dec n)))
-        :default           [parent inside bracket-cur bracket moved]))))
 
 (defn ^:export forward-barf-sexp
   "paredit forward-barf-sexp exposed for keymap."

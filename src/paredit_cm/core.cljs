@@ -1740,54 +1740,47 @@
   of paredit itself. but including it here since this will be used in
   things other than emacs itself. return true if we moved."
   [cm]
-  (let [i0           (index cm)
-        original-cur (cursor cm)
-        sexp?        (atom false)
-        moved?
-        (loop [stack 0]
-          (let [R (rinfo cm)]
-            (cond
-              ;; can't go any further than the end of file:
-              (= R :eof)            (not= i0 (index cm))
-              ;; skip past comments and whitespace since we care about sexps:
-              (or(= R :comment)
-                 (= R :whitespace)) (do(move-past-non-code cm)
-                                       (recur stack))
-              ;; skip past a word, and if there's still a stack then recur:
-              (= R :word)           (do(reset! sexp? true)
-                                       (move-past-token cm)
-                                       (if(not(zero? stack))
-                                         (recur stack)
-                                         (not= i0 (index cm))))
-              ;; skip past a string just like a single word:
-              (= R :string-start)   (do(reset! sexp? true)
-                                       (move-past-string cm)
-                                       (if(not(zero? stack))
-                                         (recur stack)
-                                         (not= i0 (index cm))))
-              ;; enter a sexp and increase the stack:
-              (= R :opener)         (do(reset! sexp? true)
-                                       (move-right cm)
-                                       (recur (inc stack)))
-              ;; what we do at a closer depends on the stack:
-              (or(= R :closer)
-                 (= R :string-end)) (cond
-                                      (= 0 stack) (not= i0 (index cm))
-                                      (= 1 stack) (do(reset! sexp? true)(move-right cm)(not= i0 (index cm)))
-                                      :else       (do(reset! sexp? true)
-                                                     (move-right cm)
-                                                     (recur (dec stack))))
-              ;; stop inside the end of a string if we start inside one:
-              (= R :string-guts)    (do(reset! sexp? true)(move-past-string cm)(move-left cm)(not= i0 (index cm)))
-              ;; none of the above, so just skip past it and check the stack:
-              :default              (do(move-past-token cm)
-                                       (if(not(zero? stack))
-                                         (recur stack)
-                                         (not= i0 (index cm)))))))]
-    (if @sexp?
-      moved?
-      (do (.setCursor cm original-cur)
-          false))))
+  (let [i0 (index cm)
+        c0 (cursor cm)]
+    (loop [stack 0]
+      (let [R (rinfo cm)]
+        (cond
+          ;; can't go any further than the end of file:
+          (= R :eof)            (not= i0 (index cm))
+          ;; skip past comments and whitespace since we care about sexps:
+          (or(= R :comment)
+             (= R :whitespace)) (do(move-past-non-code cm)
+                                   (recur stack))
+          ;; skip past a word, and if there's still a stack then recur:
+          (#{:word
+             :string-2-start
+             :string-2-end
+             :uncategorized} R) (do (move-past-token cm)
+                                    (if(not(zero? stack))
+                                      (recur stack)
+                                      (not= i0 (index cm))))
+          ;; skip past a string just like a single word:
+          (= R :string-start)   (do (move-past-string cm)
+                                    (if(not(zero? stack))
+                                      (recur stack)
+                                      (not= i0 (index cm))))
+          ;; enter a sexp and increase the stack:
+          (= R :opener)         (do (move-right cm)
+                                    (recur (inc stack)))
+          ;; what we do at a closer depends on the stack:
+          (or(= R :closer)
+             (= R :string-end)) (cond
+                                  (= 0 stack) (not= i0 (index cm))
+                                  (= 1 stack) (do(move-right cm)(not= i0 (index cm)))
+                                  :else       (do (move-right cm)
+                                                  (recur (dec stack))))
+          ;; stop inside the end of a string if we start inside one:
+          (= R :string-guts)    (do(move-past-string cm)(move-left cm)(not= i0 (index cm)))
+          ;; none of the above, so just skip past it and check the stack:
+          :default              (do(move-past-token cm)
+                                   (if(not(zero? stack))
+                                     (recur stack)
+                                     (not= i0 (index cm)))))))))
 
 (defmulti forward-m (fn [cm] (rinfo cm)))
 

@@ -216,6 +216,10 @@ bXaz\" quux)"
 b\\\"Xaz\" quux)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/forward-sexp
+           "(X \\a)"
+           "( \\aX)")
+
+  (t/check p/forward-sexp
            "  X  (let [i 1]
  (do (foo 1)
      i)) (foo bar)"
@@ -468,6 +472,10 @@ baz) (keep me)  ; Useless form!"
   (t/check p/forward
            " X"
            " X")
+
+  (t/check p/forward
+           "(X \\a)"
+           "( \\aX)")
 
   (t/check p/forward
            "(foo X(bar baz) quux)"

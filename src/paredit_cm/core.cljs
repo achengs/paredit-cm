@@ -1793,21 +1793,17 @@
   (move-right cm))
 
 (defmethod forward-m :default [cm]
+  (when-not (forward-sexp cm)
+    (move-right cm)))
+
+(defn ^:export forward
   "paredit forward exposed for keymap.
   Move forward an S-expression, or up an S-expression forward.
   If there are no more S-expressions in this one before the closing
   delimiter, move past that closing delimiter; otherwise, move forward
   past the S-expression following the point."
   [cm]
-  (let [cur-0 (cursor cm)
-        L     (rinfo cm)
-        cur-1 (do(forward-sexp cm)(cursor cm))]
-    (if (and (= cur-0 cur-1)
-             (or (= L :closer)
-                 (= L :string-end)))
-      (move-right cm))))
-
-(defn ^:export forward [cm] (forward-m cm))
+  (forward-m cm))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-sexp
@@ -1821,43 +1817,43 @@
   (let [i0 (index cm)]
     (loop [rem i0, stack 0]
       (let [L (linfo cm)]
-       (cond
-         ;; avoid infinite loop:
-         (neg? rem)              (not= i0 (index cm))
-         ;; can't go any further than the beginning of file:
-         (= L :bof)              (not= i0 (index cm))
-         ;; skip before comments and whitespace since we care about sexps:
-         (or(= L :comment)
-            (= L :whitespace))   (do(move-before-non-code cm)
-                                    (recur(dec rem)stack))
-         ;; skip before a word, and if there's still a stack then recur:
-         (= L :word)             (do(move-before-word cm)
-                                    (if(not(zero? stack))
-                                      (recur(dec rem)stack)
-                                      (not= i0 (index cm))))
-         ;; skip before a string just like a single word:
-         (= L :string-end)       (do(move-before-string cm)
-                                    (if(not(zero? stack))
-                                      (recur(dec rem)stack)
-                                      (not= i0 (index cm))))
-         ;; enter a sexp and increase the stack:
-         (= L :closer)           (do(move-left cm)
-                                    (recur(dec rem)(inc stack)))
-         ;; what we do at an opener depends on the stack:
-         (or(= L :opener)
-            (= L :string-start)) (cond
-                                   (= 0 stack) (not= i0 (index cm))
-                                   (= 1 stack) (do(move-left cm)(not= i0 (index cm)))
-                                   :else       (do(move-left cm)
-                                                  (recur(dec rem)(dec stack))))
-         ;; stop inside the end of a string if we start inside one:
-         (= L :string-guts)      (do(move-before-string cm)
-                                    (move-right cm)(not= i0 (index cm)))
-         ;; none of the above, so just skip before it and check the stack:
-         :default                (do(move-before-token cm)
-                                    (if(not(zero? stack))
-                                      (recur(dec rem)stack)
-                                      (not= i0 (index cm)))))))))
+        (cond
+          ;; avoid infinite loop:
+          (neg? rem)              (not= i0 (index cm))
+          ;; can't go any further than the beginning of file:
+          (= L :bof)              (not= i0 (index cm))
+          ;; skip before comments and whitespace since we care about sexps:
+          (or(= L :comment)
+             (= L :whitespace))   (do(move-before-non-code cm)
+                                     (recur(dec rem)stack))
+          ;; skip before a word, and if there's still a stack then recur:
+          (= L :word)             (do(move-before-word cm)
+                                     (if(not(zero? stack))
+                                       (recur(dec rem)stack)
+                                       (not= i0 (index cm))))
+          ;; skip before a string just like a single word:
+          (= L :string-end)       (do(move-before-string cm)
+                                     (if(not(zero? stack))
+                                       (recur(dec rem)stack)
+                                       (not= i0 (index cm))))
+          ;; enter a sexp and increase the stack:
+          (= L :closer)           (do(move-left cm)
+                                     (recur(dec rem)(inc stack)))
+          ;; what we do at an opener depends on the stack:
+          (or(= L :opener)
+             (= L :string-start)) (cond
+                                    (= 0 stack) (not= i0 (index cm))
+                                    (= 1 stack) (do(move-left cm)(not= i0 (index cm)))
+                                    :else       (do(move-left cm)
+                                                   (recur(dec rem)(dec stack))))
+          ;; stop inside the end of a string if we start inside one:
+          (= L :string-guts)      (do(move-before-string cm)
+                                     (move-right cm)(not= i0 (index cm)))
+          ;; none of the above, so just skip before it and check the stack:
+          :default                (do(move-before-token cm)
+                                     (if(not(zero? stack))
+                                       (recur(dec rem)stack)
+                                       (not= i0 (index cm)))))))))
 
 (defn move-back-to-end-of-word
   "move back to the end of the prev word and return the index
@@ -1923,21 +1919,17 @@
   (move-left cm))
 
 (defmethod backward-m :default [cm]
+  (when-not (backward-sexp cm)
+    (move-left cm)))
+
+(defn ^:export backward
   "paredit backward exposed for keymap.
   Move backward an S-expression, or up an S-expression backward.
   If there are no more S-expressions in this one before the opening
   delimiter, move past that opening delimiter; otherwise, move backward
   past the S-expression following the point."
   [cm]
-  (let [cur-0 (cursor cm)
-        L     (linfo cm)
-        cur-1 (do(backward-sexp cm)(cursor cm))]
-    (if (and (= cur-0 cur-1)
-             (or (= L :opener)
-                 (= L :string-start)))
-      (move-left cm))))
-
-(defn ^:export backward [cm] (backward-m cm))
+  (backward-m cm))
 
 (defn ^:export backward-up
   "paredit backward-up exposed for keymap.

@@ -2294,38 +2294,38 @@
 ;; paredit-backward-slurp-sexp C-), C-<right>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn bkwd-slurp
-  "trampolin-able that looks for an ancestor opening bracket (parent,
-  grandparent, etc) that has a sibling to slurp. returns a vector of the cur to
-  the left of such a bracket, the cur to the left of the sibling that will be
-  slurped, the string of the bracket to move. nil if there is no such anscestor
-  that can slurp."
-  [cm cur n]
-  (when (>= n 0)
-    (let [ending      (skip cm parent-closer-sp cur)
-          parent      (start-of-prev-sibling cm ending)
-          sibling     (start-of-prev-sibling cm parent)
-          bracket-cur (forward-down-cur cm parent)]
-      (if (and (not (nil? sibling)) (not (nil? bracket-cur)))
-        [parent sibling (get-string cm bracket-cur)]
-        (fn [] (bkwd-slurp cm parent (dec n)))))))
+(defn bkwd-slurp-helper
+  "returns details for a backward slurp or nil if not possible"
+  [cm]
+  (let [in-sexp?    (backward-up cm)
+        outside-cur (cursor cm)
+        opener      (:right-char(get-info cm))
+        inside-cur  (move-right cm)
+        _           (move-left cm)
+        slurpable?  (backward-sexp cm)
+        dest-cur    (cursor cm)]
+    (cond
+      (and in-sexp? slurpable?) [inside-cur outside-cur dest-cur opener]
+      in-sexp?                  (bkwd-slurp-helper cm)
+      :else                     nil)))
 
 (defn ^:export backward-slurp-sexp
   "paredit backward-slurp-sexp exposed for keymap."
-  ([cm] (backward-slurp-sexp cm nil))
-  ([cm starting-i]
-   (let [original-i (or starting-i (index cm))]
-     (if(not(backward-up cm)) ;; if we are not inside a sexp,
-       (.setCursor cm (cursor cm original-i)) ;; then there's nothing to slurp into.
-       (if(= :string-start(rinfo cm)) ;; if we merely exited a string,
-         (backward-slurp-sexp cm original-i) ;; then start over but with original-i
-         (let [{:keys [cur right-cur right-char]} (get-info cm)] ;; get the opener
-           (if(not(backward-sexp cm)) ;; if there's no sexp to slurp,
-             (.setCursor cm (cursor cm original-i)) ;; then abort.
-             (do (.replaceRange cm "" cur right-cur) ;; delete the old opener
-                 (insert cm right-char 0) ;; and put the same opener in the new spot
-                 (.setCursor cm (cursor cm original-i))))))))
-   (trim-sexp cm)))
+  [cm]
+  (let [original-cur      (cursor cm)
+        _                 (move-for-sexp-editing cm)
+        [inside-cur outside-cur
+         dest-cur opener] (bkwd-slurp-helper cm)
+        move-left?        (and inside-cur
+                               (not= (.-line dest-cur)
+                                     (.-line outside-cur)))]
+    (when inside-cur
+      (.replaceRange cm "" inside-cur outside-cur)
+      (insert cm opener 0 dest-cur))
+    (.setCursor cm original-cur)
+    ;; if the opener has moved to a different line, fix our pos:
+    (when move-left?
+      (move-left cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-barf-sexp C-\} C-<left>
@@ -2364,7 +2364,6 @@
           (.setCursor cm destination-cur)
           (.setCursor cm original-cur))
         (trim-sexp cm)))))
-;; todo slurp a defn with a docstring, see what happens
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backard-barf-sexp C-{, C-M-<right>, Esc C-<right>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -1947,6 +1947,35 @@
     (not= original-i (index cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; paredit-reindent-defun M-q
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn top-most-opener
+  "get the top most opening bracket's cursor for the specified location. nil if
+  there is no such bracket."
+  [cm]
+  (loop [candidate nil]
+    (if (backward-up cm)
+      (recur (cursor cm))
+      candidate)))
+
+(defn outermost-cursors [cm]
+  (let [cur   (cursor cm)
+        open  (top-most-opener cm)
+        close (when open (forward-sexp cm) (cursor cm))]
+    (.setCursor cm cur)
+    [open close]))
+
+(defn ^:export reindent-defun
+  "paredit reindent-defun exposed for keymap."
+  [cm]
+  (let [[open close] (outermost-cursors cm)]
+    (if (and open close)
+      (indent-lines cm (.-line open) (.-line close))
+      (let [l (-> cm cursor .-line)]
+        (indent-lines cm l l)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-up
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2224,7 +2253,9 @@
     (when inside-cur
       (insert cm closer 0 dest-cur)
       (.replaceRange cm "" inside-cur outside-cur))
-    (.setCursor cm original-cur)))
+    (.setCursor cm original-cur)
+    (when inside-cur
+      (reindent-defun cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-down C-M-d
@@ -2323,6 +2354,8 @@
       (.replaceRange cm "" inside-cur outside-cur)
       (insert cm opener 0 dest-cur))
     (.setCursor cm original-cur)
+    (when inside-cur
+      (reindent-defun cm))
     ;; if the opener has moved to a different line, fix our pos:
     (when move-left?
       (move-left cm))))
@@ -2334,10 +2367,11 @@
 (defn ^:export forward-barf-sexp
   "paredit forward-barf-sexp exposed for keymap."
   [cm]
-  (trim-sexp cm)
+  ;;(trim-sexp cm)
   (let[original-cur        (cursor        cm)
        original-i          (index         cm)
        _                   (move-for-sexp-editing cm)
+       [oc cc]             (outermost-cursors cm)
        inside-a-sexp?      (backward-up   cm)
        _                   (forward-sexp  cm)
        {:keys [left-char]} (get-info      cm)
@@ -2363,7 +2397,9 @@
         (if on-barfed?
           (.setCursor cm destination-cur)
           (.setCursor cm original-cur))
-        (trim-sexp cm)))))
+        (trim-sexp cm)
+        (when(and oc cc)
+          (indent-lines cm (.-line oc) (.-line cc)))))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backard-barf-sexp C-{, C-M-<right>, Esc C-<right>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2506,25 +2542,3 @@
                             cur)))
        (.setCursor cm cur)))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; paredit-reindent-defun M-q
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn top-most-opener
-  "get the top most opening bracket's cursor for the specified location. nil if
-  there is no such bracket."
-  [cm]
-  (loop [candidate nil]
-    (if (backward-up cm)
-      (recur (cursor cm))
-      candidate)))
-
-(defn ^:export reindent-defun
-  "paredit reindent-defun exposed for keymap."
-  [cm]
-  (let [cur   (cursor cm)
-        open  (top-most-opener cm)
-        close (when open (forward-sexp cm) (cursor cm))]
-    (.setCursor cm cur)
-    (when (and open close)
-      (indent-lines cm (.-line open) (.-line close)))))

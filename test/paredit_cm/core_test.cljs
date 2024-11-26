@@ -803,7 +803,7 @@ siblings) out)"
            "(a b ((cX d))
  e f)"
            "(a b ((cX d)
- e) f)")
+      e) f)")
 
   (t/check p/forward-slurp-sexp
            "(fXoo (bar baz) quux zot)"
@@ -824,10 +824,10 @@ siblings) out)"
   \"docstring\"
   (code))"
            "(fooX
-;; comment
-(defn bar
-  \"docstring\"
-  (code)))")
+ ;; comment
+ (defn bar
+   \"docstring\"
+   (code)))")
 
   (t/check p/forward-slurp-sexp
            "(foo \"hXi\" world quux)
@@ -835,9 +835,9 @@ siblings) out)"
 line
 thing\")] 0"
            "(foo \"hXi\" world quux
-   [some (complicated \"multi
-line
-thing\")]) 0")
+     [some (complicated \"multi
+                        line
+                        thing\")]) 0")
 
   (t/check p/forward-slurp-sexp "X" "X")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -936,8 +936,8 @@ thing\")]) 0")
 big blue
 world (!)\" (zoXt)"
            "(foo) (\"hi
-big blue
-world (!)\" zoXt)")
+       big blue
+       world (!)\" zoXt)")
 
   (t/check p/backward-slurp-sexp
            "(\"bar baz hi worXld\" quux zot)"
@@ -985,9 +985,9 @@ world (!)\" zoXt)")
  ho
 hoo)) zoo)"
            "(foo (baXr \"hi world\") ([hey]
- hi
- ho
-hoo) zoo)")
+                       hi
+                       ho
+                       hoo) zoo)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (t/check p/backward-barf-sexp
@@ -1122,7 +1122,7 @@ world\"")
   i)")
   (t/check p/reindent-defun
            "  X  (let [i 1] i)"
-           "  X  (let [i 1] i)")
+           "X(let [i 1] i)")
   (t/check p/reindent-defun
            "(defn three
 \"returns 3\"

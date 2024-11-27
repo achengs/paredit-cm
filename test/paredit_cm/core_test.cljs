@@ -930,6 +930,11 @@ thing\")] 0"
   (t/check p/backward-slurp-sexp
            "(foo (bar Xbaz) quux zot)"
            "((foo bar Xbaz) quux zot)")
+
+  (t/check p/backward-slurp-sexp
+           "foo (X)"
+           "(fooX)")
+
   ;; slurp/barf (forms (like) these)
   (t/check p/backward-slurp-sexp
            "((foo bar Xbaz) quux zot)"

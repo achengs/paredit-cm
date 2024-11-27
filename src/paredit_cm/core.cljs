@@ -2367,6 +2367,7 @@
       (insert cm opener 0 dest-cur))
     (.setCursor cm original-cur)
     (when inside-cur
+      (trim-sexp cm)
       (reindent-defun cm))
     ;; if the opener has moved to a different line, fix our pos:
     (when move-left?

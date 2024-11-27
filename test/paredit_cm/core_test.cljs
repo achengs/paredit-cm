@@ -707,7 +707,7 @@ world\") baz)")
 
   (t/check p/splice-sexp
            "  (foo baz X)   "
-           "  foo baz X   ")
+           "foo baz X   ")
 
   (t/check p/splice-sexp
            "(foo   X  baz)"
@@ -718,6 +718,13 @@ world\") baz)")
            "foo \"bar Xbaz\" qux")
 
   (t/check p/splice-sexp
+           "(a
+ bX
+ c)"
+           "a
+bX
+c")
+  (t/check p/splice-sexp
            "(foo \"bar
 boo
 Xbaz
@@ -727,7 +734,7 @@ foo\"
 boo
 Xbaz
 foo\"
- qux")
+qux")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/splice-sexp-killing-backward
            "(foo (let ((x 5)) X(sqrt n)) bar)"

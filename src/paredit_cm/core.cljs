@@ -2101,7 +2101,8 @@
                                     (cursor cm iR))
                          cur-L
                          cur-R)
-          (.setCursor cm (cursor cm (dec i0)))))))
+          (.setCursor cm (cursor cm (dec i0)))
+          (indent-lines cm (.-line cur-L)(.-line cur-R))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-splice-sexp-killing-backward M-<up>

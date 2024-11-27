@@ -2266,6 +2266,7 @@
       (.replaceRange cm "" inside-cur outside-cur))
     (.setCursor cm original-cur)
     (when inside-cur
+      (trim-sexp cm)
       (reindent-defun cm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -809,7 +809,7 @@ siblings) out)"
 
   (t/check p/forward-slurp-sexp
            "(X) (\"a\")"
-           "(X (\"a\"))")
+           "(X(\"a\"))")
 
   (t/check p/forward-slurp-sexp
            "(a b ((cX d)) e f)"

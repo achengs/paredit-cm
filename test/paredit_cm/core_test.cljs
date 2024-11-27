@@ -734,6 +734,13 @@ foo\"
            "(foo X(sqrt n) bar)")
 
   (t/check p/splice-sexp-killing-backward
+           "(let [x 5]
+  Xfoo
+  bar)"
+           "Xfoo
+bar")
+
+  (t/check p/splice-sexp-killing-backward
            "(Xfoo bar)"
            "Xfoo bar")
 
@@ -759,7 +766,7 @@ foo\"
      \"hi Xworld\"
  (sqrt n)) bar)"
            "(foo X\"hi world\"
- (sqrt n) bar)")
+     (sqrt n) bar)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/splice-sexp-killing-forward
            "(foo (bar bazX qux zoo) hey)"

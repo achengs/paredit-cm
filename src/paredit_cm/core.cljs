@@ -2134,8 +2134,8 @@
                          cur-L
                          cur-R)
           (.setCursor cm (cursor cm i1))
-          ;;(reindent-defun cm)
-          ))))
+          (reindent-defun cm)
+          (indent-lines cm (.-line cur-L)(.-line cur-R))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-splice-sexp-killing-forward M-<down>

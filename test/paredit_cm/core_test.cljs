@@ -89,6 +89,22 @@
            "(X)")
 
   (t/check p/open-round
+           "#X"
+           "#(X)")
+
+  (t/check p/open-round
+           "#_X"
+           "#_(X)")
+
+  (t/check p/open-round
+           "(let [foo_X])"
+           "(let [foo_ (X)])")
+
+  (t/check p/open-round
+           "(let [foo#_X])"
+           "(let [foo#_ (X)])")
+
+  (t/check p/open-round
            "(a bX c d) "
            "(a b (X) c d) ")
 

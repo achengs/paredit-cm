@@ -285,10 +285,6 @@
   "returns true if an escaped char and its backslash is to the right"
   [cm cur] (in-escaped-char? cm cur 1))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; paredit-open-round
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defn insert
   "insert text at current cursor. move cursor to the end of inserted text minus
   optional offset. the offset is for moving the cursor immediately after the
@@ -302,38 +298,6 @@
      (.setCursor cm line (+ (+ ch (count text)) offset))
      (cursor cm))))
 
-(defn ^:export open-round
-  "paredit-open-round exposed for keymap. unlike traditional emacs paredit, this
-  supports brackets [] {} () but not double-quote"
-  ([cm] (open-round cm "("))
-  ([cm c]
-   (let [{:keys [type left-char right-char]} (get-info cm)
-         [L R] (info cm)]
-     (cond
-       ;; don't insert if in an escaped char because it'd become a bracket:
-       (and (or (= L :string-2-start) (= L :string-2-guts))
-            (or (= R :string-2-guts)  (= R :string-2-end))) :no-op
-
-       ;; escaping the next character:
-       (= "\\" left-char) (insert cm c)
-
-       ;; typing in a comment or string as-is:
-       (comment-or-string? type) (insert cm c)
-
-       ;; insert a pair, pad with a space to the left and/or right if necessary,
-       ;; and move the cursor into the pair before returning:
-       :else
-       (let [pad-L (#{:string-end :string-2-end :word :closer} L)
-             pad-R (#{:string-start :string-2-start :word :opener} R)]
-         (insert cm
-                 (str (when pad-L " ")
-                      c (pair c)
-                      (when pad-R " "))
-                 (if pad-R -2 -1)))))))
-
-(defn ^:export open-brace
-  "open curly brace with matching close brace"
-  ([cm] (open-round cm "{")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-close-round )
@@ -532,9 +496,6 @@
      (insert cm s)
      (when (close-round cm s)
        (.execCommand cm "newlineAndIndent")))))
-
-(defn ^:export  open-square [cm]  (open-round cm "["))
-(defn ^:export close-square [cm] (close-round cm "]"))
 
 (defn move
   "moves the cursor by 'offset' places, negative for left. returns the cursor."
@@ -1059,7 +1020,7 @@
   ([cm] (move-to-end-of-line cm (cursor cm)))
   ([cm cur]
    (let [end  (->> cur .-line (.getLineTokens cm) (remove #(nil? (.-type %)))
-                  last .-end)
+                   last .-end)
          ch   (.-ch cur)
          i    (index cm cur)
          i'   (+ i (- end ch))
@@ -1452,9 +1413,9 @@
 
 (defn cur-of-end-of-kill [cm]
   (let [starting-line (:line(get-info cm))
-        cur-eol      (last-cur cm)]
+        cur-eol       (last-cur cm)]
     (loop [stack 0]
-      (let [L    (rinfo cm)
+      (let [L                                       (rinfo cm)
             {:keys [line left-cur cur right-cur i]} (get-info cm)]
         (cond
           (= L :eof)                  cur
@@ -1468,7 +1429,7 @@
           ;; reached end of line on the same line:
           (and (= line starting-line)
                (zero? stack)
-               (= cur-eol right-cur))       left-cur
+               (= cur-eol right-cur)) left-cur
           ;; got to a new line and reached end of a sexp
           (and (not= line starting-line)
                (zero? stack))         cur
@@ -1490,7 +1451,7 @@
   (while (in-string-and-backslash-to-the-left? cm)
     (move-left cm))
   (let [start-cur (cursor cm)
-        end-cur (cur-of-end-of-kill cm)]
+        end-cur   (cur-of-end-of-kill cm)]
     (when end-cur
       (.setSelection cm start-cur end-cur)
       (kill-region cm))))
@@ -1561,7 +1522,7 @@
 (defn move-before-token [cm]
   (when-let [{:keys [left-cur]} (get-info cm)]
     (let [{:keys [ch start]} (get-info cm left-cur)
-          i (index cm)]
+          i                  (index cm)]
       (.setCursor cm (cursor cm (- i 1 (- ch start)))))))
 
 (defn move-before-word [cm]
@@ -1854,6 +1815,56 @@
                                      (if(not(zero? stack))
                                        (recur(dec rem)stack)
                                        (not= i0 (index cm)))))))))
+
+(defn ^:export get-text-of-left-sexp [cm]
+  (let [original-cur (cursor cm)
+        moved?       (backward-sexp cm)
+        text         (.getRange cm (cursor cm) original-cur)]
+    (.setCursor cm original-cur)
+    (println text)
+    text))
+
+(defn need-padding-before-opener? [l-info cm]
+  (or (#{:string-end :string-2-end :closer} l-info)
+      (and (= :word l-info)
+           (not (#{"#" "#_"} (get-text-of-left-sexp cm))))))
+
+(defn ^:export open-round
+  "paredit-open-round exposed for keymap. unlike traditional emacs paredit, this
+  supports brackets [] {} () but not double-quote"
+  ([cm] (open-round cm "("))
+  ([cm c]
+   (let [{:keys [type left-char right-char]} (get-info cm)
+         [L R]                               (info cm)]
+     (cond
+       ;; don't insert if in an escaped char because it'd become a bracket:
+       (and (or (= L :string-2-start) (= L :string-2-guts))
+            (or (= R :string-2-guts)  (= R :string-2-end))) :no-op
+
+       ;; escaping the next character:
+       (= "\\" left-char) (insert cm c)
+
+       ;; typing in a comment or string as-is:
+       (comment-or-string? type) (insert cm c)
+
+       ;; insert a pair, pad with a space to the left and/or right if necessary,
+       ;; and move the cursor into the pair before returning:
+       :else
+       (let [pad-L? (need-padding-before-opener? L cm)
+             pad-R? (#{:string-start :string-2-start :word :opener} R)]
+         (insert cm
+                 (str (when pad-L? " ")
+                      c (pair c)
+                      (when pad-R? " "))
+                 (if pad-R? -2 -1)))))))
+
+;; todo open round should not pad left if after # or #_ bb
+(defn ^:export open-brace
+  "open curly brace with matching close brace"
+  ([cm] (open-round cm "{")))
+
+(defn ^:export  open-square [cm]  (open-round cm "["))
+(defn ^:export close-square [cm] (close-round cm "]"))
 
 (defn move-back-to-end-of-word
   "move back to the end of the prev word and return the index

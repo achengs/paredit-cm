@@ -1099,6 +1099,11 @@ world)"
 X
 (world)")
   (t/check p/split-sexp
+           "(adsf asdf
+      Xasdf asdf)"
+           "(adsf asdf)
+X(asdf asdf)")
+  (t/check p/split-sexp
            "(let [foo \"bar\"]Xdefn)"
            "(let [foo \"bar\"])X (defn)")
   (t/check p/split-sexp

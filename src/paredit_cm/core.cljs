@@ -2488,6 +2488,10 @@
 (defmethod split-sexp-m :default [cm]
   (let [original-cur    (cursor cm)
         inside-a-sexp?  (backward-up cm)
+        cur-start       (cursor cm)
+        _               (forward-sexp cm)
+        cur-end         (cursor cm)
+        _               (backward-sexp cm)
         opening-bracket (:right-char(get-info cm))
         closing-bracket (get pair opening-bracket)
         _               (.setCursor cm original-cur)
@@ -2524,7 +2528,8 @@
                          dest-L-cur
                          dest-L-cur-b)
           (do(insert cm closing-bracket) ;; else insert to avoid consuming a \n
-             (move-right cm)))))))       ;; and adjust the position
+             (move-right cm))))          ;; and adjust the position
+      (indent-lines cm (.-line cur-start) (.-line cur-end)))))
 
 (defn ^:export split-sexp
   "paredit split-sexp exposed for keymap."

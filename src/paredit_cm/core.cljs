@@ -2168,7 +2168,8 @@
                                     (cursor cm iR))
                          cur-L
                          cur-R)
-          (.setCursor cm (cursor cm (dec iR)))))))
+          (.setCursor cm (cursor cm (dec iR)))
+          (indent-lines cm (.-line cur-L)(.-line cur-R))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-raise-sexp M-r

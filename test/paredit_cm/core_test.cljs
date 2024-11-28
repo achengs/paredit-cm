@@ -780,6 +780,13 @@ bar")
            "(foo bar bazX hey)")
 
   (t/check p/splice-sexp-killing-forward
+           "(a
+ bX
+ c)"
+           "a
+bX")
+
+  (t/check p/splice-sexp-killing-forward
            "(foo hey)X"
            "(foo hey)X")
 

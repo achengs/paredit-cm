@@ -2203,7 +2203,12 @@
                          (.getRange cm sexp-start-cur sexp-end-cur)
                          parent-start-cur
                          parent-end-cur)
-          (backward-sexp cm)))))
+          (backward-sexp cm)
+          (let [start-line (.-line parent-start-cur)
+                end-line   (+ start-line
+                              (- (.-line sexp-end-cur)
+                                 (.-line sexp-start-cur)))]
+            (indent-lines cm start-line end-line))))))
 
 (defn ^:export trim-beginning [cm]
   (let [original-cur (cursor cm)]

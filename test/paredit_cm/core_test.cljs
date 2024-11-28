@@ -823,6 +823,14 @@ siblings) out)"
   (t/check p/raise-sexp
            "     X    "
            "     X    ")
+  (t/check p/raise-sexp
+           "(def bar
+  X(for [x [1 2 3]]
+           :foo
+             :bar))"
+           "X(for [x [1 2 3]]
+  :foo
+  :bar)")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (t/check p/forward-slurp-sexp
            "(foo (bar Xbaz) quux zot)"

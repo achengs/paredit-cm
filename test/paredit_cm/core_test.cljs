@@ -1139,6 +1139,9 @@ world\"")
            "(hello)X (world)"
            "(helloX world)")
   (t/check p/join-sexps
+           "(h)X (w)"
+           "(hX w)")
+  (t/check p/join-sexps
            "(foo)X [bar]"
            "(foo)X [bar]")
   (t/check p/join-sexps

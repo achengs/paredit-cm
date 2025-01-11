@@ -59,7 +59,7 @@ You can change the key shortcuts by editing your copy of
 ## Running the Tests
 
 ### From the command line
-`lein cljsbuild test`
+`lein fig:test`
 
 ### With figwheel and emacs
 * Jack in

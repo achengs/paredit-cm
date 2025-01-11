@@ -57,10 +57,10 @@ Note: your browser may interfere with the capture of many modifiers and combinat
   </tr>
   <tr>
     <td>Backward Barf</td>
-    <td>Shift Ctrl \[</td>
+    <td>Shift Ctrl [</td>
     <td>&nbsp;&nbsp;&nbsp;</td>
     <td>Forward Barf</td>
-    <td>Shift Ctrl \]</td>
+    <td>Shift Ctrl ]</td>
   </tr>
   <tr>
     <td>Backward Slurp</td>
@@ -114,7 +114,7 @@ Note: your browser may interfere with the capture of many modifiers and combinat
   </tr>
   <tr>
     <td>Indent Defun</td>
-    <td>Shift Ctrl \\</td>
+    <td>Shift Ctrl &#92;</td>
     <td>&nbsp;&nbsp;&nbsp;</td>
     <td>Meta Double Quote</td>
     <td>Shift Alt "</td>
@@ -130,7 +130,7 @@ Note: your browser may interfere with the capture of many modifiers and combinat
     <td>Shift Alt 0</td>
     <td>&nbsp;&nbsp;&nbsp;</td>
     <td>Trim Sexp</td>
-    <td>Ctrl \\</td>
+    <td>Ctrl &#92;</td>
   </tr>
 </table>
 

@@ -830,24 +830,6 @@
      (or (= type "string")
          (= type "string-2")))))
 
-(defn ^:export meta-doublequote
-  "paredit meta-doublequote exposed for keymap.
-  if in a string, moves cursor out of the string to the right.
-  if in a comment, insert a doublequote.
-  if in an escaped char, do nothing.
-  otherwise starts a string that that continues to the end of the next
-  form, escaping backslashes and doublequotes."
-  [cm]
-  (let [{:keys [type eof cur]} (get-info cm)]
-    (cond
-      eof                       :do-nothing
-      (in-escaped-char? cm cur) :do-nothing
-      (in-string? cm cur)       (exit-string cm)
-      (= type "comment")        (insert cm "\"")
-      (in-a-word? cm)           (stringify cm cur (token-end cm cur))
-      (forward-sexp cm)         (stringify cm cur (cursor cm))
-      :else                     :nothing-to-do)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-comment-dwim
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1766,6 +1748,24 @@
   past the S-expression following the point."
   [cm]
   (forward-m cm))
+
+(defn ^:export meta-doublequote
+  "paredit meta-doublequote exposed for keymap.
+  if in a string, moves cursor out of the string to the right.
+  if in a comment, insert a doublequote.
+  if in an escaped char, do nothing.
+  otherwise starts a string that that continues to the end of the next
+  form, escaping backslashes and doublequotes."
+  [cm]
+  (let [{:keys [type eof cur]} (get-info cm)]
+    (cond
+      eof                       :do-nothing
+      (in-escaped-char? cm cur) :do-nothing
+      (in-string? cm cur)       (exit-string cm)
+      (= type "comment")        (insert cm "\"")
+      (in-a-word? cm)           (stringify cm cur (token-end cm cur))
+      (forward-sexp cm)         (stringify cm cur (cursor cm))
+      :else                     :nothing-to-do)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-sexp

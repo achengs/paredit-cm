@@ -845,7 +845,8 @@
       (in-string? cm cur)       (exit-string cm)
       (= type "comment")        (insert cm "\"")
       (in-a-word? cm)           (stringify cm cur (token-end cm cur))
-      :else                     (stringify cm cur (end-of-next-sibling cm)))))
+      (forward-sexp cm)         (stringify cm cur (cursor cm))
+      :else                     :nothing-to-do)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-comment-dwim

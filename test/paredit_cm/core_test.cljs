@@ -272,6 +272,11 @@ b\\\"Xaz\" quux)")
            "(foo \"bar Xbaz\" quux)"
            "(foo \"bar baz\"X quux)")
 
+  "(\"foo\")"
+  (t/check p/meta-doublequote
+           "X(\"foo\")"
+           "\"X(\\\"foo\\\")\"")
+
   (t/check p/meta-doublequote
            "(foo X(bar #\\x \"baz \\\\ quux\") zot)"
            "(foo \"X(bar #\\\\x \\\"baz \\\\\\\\ quux\\\")\" zot)")

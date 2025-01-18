@@ -1,9 +1,10 @@
+// used by lein fig:build
 (function() {
   // Modifiers in this order: Shift-, Cmd-, Ctrl-, and Alt-
   // Alt- does not behave properly a modifier on linux...
   CodeMirror.keyMap.paredit_cm = {
-      //"Ctrl-1"       : paredit_cm.core.trim_sexp,
-      //"Ctrl-2"       : paredit_cm.core.move_left,
+      // "Ctrl-1"       : paredit_cm.core.info,
+      // "Ctrl-2"       : paredit_cm.core.get_text_of_left_sexp,
       //"Ctrl-3"       : paredit_cm.core.move_right,
       "Shift-9"       : paredit_cm.core.open_round,
       "Shift-0"       : paredit_cm.core.close_round,

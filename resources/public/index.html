@@ -47,9 +47,9 @@
   <body>
     <div id="app">
 <h2>paredit-cm demo</h2>
-<p>Note: Because the keymap falls through to
-  CodeMirror's <code>emacs.js</code> keymap, the following
-  applies. It's from CodeMirror's emacs demo page:</p>
+<p>Note: the keymap falls through to
+  CodeMirror's <code>emacs.js</code> keymap, so
+  CodeMirror's emacs demo page says this:</p>
 
 <blockquote cite="https://github.com/codemirror/CodeMirror/blob/master/demo/emacs.html">
 Because CodeMirror's internal API is quite different from Emacs,
@@ -224,7 +224,6 @@ to <code>"paredit_cm"</code>.</p>
       <li>Delimiters are created in pairs except when inside a string or comment or when the next character is escaped: () {} [] ""</li>
       <li>Typing a closing delimiter moves past it after deleting any whitespace at the end of the current list.</li>
       <li>Typing a closing double quote at the end of a string exits it to the right.</li>
-      <li>Close round and newline: Shift-Alt-0</li>
     </ul>
   </li>
 </ul>

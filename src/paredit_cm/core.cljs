@@ -1570,19 +1570,19 @@
         ;; end of a comment:
         (or(= L :whitespace)
            (= L :string-end))
-        (do(println"end of comment")[mark (index cm)])
+        [mark (index cm)]
         ;; keep moving to next whitespace in comment or string:
         (and (or(= L :comment)
                 (= L :string-guts))
              (not(#{" " "\t" "\n"} right-char)))
-        (do(println"moving within com/string")(move-right cm)(recur(rinfo cm)(:right-char(get-info cm))))
+        (do(move-right cm)(recur(rinfo cm)(:right-char(get-info cm))))
         ;; arrived at whitespace in string or comment, stop:
         (or(= L :comment)
            (= L :string-guts))
-        (do(println"arrived at whitespace in string/comment")[mark(index cm)])
+        [mark(index cm)]
         ;; move past word of code:
         :else
-        (do(println"move past word of code")(move-past-token cm)[mark(index cm)])))))
+        (do(move-past-token cm)[mark(index cm)])))))
 
 (defn ^:export forward-kill-word
   "paredit forward-kill-word exposed for keymap.
@@ -1821,7 +1821,7 @@
         moved?       (backward-sexp cm)
         text         (.getRange cm (cursor cm) original-cur)]
     (.setCursor cm original-cur)
-    (println text)
+    ;;(println text)
     text))
 
 (defn need-padding-before-opener? [l-info cm]
@@ -1905,19 +1905,19 @@
         ;; end of a comment:
         (or(= L :whitespace)
            (= L :string-start))
-        (do(println"end of comment")[mark (index cm)])
+        [mark (index cm)]
         ;; keep moving to next whitespace in comment or string:
         (and (or(= L :comment)
                 (= L :string-guts))
              (not(#{" " "\t" "\n"} left-char)))
-        (do(println"moving within com/string")(move-left cm)(recur(linfo cm)(:left-char(get-info cm))))
+        (do(move-left cm)(recur(linfo cm)(:left-char(get-info cm))))
         ;; arrived at whitespace in string or comment, stop:
         (or(= L :comment)
            (= L :string-guts))
-        (do(println"arrived at whitespace in string/comment")[mark(index cm)])
+        [mark(index cm)]
         ;; move past word of code:
         :else
-        (do(println"move past word of code")(move-before-token cm)[mark(index cm)])))))
+        (do(move-before-token cm)[mark(index cm)])))))
 
 (defmulti backward-m (fn [cm] (linfo cm)))
 
@@ -1994,7 +1994,6 @@
   "paredit forward-up exposed for keymap.
   return true if we moved."
   [cm]
-  (println "in forward-up")
   (when (backward-up cm)
     (forward-sexp cm)))
 

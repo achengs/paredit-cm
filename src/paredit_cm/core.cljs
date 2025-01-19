@@ -1362,16 +1362,6 @@
   (select-rest-of-siblings cm)
   (kill-region cm))
 
-(defn kill-next-sibling
-  "kills the next sibling to the right of the cursor"
-  [cm]
-  (let [from (cursor cm)
-        mid  (end-of-next-sibling cm from)
-        to   (if (betw-code-and-comment? cm mid) (last-cur cm mid) mid)]
-    (when to
-      (.setSelection cm from to)
-      (kill-region cm))))
-
 (defn in-string-and-backslash-to-the-left?
   ([cm] (in-string-and-backslash-to-the-left? cm (cursor cm)))
   ([cm cur]
@@ -2001,13 +1991,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-wrap-round
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn end-of-this
-  "go to the end of the current thing, whether it be a string or a word of code"
-  [cm cur]
-  (if (in-string? cm cur)
-    (token-end cm cur)
-    (end-of-next-sibling cm cur)))
 
 (defmulti move-to-start "move to the start for wrap-round"
   (fn [cm]

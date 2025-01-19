@@ -8,7 +8,11 @@ All the Paredit operations from [EmacsWiki Paredit CheatSheet](https://emacswiki
 
 `paredit-cm` is written in ClojureScript. It only parses code when asked to do an operation, and generally parses only as far as necessary. It relies on methods in CodeMirror, which in turn may change its behavior (i.e. what counts as a token, etc) depending on what kind of file it believes it's displaying.
 
-## Demo
+## Online Demo
+
+[Visit the online demo.](https://achengs.github.io/)
+
+## Local Demo
 
 1. git clone git@github.com:achengs/paredit-cm.git
 1. cd paredit-cm

@@ -359,47 +359,6 @@
   ;;(println "past")
   )
 
-(defn skip-trampoline-helper
-  "returns the cursor that satsifies skipping predicate 'sp' or nil if eof
-  reached. does this by making sp something we can trampoline. sp takes these
-  args: cm, cursor, state. counts down 'n' to 0 in order to guard against
-  infinite loops."
-  [cm cur sp state n]
-  (if (>= n 0)
-    (let [{:keys [left-cur i]} (get-info cm cur)
-          result               (sp cm cur state)]
-      (case result
-        :eof               nil
-        :stop              nil
-        :yes               cur
-        :left              left-cur
-        :end-of-this-token (token-end cm cur)
-        :start-of-this-tok (token-start cm cur)
-        (let [next-cur (token-end cm cur 1)]
-          (fn [] ;; for trampoline
-            (skip-trampoline-helper cm next-cur sp result (dec n))))))
-    (guard)))
-
-(defn skip-trampoline-helper-left
-  "like skip-trampoline-helper but in the opposite direction."
-  [cm cur sp state n]
-  (if (>= n 0)
-    (let [{:keys [left-cur right-cur i start ch]} (get-info cm cur)
-          result                                  (sp cm cur state)]
-      (case result
-        :bof               nil
-        :stop              nil
-        :yes               left-cur
-        :right             right-cur
-        :end-of-this-token (token-end cm cur)
-        :start-of-this-tok (token-start cm cur)
-        :before-this-tok   (cursor cm (dec(index cm (token-start cm cur))))
-        (let [next-cur (if (= ch start)
-                         (cursor cm (dec i))
-                         (cursor cm (- i (- ch start))))]
-          #(skip-trampoline-helper-left cm next-cur sp result (dec n)))))
-    (guard)))
-
 (defn delete-whitespace
   "if cur is in whitespace, deletes it optionally without ruining indentation."
   ([cm] (delete-whitespace cm (cursor cm) true))

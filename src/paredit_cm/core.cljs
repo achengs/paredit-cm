@@ -1272,18 +1272,6 @@
            (every? true? tests) ; there's only junk to the right
            (some #(not (nil? (.-type %))) toks)))))
 
-(defn rest-of-siblings
-  [cm]
-  (let [c1            (cursor cm)
-        parent-closer (skip cm parent-closer-sp)
-        c2            (when parent-closer (cursor cm (dec (index cm parent-closer))))]
-    [c1 c2]))
-
-(defn select-rest-of-siblings
-  [cm]
-  (let [[c1 c2] (rest-of-siblings cm) c1 (cursor cm)]
-    (when c2 (.setSelection cm c1 c2))))
-
 (defn kill-from-to [cm i j]
   (let [cur (cursor cm i)]
     (CodeMirror.emacs.kill cm cur (cursor cm j))
@@ -1307,10 +1295,6 @@
 
 (defn kill-rest-of-line [cm]
   (select-rest-of-line cm)
-  (kill-region cm))
-
-(defn kill-rest-of-siblings [cm]
-  (select-rest-of-siblings cm)
   (kill-region cm))
 
 (defn in-string-and-backslash-to-the-left?
@@ -1509,19 +1493,6 @@
   [cm i]
   (let [{:keys [ch start]} (get-info cm (cursor cm i))]
     (- i (- ch start))))
-
-(defn kill-prev-word-in-comment
-  "assumes i is in a comment. kills text from i to the beginning of the previous
-  word in this comment"
-  [cm i]
-  (let [{:keys [ch start string]} (get-info cm (cursor cm i))
-        cur-offset-in-string      (- ch start)
-        head                      (subs string 0 cur-offset-in-string)
-        tail                      (subs string cur-offset-in-string)
-        word                      (re-find #"\S*\s*$" head)
-        length                    (count word)]
-    (kill-from-to cm (- i length) i)
-    (.setCursor cm (cursor cm (- i length)))))
 
 (defn beginning-of-line?
   [cm cur]

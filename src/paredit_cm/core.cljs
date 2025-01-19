@@ -570,109 +570,89 @@
          ;; (= mode false)
          )))
 
-(defn end-of-next-sibling-sp ;; -sp see 'skipping predicate'
-  "returns the cursor at the end of the sibling to the right or nil if
-  no sibling or eof. does not exit the containing form. does this by
-  skipping past any comments or whitespace, and branches depending on
-  whether an opening bracket or doublequote is encountered (sp
-  satisfied when encountering a closing bracket that empties the
-  stack) vs the beginning of a word (return token at the end of the
-  word). assuming the cm has matched brackets for now."
-  [cm cur stack]
-  (let [{:keys [string type eof ch end]} (get-info cm cur)
-        stack-empty                      (zero? stack)
-        one-left                         (= 1 stack)
-        string-extends                   (or (not= \" (last string))
-                                             (= \\ (last (drop-last string))))] ;; for multi-line
-    (cond ;; we return a keyword when we know where to stop, stack otherwise.
-      (and (end-of-a-string? cm cur) one-left)                :yes
-      (and (escaped-char-to-left? cm cur) stack-empty)        :yes
-      (and (word? type) stack-empty (= ch end))               :yes
-      (and (is-bracket-type? type) (closer? string) one-left) :yes
-      eof                                                     :eof
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; paredit-forward
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-      ;; skip comments
-      (= type "comment"), stack
+(defn move-past-non-code [cm]
+  (while (contains? #{:whitespace :comment}(rinfo cm))
+    (move-past-token cm)))
 
-      ;; strings ...............................................................
+(defn move-before-non-code [cm]
+  (while (contains? #{:whitespace :comment}(linfo cm))
+    (move-left cm)))
 
-      ;; entering a string, push " onto stack
-      (start-of-a-string? cm cur), (inc stack)
+(defn move-past-string
+  "even for multi-line strings.
+  assumes this is called when rinfo returns :string-start, i.e. block cursor is on open double quote"
+  [cm]
+  (move-right cm)
+  (while (#{:string-guts :string-end} (rinfo cm))
+    (move-right cm)))
 
-      ;; skip whitespace - this used to be checked before start-of-a-string? but that'd be a bug
-      (nil? type), stack
+(defn move-before-string
+  "even for multi-line strings.
+  assumes this is called when linfo returns :string-end, i.e. block cursor is on to the right of a closing double quote"
+  [cm]
+  (move-left cm)
+  (while (#{:string-guts :string-start} (linfo cm))
+    (move-left cm)))
 
-      ;; at end of string and stack already empty, we must have started in the
-      ;; middle of the string
-      (and (end-of-a-string? cm cur) stack-empty), :stop
-
-      ;; at end of string and stack about to be empty, we've found the end of
-      ;; the string -- handled before checking for eof above
-
-      ;; in string, the end of this string is our goal ...
-      ;; ... but the end of this string might be on a different line:
-      (and (= type "string") one-left string-extends), stack
-
-      ;; in string, the end of this string is our goal ...
-      ;; ... the end is on this line:
-      (and (= type "string") one-left), :end-of-this-token
-
-      ;; in string which continues on next line. go to next line:
-
-      (and (= type "string") string-extends), stack
-
-      ;; in string, need to get out of this form, pop stack
-      (= type "string"), (dec stack)
-
-      ;; escaped chars .........................................................
-
-      ;; inside an escaped char and the end of it is what we want
-      (and (in-escaped-char? cm cur) stack-empty), :end-of-this-token
-
-      ;; in an escaped char inside the next sibling
-      (in-escaped-char? cm cur), stack
-
-      ;; at end of an escaped char which was the next sibling -- handled before
-      ;;checking for eof above
-
-      ;; at end of an escaped char inside the next sibling
-      (escaped-char-to-left? cm cur), stack
-
-      ;; words .................................................................
-
-      ;; reached the end of a word which was the next sibling -- handled before
-      ;;checking for eof above
-
-      ;; in a word that is the next sibling, the end of it is what we want
-      (and (word? type) stack-empty), :end-of-this-token
-
-      ;; in a word that is inside the next sibling
-      (word? type), stack
-
-      ;; brackets ..............................................................
-
-      ;; push opener on stack
-      (and (is-bracket-type? type) (opener? string)), (inc stack)
-
-      ;; we've reached the end of a form -- handled before checking for eof
-      ;;above
-
-      ;; there was no sibling
-      (and (is-bracket-type? type) (closer? string) stack-empty), :stop
-
-      ;; passing through the guts of a sibling form (.. (guts)|..)
-      (and (is-bracket-type? type) (closer? string)), (dec stack)
-
-      :default, :stop)))
+(defn ^:export forward-sexp
+  "forward-sexp exposed for keymap. seems part of emacs and not part
+  of paredit itself. but including it here since this will be used in
+  things other than emacs itself. return true if we moved."
+  [cm]
+  (let [i0 (index cm)
+        c0 (cursor cm)]
+    (loop [stack 0]
+      (let [R (rinfo cm)]
+        (cond
+          ;; can't go any further than the end of file:
+          (= R :eof)            (not= i0 (index cm))
+          ;; skip past comments and whitespace since we care about sexps:
+          (or(= R :comment)
+             (= R :whitespace)) (do(move-past-non-code cm)
+                                   (recur stack))
+          ;; skip past a word, and if there's still a stack then recur:
+          (#{:word
+             :string-2-start
+             :string-2-end
+             :uncategorized} R) (do (move-past-token cm)
+                                    (if(not(zero? stack))
+                                      (recur stack)
+                                      (not= i0 (index cm))))
+          ;; skip past a string just like a single word:
+          (= R :string-start)   (do (move-past-string cm)
+                                    (if(not(zero? stack))
+                                      (recur stack)
+                                      (not= i0 (index cm))))
+          ;; enter a sexp and increase the stack:
+          (= R :opener)         (do (move-right cm)
+                                    (recur (inc stack)))
+          ;; what we do at a closer depends on the stack:
+          (or(= R :closer)
+             (= R :string-end)) (cond
+                                  (= 0 stack) (not= i0 (index cm))
+                                  (= 1 stack) (do(move-right cm)(not= i0 (index cm)))
+                                  :else       (do (move-right cm)
+                                                  (recur (dec stack))))
+          ;; stop inside the end of a string if we start inside one:
+          (= R :string-guts)    (do(move-past-string cm)(move-left cm)(not= i0 (index cm)))
+          ;; none of the above, so just skip past it and check the stack:
+          :default              (do(move-past-token cm)
+                                   (if(not(zero? stack))
+                                     (recur stack)
+                                     (not= i0 (index cm)))))))))
 
 (defn end-of-next-sibling
   "get the cursor for the end of the sibling to the right."
-  ([cm]
-   (skip cm end-of-next-sibling-sp))
+  ([cm] (end-of-next-sibling cm (cursor cm)))
   ([cm cur]
    (when cur
      (.setCursor cm cur)
-     (skip cm end-of-next-sibling-sp))))
+     (when (forward-sexp cm)
+       (cursor cm)))))
 
 (defn start-of-prev-sibling-sp ;; -sp see 'skipping predicate'
   "returns the cursor at the start of the sibling to the left or nil
@@ -829,6 +809,24 @@
    (let [type (get-type cm cur)]
      (or (= type "string")
          (= type "string-2")))))
+
+(defn ^:export meta-doublequote
+  "paredit meta-doublequote exposed for keymap.
+  if in a string, moves cursor out of the string to the right.
+  if in a comment, insert a doublequote.
+  if in an escaped char, do nothing.
+  otherwise starts a string that that continues to the end of the next
+  form, escaping backslashes and doublequotes."
+  [cm]
+  (let [{:keys [type eof cur]} (get-info cm)]
+    (cond
+      eof                       :do-nothing
+      (in-escaped-char? cm cur) :do-nothing
+      (in-string? cm cur)       (exit-string cm)
+      (= type "comment")        (insert cm "\"")
+      (in-a-word? cm)           (stringify cm cur (token-end cm cur))
+      (forward-sexp cm)         (stringify cm cur (cursor cm))
+      :else                     :nothing-to-do)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-comment-dwim
@@ -1641,80 +1639,6 @@
   (backward-skip-delimiters cm)
   (backward-delete-word cm))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; paredit-forward
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn move-past-non-code [cm]
-  (while (contains? #{:whitespace :comment}(rinfo cm))
-    (move-past-token cm)))
-
-(defn move-before-non-code [cm]
-  (while (contains? #{:whitespace :comment}(linfo cm))
-    (move-left cm)))
-
-(defn move-past-string
-  "even for multi-line strings.
-  assumes this is called when rinfo returns :string-start, i.e. block cursor is on open double quote"
-  [cm]
-  (move-right cm)
-  (while (#{:string-guts :string-end} (rinfo cm))
-    (move-right cm)))
-
-(defn move-before-string
-  "even for multi-line strings.
-  assumes this is called when linfo returns :string-end, i.e. block cursor is on to the right of a closing double quote"
-  [cm]
-  (move-left cm)
-  (while (#{:string-guts :string-start} (linfo cm))
-    (move-left cm)))
-
-(defn ^:export forward-sexp
-  "forward-sexp exposed for keymap. seems part of emacs and not part
-  of paredit itself. but including it here since this will be used in
-  things other than emacs itself. return true if we moved."
-  [cm]
-  (let [i0 (index cm)
-        c0 (cursor cm)]
-    (loop [stack 0]
-      (let [R (rinfo cm)]
-        (cond
-          ;; can't go any further than the end of file:
-          (= R :eof)            (not= i0 (index cm))
-          ;; skip past comments and whitespace since we care about sexps:
-          (or(= R :comment)
-             (= R :whitespace)) (do(move-past-non-code cm)
-                                   (recur stack))
-          ;; skip past a word, and if there's still a stack then recur:
-          (#{:word
-             :string-2-start
-             :string-2-end
-             :uncategorized} R) (do (move-past-token cm)
-                                    (if(not(zero? stack))
-                                      (recur stack)
-                                      (not= i0 (index cm))))
-          ;; skip past a string just like a single word:
-          (= R :string-start)   (do (move-past-string cm)
-                                    (if(not(zero? stack))
-                                      (recur stack)
-                                      (not= i0 (index cm))))
-          ;; enter a sexp and increase the stack:
-          (= R :opener)         (do (move-right cm)
-                                    (recur (inc stack)))
-          ;; what we do at a closer depends on the stack:
-          (or(= R :closer)
-             (= R :string-end)) (cond
-                                  (= 0 stack) (not= i0 (index cm))
-                                  (= 1 stack) (do(move-right cm)(not= i0 (index cm)))
-                                  :else       (do (move-right cm)
-                                                  (recur (dec stack))))
-          ;; stop inside the end of a string if we start inside one:
-          (= R :string-guts)    (do(move-past-string cm)(move-left cm)(not= i0 (index cm)))
-          ;; none of the above, so just skip past it and check the stack:
-          :default              (do(move-past-token cm)
-                                   (if(not(zero? stack))
-                                     (recur stack)
-                                     (not= i0 (index cm)))))))))
 
 (defmulti forward-m (fn [cm] (rinfo cm)))
 
@@ -1738,24 +1662,6 @@
   past the S-expression following the point."
   [cm]
   (forward-m cm))
-
-(defn ^:export meta-doublequote
-  "paredit meta-doublequote exposed for keymap.
-  if in a string, moves cursor out of the string to the right.
-  if in a comment, insert a doublequote.
-  if in an escaped char, do nothing.
-  otherwise starts a string that that continues to the end of the next
-  form, escaping backslashes and doublequotes."
-  [cm]
-  (let [{:keys [type eof cur]} (get-info cm)]
-    (cond
-      eof                       :do-nothing
-      (in-escaped-char? cm cur) :do-nothing
-      (in-string? cm cur)       (exit-string cm)
-      (= type "comment")        (insert cm "\"")
-      (in-a-word? cm)           (stringify cm cur (token-end cm cur))
-      (forward-sexp cm)         (stringify cm cur (cursor cm))
-      :else                     :nothing-to-do)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-sexp

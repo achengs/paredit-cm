@@ -400,15 +400,6 @@
           #(skip-trampoline-helper-left cm next-cur sp result (dec n)))))
     (guard)))
 
-(defn skip
-  "returns the cursor that satisfies sp or nil if either eof reached
-  or we found out sp could not be satisfied. see skip-to for more
-  info."
-  ([cm sp] (skip cm sp (cursor cm)))
-  ([cm sp cur]
-   (when-let [right-cur (:right-cur (get-info cm cur))]
-     (trampoline skip-trampoline-helper cm right-cur sp 0 (char-count cm)))))
-
 (defn delete-whitespace
   "if cur is in whitespace, deletes it optionally without ruining indentation."
   ([cm] (delete-whitespace cm (cursor cm) true))
@@ -431,46 +422,6 @@
      (when (nil? type)
        (.replaceRange cm " " c1 c2)
        (if indent-after (.indentLine cm line))))))
-
-(defn skip-to
-  "moves to the cursor that satisfies sp or doesn't move if eof reached.
-  starts at current cursor for cm. sp stands for 'skipping predicate'
-  which returns:
-  - :yes if sp is satisfied.
-  - :stop if we know we will not be satisfied with any future result.
-  - :left if the cursor to the left is what we want.
-  - new non-nil state if not satisfied. this state is used with the
-  next iteration after we skip to the end of the current token. an sp
-  takes cm, cursor, state."
-  [cm sp]
-  (when-let [cur' (skip cm sp)]
-    (.setCursor cm cur')
-    cur'))
-
-(defn move-past-parent-closer
-  "moves cursor to just outside the closing bracket, or if there is
-  none then doesn't move at all."
-  ;; emacs has this extending the current selection if there is one.
-  [cm]
-  (when-let [cur (skip-to cm parent-closer-sp)]
-    (delete-whitespace cm (:left-cur (get-info cm)))
-    cur))
-
-(defn ^:export close-round
-  "paredit-close-round exposed for keymap. skips to end of current
-  list even if it ends with ] or }. but if you're in a string or
-  comment then this just inserts the bracket. requires CodeMirror
-  mode's parser uses state with indentStack because that's how we
-  can tell we've reached the end of a top level form and avoid
-  entering the next top level form. 's' is the character as a string."
-  ([cm] (close-round cm ")"))
-  ([cm s]
-   (let [{:keys [type left-char]} (get-info cm)]
-     (cond
-       (= "\\" left-char)        (insert cm s)
-       (comment-or-string? type) (insert cm s)
-       :else                     (move-past-parent-closer cm)))))
-;; todo make this ^ use move forward up
 
 (defn ^:export close-brace
   "close curly brace like close-round"
@@ -1689,6 +1640,30 @@
   (when (backward-up cm)
     (forward-sexp cm)))
 
+(defn move-past-parent-closer
+  "moves cursor to just outside the closing bracket, or if there is
+  none then doesn't move at all."
+  ;; emacs has this extending the current selection if there is one.
+  [cm]
+  (when(forward-up cm)
+    (let [cur (cursor cm)]
+      (delete-whitespace cm (:left-cur (get-info cm)))
+      cur)))
+
+(defn ^:export close-round
+  "paredit-close-round exposed for keymap. skips to end of current
+  list even if it ends with ] or }. but if you're in a string or
+  comment then this just inserts the bracket. requires CodeMirror
+  mode's parser uses state with indentStack because that's how we
+  can tell we've reached the end of a top level form and avoid
+  entering the next top level form. 's' is the character as a string."
+  ([cm] (close-round cm ")"))
+  ([cm s]
+   (let [{:keys [type left-char]} (get-info cm)]
+     (cond
+       (= "\\" left-char)        (insert cm s)
+       (comment-or-string? type) (insert cm s)
+       :else                     (move-past-parent-closer cm)))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-wrap-round
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

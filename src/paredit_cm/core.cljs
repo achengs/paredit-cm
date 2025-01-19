@@ -409,14 +409,6 @@
    (when-let [right-cur (:right-cur (get-info cm cur))]
      (trampoline skip-trampoline-helper cm right-cur sp 0 (char-count cm)))))
 
-(defn skip-left
-  "returns the cursor that satisfies sp or nil if either bof reached
-  or we found out sp could not be satisfied. see skip-to for more
-  info."
-  [cm sp]
-  (when-let [cur (cursor cm)]
-    (trampoline skip-trampoline-helper-left cm cur sp 0 (char-count cm))))
-
 (defn delete-whitespace
   "if cur is in whitespace, deletes it optionally without ruining indentation."
   ([cm] (delete-whitespace cm (cursor cm) true))
@@ -428,8 +420,8 @@
      (when (nil? type)
        (.replaceRange cm "" c1 c2)
        (if indent-after (.indentLine cm line))))))
-;; todo
-(defn just-one-space
+
+(defn just-one-space ;; wip, currently not used
   ([cm] (just-one-space cm (cursor cm) true))
   ([cm cur] (just-one-space cm cur true))
   ([cm cur indent-after]
@@ -478,6 +470,7 @@
        (= "\\" left-char)        (insert cm s)
        (comment-or-string? type) (insert cm s)
        :else                     (move-past-parent-closer cm)))))
+;; todo make this ^ use move forward up
 
 (defn ^:export close-brace
   "close curly brace like close-round"
@@ -547,28 +540,6 @@
   (let [cur (cursor cm), i (index cm cur)]
     (and (at-a-word? cm cur)
          (not= i (token-end-index cm i)))))
-
-(defn start-of-a-string?
-  "returns true if at the start of a string."
-  [cm cur]
-  (let [{:keys [right-char type right-cur eof]} (get-info cm cur)
-        left-type                               type
-        {:keys [type]}                          (get-info cm right-cur)]
-    (and (false? eof)
-         (not= "string" left-type)
-         (= "string" type)
-         (= "\"" right-char))))
-
-(defn end-of-a-string?
-  "returns true if just to the right of a closing doublequote of a string."
-  [cm cur]
-  (let [{:keys [left-char type ch end string]} (get-info cm cur)]
-    (and (= type "string")
-         (= ch end)
-         (= \" (last string))
-         (not= \\ (last (drop-last string)))
-         ;; (= mode false)
-         )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward
@@ -1367,30 +1338,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-forward-kill-word M-d
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defn comment?
-  [cm cur]
-  (= "comment" (get-type cm cur)))
-
-(defn start-of-comment?
-  "true if block cursor is on the first ; of a line comment"
-  [cm cur]
-  (let [{:keys [type right-cur]} (get-info cm cur)
-        right-type               (get-type cm right-cur)]
-    (and (not= "comment" type)
-         (= "comment" right-type))))
-
-(defn idx-of-next [cm i chars member dir max]
-  (let [{:keys [right-char]} (get-info cm (cursor cm i))]
-    (cond
-      (= i max)                               (guard)
-      (= member (contains? chars right-char)) i
-      :default                                #(idx-of-next cm (dir i) chars member dir max))))
-
-(defn index-of-next [cm i chars dir]
-  (trampoline idx-of-next cm i chars true dir (char-count cm)))
-
-(defn index-of-next-non [cm i chars dir]
-  (trampoline idx-of-next cm i chars false dir (char-count cm)))
 
 (def non-word-chars (set "(){}[]|&; \n"))
 
@@ -1494,20 +1441,6 @@
   (let [{:keys [ch start]} (get-info cm (cursor cm i))]
     (- i (- ch start))))
 
-(defn beginning-of-line?
-  [cm cur]
-  (let [{:keys [start end type] :as info} (get-info cm cur)]
-    (and (not (nil? info))
-         (nil? type)
-         (= start end 0))))
-
-(defn bkwd-kill-skippable-comment-char?
-  [cm cur]
-  (let [{:keys [type left-char] :as info} (get-info cm cur)]
-    (and (not (nil? info))
-         (= "comment" type)
-         (re-matches #"\s|;" left-char))))
-
 (defn backward-delete-initial-non-word
   [cm]
   (let [L (linfo cm)]
@@ -1574,7 +1507,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-backward-sexp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (defn ^:export get-text-of-left-sexp [cm]
   (let [original-cur (cursor cm)

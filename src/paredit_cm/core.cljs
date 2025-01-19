@@ -574,6 +574,22 @@
 ;; paredit-forward
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn move-past-token [cm]
+  (when-let [{:keys [right-cur]} (get-info cm)]
+    (let [{:keys [ch end]} (get-info cm right-cur)
+          i                (index cm)]
+      (.setCursor cm (cursor cm (+ i 1 (- end ch)))))))
+
+(defn move-before-token [cm]
+  (when-let [{:keys [left-cur]} (get-info cm)]
+    (let [{:keys [ch start]} (get-info cm left-cur)
+          i                  (index cm)]
+      (.setCursor cm (cursor cm (- i 1 (- ch start)))))))
+
+(defn move-before-word [cm]
+  (while (= :word (linfo cm))
+    (move-left cm)))
+
 (defn move-past-non-code [cm]
   (while (contains? #{:whitespace :comment}(rinfo cm))
     (move-past-token cm)))
@@ -654,123 +670,60 @@
      (when (forward-sexp cm)
        (cursor cm)))))
 
-(defn start-of-prev-sibling-sp ;; -sp see 'skipping predicate'
-  "returns the cursor at the start of the sibling to the left or nil
-  if no sibling or eof. does not exit the containing form. does this
-  by skipping past any comments or whitespace, and branches depending
-  on whether a bracket or doublequote is encountered (sp satisfied
-  when encountering an opening bracket that empties the stack) vs the
-  beginning of a word (return token at the start of the
-  word). assuming the cm has matched brackets for now."
-  [cm cur stack]
-  (let [{:keys [string type bof ch start]} (get-info cm cur)
-        stack-empty                        (zero? stack)
-        one-left                           (= 1 stack)
-        string-extends                     (not= "\"" (first string))];; for multiline strings
-    ;;(println (get-info cm cur))
-    (cond ;; we return a keyword when we know where to stop, stack otherwise.
-
-      ;; check these before checking for bof:
-
-      ;; in a multi-line string, keep searching for the first line of it:
-      (and (start-of-a-string? cm cur) one-left string-extends), stack
-
-      ;; at the first line of a string and we want its opening doublequote:
-      (and (start-of-a-string? cm cur) one-left), :yes
-
-      ;; at the start of an escaped char:
-      (and (escaped-char-to-right? cm cur) stack-empty), :yes
-
-      ;; at the start of a word:
-      (and (word? type) stack-empty (= ch start)), :yes
-
-      ;; at the opener we were looking for:
-      (and (is-bracket-type? type) (opener? string) one-left), :yes
-
-      bof, :bof; reached beginning of file
-
-      ;; skip comments
-      (= type "comment"), stack
-
-      ;; strings ...............................................................
-
-      ;; entering a string from the right; push " onto stack ;;;;;;;;wantedthisxxx;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      ;; actually we skip past the string and might still have a stack!
-      (end-of-a-string? cm cur), (inc stack)
-      ;; using stack above skips 1 sexp too far - we need to skip just the string and stop
-      ;; but using start of this tok doesn't skip far enough - falls short just inside start of string
-
-      ;; skip whitespace -- this used to be before the check for end-of-a-string? but that's a bug
-      (nil? type), stack
-
-      ;; at start of string and stack already empty, we must have started in the
-      ;; middle of the string. if it's a multi-line string, advance up:
-      (and (start-of-a-string? cm cur) stack-empty string-extends), stack
-
-      ;; we're at the first line of the string, stop:
-      (and (start-of-a-string? cm cur) stack-empty), :stop
-
-      ;; at start of string and stack about to be empty, we've found the end of
-      ;; the string -- handled before check for bof above
-
-      ;; in string, the start of it is our goal. it's on a higher line:
-      (and (= type "string") one-left string-extends), stack
-
-      ;; it's on this line:
-      (and (= type "string") one-left), :start-of-this-tok
-
-      ;; in string, need to get out of this form, pop stack
-      (and (= type "string") string-extends), stack
-      (= type "string"),                      (dec stack)
-
-      ;; escaped chars .........................................................
-
-      ;; inside an escaped char and the start of it is what we want
-      (and (in-escaped-char? cm cur) stack-empty), :start-of-this-tok
-
-      ;; in an escaped char inside the prev sibling
-      (in-escaped-char? cm cur), stack
-
-      ;; at start of an escaped char which was the prev sibling -- handled
-      ;; before check for bof above
-
-      ;; at start of an escaped char inside the prev sibling
-      (escaped-char-to-right? cm cur), stack
-
-      ;; words .................................................................
-
-      ;; reached the start of a word which was the prev sibling -- handled
-      ;; before check for bof above
-
-      ;; in a word that is the prev sibling, the start of it is what we want
-      (and (word? type) stack-empty), :start-of-this-tok
-
-      ;; in a word that is inside the prev sibling
-      (word? type), stack
-
-      ;; brackets ..............................................................
-
-      ;; push closer on stack
-      (and (is-bracket-type? type) (closer? string)), (inc stack)
-
-      ;; we've reached the start of a form -- handled before check for bof above
-
-      ;; there was no prev sibling, avoid exiting the form
-      (and (is-bracket-type? type) (opener? string) stack-empty), :stop
-
-      ;; passing through the guts of a sibling form (.. X(guts)..)
-      (and (is-bracket-type? type) (opener? string)), (dec stack)
-
-      :default :stop)))
+(defn ^:export backward-sexp
+  "backward-sexp exposed for keymap. seems part of emacs and not part
+  of paredit itself. but including it here since this will be used in
+  things other than emacs itself. return true if we moved."
+  [cm]
+  (let [i0 (index cm)]
+    (loop [rem i0, stack 0]
+      (let [L (linfo cm)]
+        (cond
+          ;; avoid infinite loop:
+          (neg? rem)              (not= i0 (index cm))
+          ;; can't go any further than the beginning of file:
+          (= L :bof)              (not= i0 (index cm))
+          ;; skip before comments and whitespace since we care about sexps:
+          (or(= L :comment)
+             (= L :whitespace))   (do(move-before-non-code cm)
+                                     (recur(dec rem)stack))
+          ;; skip before a word, and if there's still a stack then recur:
+          (= L :word)             (do(move-before-word cm)
+                                     (if(not(zero? stack))
+                                       (recur(dec rem)stack)
+                                       (not= i0 (index cm))))
+          ;; skip before a string just like a single word:
+          (= L :string-end)       (do(move-before-string cm)
+                                     (if(not(zero? stack))
+                                       (recur(dec rem)stack)
+                                       (not= i0 (index cm))))
+          ;; enter a sexp and increase the stack:
+          (= L :closer)           (do(move-left cm)
+                                     (recur(dec rem)(inc stack)))
+          ;; what we do at an opener depends on the stack:
+          (or(= L :opener)
+             (= L :string-start)) (cond
+                                    (= 0 stack) (not= i0 (index cm))
+                                    (= 1 stack) (do(move-left cm)(not= i0 (index cm)))
+                                    :else       (do(move-left cm)
+                                                   (recur(dec rem)(dec stack))))
+          ;; stop inside the end of a string if we start inside one:
+          (= L :string-guts)      (do(move-before-string cm)
+                                     (move-right cm)(not= i0 (index cm)))
+          ;; none of the above, so just skip before it and check the stack:
+          :default                (do(move-before-token cm)
+                                     (if(not(zero? stack))
+                                       (recur(dec rem)stack)
+                                       (not= i0 (index cm)))))))))
 
 (defn start-of-prev-sibling
   "return the cursor at the start of the sibling to the left."
-  ([cm]
-   (skip-left cm start-of-prev-sibling-sp))
+  ([cm](start-of-prev-sibling (cursor cm)))
   ([cm cur]
    (when cur
      (.setCursor cm cur)
-     (skip-left cm start-of-prev-sibling-sp))))
+     (when(backward-sexp cm)
+       (cursor cm)))))
 
 (defn escape-string
   "escapes a string, replacing backslashes and doublequotes. wraps
@@ -1484,22 +1437,6 @@
         quote                     (if (str/ends-with? last-word "\"") 1 0)]
     (- i length quote)))
 
-(defn move-past-token [cm]
-  (when-let [{:keys [right-cur]} (get-info cm)]
-    (let [{:keys [ch end]} (get-info cm right-cur)
-          i                (index cm)]
-      (.setCursor cm (cursor cm (+ i 1 (- end ch)))))))
-
-(defn move-before-token [cm]
-  (when-let [{:keys [left-cur]} (get-info cm)]
-    (let [{:keys [ch start]} (get-info cm left-cur)
-          i                  (index cm)]
-      (.setCursor cm (cursor cm (- i 1 (- ch start)))))))
-
-(defn move-before-word [cm]
-  (while (= :word (linfo cm))
-    (move-left cm)))
-
 (def delimiters (set/union openers closers #{"\"" ";"}))
 
 (defn move-to-start-of-word
@@ -1667,51 +1604,6 @@
 ;; paredit-backward-sexp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn ^:export backward-sexp
-  "backward-sexp exposed for keymap. seems part of emacs and not part
-  of paredit itself. but including it here since this will be used in
-  things other than emacs itself. return true if we moved."
-  [cm]
-  (let [i0 (index cm)]
-    (loop [rem i0, stack 0]
-      (let [L (linfo cm)]
-        (cond
-          ;; avoid infinite loop:
-          (neg? rem)              (not= i0 (index cm))
-          ;; can't go any further than the beginning of file:
-          (= L :bof)              (not= i0 (index cm))
-          ;; skip before comments and whitespace since we care about sexps:
-          (or(= L :comment)
-             (= L :whitespace))   (do(move-before-non-code cm)
-                                     (recur(dec rem)stack))
-          ;; skip before a word, and if there's still a stack then recur:
-          (= L :word)             (do(move-before-word cm)
-                                     (if(not(zero? stack))
-                                       (recur(dec rem)stack)
-                                       (not= i0 (index cm))))
-          ;; skip before a string just like a single word:
-          (= L :string-end)       (do(move-before-string cm)
-                                     (if(not(zero? stack))
-                                       (recur(dec rem)stack)
-                                       (not= i0 (index cm))))
-          ;; enter a sexp and increase the stack:
-          (= L :closer)           (do(move-left cm)
-                                     (recur(dec rem)(inc stack)))
-          ;; what we do at an opener depends on the stack:
-          (or(= L :opener)
-             (= L :string-start)) (cond
-                                    (= 0 stack) (not= i0 (index cm))
-                                    (= 1 stack) (do(move-left cm)(not= i0 (index cm)))
-                                    :else       (do(move-left cm)
-                                                   (recur(dec rem)(dec stack))))
-          ;; stop inside the end of a string if we start inside one:
-          (= L :string-guts)      (do(move-before-string cm)
-                                     (move-right cm)(not= i0 (index cm)))
-          ;; none of the above, so just skip before it and check the stack:
-          :default                (do(move-before-token cm)
-                                     (if(not(zero? stack))
-                                       (recur(dec rem)stack)
-                                       (not= i0 (index cm)))))))))
 
 (defn ^:export get-text-of-left-sexp [cm]
   (let [original-cur (cursor cm)

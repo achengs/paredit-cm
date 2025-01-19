@@ -152,6 +152,7 @@
   ([cm cur] (let [end  (.-end (last-token cm cur))
                   diff (- end (.-ch cur))]
               (cursor cm (+ diff (index cm cur))))))
+
 (defn get-info
   "make info from CodeMirror more conveniently accessed by our code.
   we'll use destructuring and just name what we want. hypothesizing
@@ -298,48 +299,9 @@
      (.setCursor cm line (+ (+ ch (count text)) offset))
      (cursor cm))))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; paredit-close-round )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn parent-closer-sp ;; -sp see 'skipping predicate' below
-  "finds the *parent* closing bracket. behavior when used with skip: pushes
-  opening brackets that appear along the way on a stack. closing brackets pop
-  them off. stops when encountering a closing bracket while the stack is empty.
-  assuming the cm has matched brackets for now. moves to the right."
-  [cm cur state]
-  (let [{:keys [string type top eof]} (get-info cm cur)]
-    (cond
-      ;; 'push' opener on our 'stack':
-      (and (is-bracket-type? type) (opener? string)), (inc state)
-
-      ;; stop if we see a closer while our 'stack' is empty:
-      (and (is-bracket-type? type) (closer? string) (zero? state)), :yes
-
-      ;; closer means we 'pop' off the 'stack', unless eof
-      (and (is-bracket-type? type) (closer? string) (not= 0 state) eof), :eof
-
-      ;; closer means we 'pop' off the 'stack':
-      (and (is-bracket-type? type) (closer? string) (not= 0 state)), (dec state)
-
-      ;; we can* rely on code mirror to tell us if we're at the top
-      ;; level: (* NOT in [cljsjs/codemirror "5.21.0-2"] ... but maybe
-      ;; in a later version ... until we can figure out how to refer
-      ;; to the latest codemirror in our tests, the tests will have to
-      ;; live here in order to get the codemirror that is included in
-      ;; the script tag on the demo index.html page)
-      ;; TODO: investigate whether we can use this, given CodeMirror version:
-      ;; top, :stop
-
-      ;; stack stays unchanged. move to the next thing:
-      :default, state)))
-
-(defn token-start
-  "returns the cursor for the start of the current token"
-  [cm cur]
-  (let [{:keys [i start ch]} (get-info cm cur)]
-    (cursor cm (- i (- ch start)))))
 
 (defn token-end
   "returns the cursor for the end of the current token"

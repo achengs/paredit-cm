@@ -1,25 +1,10 @@
 # paredit-cm
 
-[![Build Status](https://travis-ci.org/achengs/paredit-cm.svg?branch=master)](https://travis-ci.org/achengs/paredit-cm)
-[![Dependencies Status](https://jarkeeper.com/achengs/paredit-cm/status.svg)](https://jarkeeper.com/achengs/paredit-cm)
-[![Clojars Project](https://img.shields.io/clojars/v/paredit-cm.svg)](https://clojars.org/paredit-cm)
-
-All the Paredit operations from [EmacsWiki Paredit CheatSheet](https://emacswiki.org/emacs/PareditCheatsheet) for [CodeMirror](http://codemirror.net/).
-
-`paredit-cm` is written in ClojureScript. It only parses code when asked to do an operation, and generally parses only as far as necessary. It relies on methods in CodeMirror, which in turn may change its behavior (i.e. what counts as a token, etc) depending on what kind of file it believes it's displaying.
+[Paredit operations](https://emacswiki.org/emacs/PareditCheatsheet) for [CodeMirror](http://codemirror.net/).
 
 ## Online Demo
 
 [Visit the online demo.](https://achengs.github.io/)
-
-## Local Demo
-
-1. git clone git@github.com:achengs/paredit-cm.git
-1. cd paredit-cm
-1. lein fig:build
-1. Wait for your browser to load http://localhost:9500/
-
-Note: your browser may interfere with the capture of many modifiers and combinations.
 
 ## Features / Keys
 
@@ -138,7 +123,7 @@ Note: your browser may interfere with the capture of many modifiers and combinat
   </tr>
 </table>
 
-Bug reports are definitely welcome.
+Bug reports are welcome.
 
 ## Customization
 
@@ -149,11 +134,6 @@ You can change the key shortcuts by editing your copy of
 
 ### From the command line
 `lein fig:test`
-
-### With figwheel and emacs
-* Jack in
-* When your browser loads `index.html`, show the javascipt console
-* Edit code or tests. The tests should run.
 
 ## License
 
